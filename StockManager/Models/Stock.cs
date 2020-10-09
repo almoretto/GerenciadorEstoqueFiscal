@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FiscalStockManager.Models
+namespace StockManager.Models
 {
     class Stock
     {

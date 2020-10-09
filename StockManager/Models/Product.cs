@@ -1,4 +1,4 @@
-﻿namespace FiscalStockManager.Models
+﻿namespace StockManager.Models
 {
     class Product
     {
