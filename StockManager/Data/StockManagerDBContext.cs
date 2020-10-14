@@ -4,19 +4,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace StockManager.Data
 {
-    class StockManagerContext : DbContext
+    public class StockManagerDBContext : DbContext
     {
-        public StockManagerContext(DbContextOptions<StockManagerContext> options) : base(options) { }
+        public StockManagerDBContext(DbContextOptions<StockManagerDBContext> options)
+             : base(options)
+        {
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"\\srv001\SQLEXPRESS;Database=StockManagerDB;Trusted_Connection=True;");
-            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseSqlServer(@"server=SRV001\SQLEXPRESS;Database=StockKManagerDB;User Id=administrator;Password=$3nh@2018;");
         }
 
         public DbSet<InputProduct> InputProducts { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<SoldProduct> SoldProducts { get; set; }
         public DbSet<Stock> Stocks { get; set; }
-
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace StockManager.Models
+﻿namespace StockManagerCore.Models
 {
     public class Product
     {

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StockManager.Models
 {
-    class SoldProduct
+    public class SoldProduct
     {
         [Key]
         public int Id { get; set; }
@@ -14,7 +14,7 @@ namespace StockManager.Models
         public int ProductId { get; set; }
 
         //Navigation Prop
-        public Product ProductNav { get; set; }
+        public Product Product { get; set; }
 
     }
 }
