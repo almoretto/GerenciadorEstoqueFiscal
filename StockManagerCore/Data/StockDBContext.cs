@@ -11,7 +11,7 @@ namespace StockManagerCore.Data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"server=SRV001\SQLEXPRESS;Database=StockKManagerDB;User Id=administrator;Password=$3nh@2018;");
+            optionsBuilder.UseSqlServer(@"server=192.168.100.2\SQLEXPRESS;Database=StockKManagerDB;User Id=administrator;Password=$3nh@2018;");
         }
 
         public DbSet<InputProduct> InputProducts { get; set; }

@@ -23,6 +23,8 @@ namespace StockManagerCore
         public MainWindow()
         {
             InitializeComponent();
+            //Startup start = new Startup();
+
         }
     }
 }
