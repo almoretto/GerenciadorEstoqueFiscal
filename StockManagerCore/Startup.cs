@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+
 using StockManagerCore.Data;
 
 namespace StockManagerCore
@@ -11,7 +10,7 @@ namespace StockManagerCore
         public StockDBContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<StockDBContext>();
-            optionsBuilder.UseSqlServer(@"server=192.168.100.2\SQLEXPRESS;Database=StockKManagerDB;User Id=administrator;Password=$3nh@2018;");
+            optionsBuilder.UseSqlServer("server=tcp:=192.168.100.2,1433;Network Library = DBMSSOCN;Initial Catalog =StockKManagerDB;User Id=sa;Password=$3nh@2018;");
 
             return new StockDBContext(optionsBuilder.Options);
         }
