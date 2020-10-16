@@ -13,8 +13,11 @@
                 <Grid Background="#FFE5E5E5">
                     <TextBox x:Name="FileNameTextBox" HorizontalAlignment="Left" Margin="34,33,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
                     <Button x:Name="BtnFileOpen" Content="Selecionar" HorizontalAlignment="Left" Margin="170,32,0,0" VerticalAlignment="Top"/>
-                    <Button x:Name="ProcessInputs" Content="Processar Entradas" HorizontalAlignment="Left" Margin="34,65,0,0" VerticalAlignment="Top"/>
-                    <Button x:Name="ProcessSales" Content="Processar Saídas" HorizontalAlignment="Left" Margin="34,90,0,0" VerticalAlignment="Top" Width="103" Click="ProcessSales_Click"/>
+                    <Button x:Name="ProcessFile" Content="Processar Arquivo" HorizontalAlignment="Left" Margin="34,65,0,0" VerticalAlignment="Top" Click="ProcessInputs_Click"/>
+                    <Button x:Name="ProcessSales" Content="Processar Saídas" HorizontalAlignment="Left" Margin="34,119,0,0" VerticalAlignment="Top" Width="103" Click="ProcessSales_Click"/>
+                    <TextBlock x:Name="Log_TextBlock" HorizontalAlignment="Center" Margin="34,200,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="741" Height="137" FontWeight="Normal"/>
+                    <CheckBox x:Name="InputOutput" Content="Marque se o arquivo for de Vendas" HorizontalAlignment="Left" Margin="149,70,0,0" VerticalAlignment="Top" Width="210" Height="17"/>
+                    <CheckBox x:Name="NFUn" Content="Marque se a unidade for duzia" HorizontalAlignment="Left" Margin="149,92,0,0" VerticalAlignment="Top" Width="210"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Dados">
