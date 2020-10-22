@@ -1,6 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Windows.Shapes;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using StockManagerCore.Models;
 
 namespace StockManagerCore.Services
@@ -8,106 +14,141 @@ namespace StockManagerCore.Services
     class XMLReader
     {
 
-        private List<InputXML> Inputs { get; set; } = new List<InputXML>();
+        public List<InputXML> Inputs { get; set; } = new List<InputXML>();
         // private  List<SoldProduct> Sales { get; set; } = new List<SoldProduct>();
+        CultureInfo provider = CultureInfo.InvariantCulture;
+        DateTime dhEmi;
+        string nItem;
+        string xProd;
+        int qCom;
+        double vUnCom;
+        string uCom;
+        double vTotal;
+        double vUnTrib;
+        double vTotTrib;
+
         [NotMapped]
         public string Path { get; set; }
-        public bool Duzens { get; set; }
-        public bool  Sales { get; set; }
+        [NotMapped]
+        public bool Sales { get; set; }
 
-        public XMLReader(string path, bool duzens, bool sales)
+        public XMLReader(string path, bool sales)
         {
             Path = path;
-            Duzens = duzens;
             Sales = sales;
         }
 
         public string GetInputItens()
         {
-            int item = 0;
-            XElement xml = XElement.Load(Path);
-
-            foreach (XElement x in xml.Elements())
+            int count = 0;
+            using (StreamReader sr = File.OpenText(Path)) //forma reduzida
             {
-                InputXML p = new InputXML()
+
+                while (!sr.EndOfStream)
                 {
-                    NItem = x.Attribute("nItem").Value,
-                    XProd = x.Attribute("xProd").Value,
-                    QCom = int.Parse(x.Attribute("qCom").Value),
-                    VUnCom = double.Parse(x.Attribute("vUnCom").Value),
-                    UCom = x.Attribute("uCom").Value,
-                    Vtotal = double.Parse(x.Attribute("vTotal").Value),
-                    VUnTrib = double.Parse(x.Attribute("vUnTrib").Value),
-                    VTotTrib = double.Parse(x.Attribute("vTotTrib").Value)
-                };
-                Inputs.Add(p);
-                item++;
+                    string[] line = sr.ReadLine().Split('|');
+                    if (line.Length != 0)
+                    {
+                        for (int i = 0; i < line.Length; i++)
+                        {
+
+                            /*
+                            InputXML p = new InputXML();
+                            dhEmi = DateTime.ParseExact(x.Element("dhEmi").Value, "yyyy-MM-dd", provider);
+                            nItem = x.Attribute("nItem").Value;
+                            xProd = x.Attribute("xProd").Value;
+                            qCom = int.Parse(x.Attribute("qCom").Value);
+                            vUnCom = double.Parse(x.Attribute("vUnCom").Value);
+                            uCom = x.Attribute("uCom").Value;
+                            vTotal = double.Parse(x.Attribute("vTotal").Value);
+                            vUnTrib = double.Parse(x.Attribute("vUnTrib").Value);
+                            vTotTrib = double.Parse(x.Attribute("vTotTrib").Value);
+
+                            p.DhEmi = dhEmi;
+                            p.NItem = nItem;
+                            p.XProd = xProd;
+                            p.QCom = qCom;
+                            p.VUnCom = vUnCom;
+                            p.UCom = uCom;
+                            p.Vtotal = vTotal;
+                            p.VUnTrib = vUnTrib;
+                            p.VTotTrib = vTotTrib;
+                            */
+                            Inputs.Add(p);
+                        }
+                    }
+                    count++;
+                }
             }
             GenerateGroups();
-            return "Inputs Added :" + item.ToString();
+            return "Inputs Added :" + count.ToString();
         }
         private void GenerateGroups()
         {
-            for (int i = 0; i < Inputs.Count ; i++)
+            for (int i = 0; i < Inputs.Count; i++)
             {
                 if (Inputs[i].XProd.Contains("Anel"))
                 {
                     Inputs[i].Group = "Anel";
                 }
-                if (Inputs[i].XProd.Contains("Argola"))
+                else if (Inputs[i].XProd.Contains("Argola"))
                 {
                     Inputs[i].Group = "Argola";
                 }
-                if (Inputs[i].XProd.Contains("Bracelete"))
+                else if (Inputs[i].XProd.Contains("Bracelete"))
                 {
                     Inputs[i].Group = "Bracelete";
                 }
-                if (Inputs[i].XProd.Contains("Brinco"))
+                else if (Inputs[i].XProd.Contains("Brinco"))
                 {
                     Inputs[i].Group = "Brinco";
                 }
-                if (Inputs[i].XProd.Contains("Choker"))
+                else if (Inputs[i].XProd.Contains("Choker"))
                 {
                     Inputs[i].Group = "Choker";
                 }
-                if (Inputs[i].XProd.Contains("Colar"))
+                else if (Inputs[i].XProd.Contains("Colar") || Inputs[i].XProd.Contains("Gargantilha"))
                 {
                     Inputs[i].Group = "Colar";
                 }
-                if (Inputs[i].XProd.Contains("Corrente"))
+                else if (Inputs[i].XProd.Contains("Corrente"))
                 {
                     Inputs[i].Group = "Corrente";
                 }
-                if (Inputs[i].XProd.Contains("Pingente"))
+                else if (Inputs[i].XProd.Contains("Pingente"))
                 {
                     Inputs[i].Group = "Pingente";
                 }
-                if (Inputs[i].XProd.Contains("Pulseira"))
+                else if (Inputs[i].XProd.Contains("Pulseira"))
                 {
                     Inputs[i].Group = "Pulseira";
                 }
-                if (Inputs[i].XProd.Contains("Tornozeleira"))
+                else if (Inputs[i].XProd.Contains("Tornozeleira"))
                 {
                     Inputs[i].Group = "Tornozeleira";
                 }
-                if (Inputs[i].XProd.Contains("Variados"))
+                else if (Inputs[i].XProd.Contains("Variados"))
                 {
                     Inputs[i].Group = "Variados";
                 }
-                if (Inputs[i].XProd.Contains("Broche"))
+                else if (Inputs[i].XProd.Contains("Broche"))
                 {
                     Inputs[i].Group = "Broche";
                 }
-                if (Inputs[i].XProd.Contains("Partes e"))
+                else if (Inputs[i].XProd.Contains("Partes e"))
                 {
-                    Inputs[i].Group = "Broche";
+                    Inputs[i].Group = "Peças";
+                }
+                else if (Inputs[i].XProd.Contains("Conjunto"))
+                {
+                    Inputs[i].Group = "Conjunto";
+                }
+                else
+                {
+                    Inputs[i].Group = "Variados";
                 }
             }
         }
-        private void ProcessData()
-        {
 
-
-        }
     }
 }

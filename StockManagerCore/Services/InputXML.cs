@@ -1,8 +1,10 @@
-﻿namespace StockManagerCore.Services
+﻿using System;
+
+namespace StockManagerCore.Services
 {
     public class InputXML
     {
-        
+        public DateTime DhEmi { get; set; }
         public string NItem { get; set; }
         public string XProd { get; set; }
         public int QCom { get; set; }
