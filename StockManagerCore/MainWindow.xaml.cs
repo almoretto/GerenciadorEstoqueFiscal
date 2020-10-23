@@ -17,7 +17,7 @@ namespace StockManagerCore
     {
         private readonly StockDBContext _context;
         string filename;
-        XMLReader xmlReader;
+        NFeReader nfeReader;
         bool sales;
 
         StringBuilder log = new StringBuilder();
@@ -36,8 +36,8 @@ namespace StockManagerCore
                 Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
                 // Set filter for file extension and default file extension
-                dlg.DefaultExt = ".xml";
-                dlg.Filter = "XML Document (.XML)|*.xml";
+                dlg.DefaultExt = ".txt";
+                dlg.Filter = "TXT Document (.TXT;.CSV)|*.TXT;*.CSV";
 
                 // Display OpenFileDialog by calling ShowDialog method
                 Nullable<bool> result = dlg.ShowDialog();
@@ -58,7 +58,7 @@ namespace StockManagerCore
             }
 
         }
-        public List<InputProduct> ListInputProduct { get; set; }
+        public List<InputProduct> ListInputProduct { get; set; } = new List<InputProduct>();
         public IQueryable<Product> Products { get; set; }
 
         private void ProcessInputs_Click(object sender, RoutedEventArgs e)
@@ -71,11 +71,11 @@ namespace StockManagerCore
                 if (!sales)
                 {
                     //Instance the service
-                    xmlReader = new XMLReader(filename, sales);
+                    nfeReader = new NFeReader(filename, sales);
                     //Reading inputs and returning Log
-                    log.AppendLine(xmlReader.GetInputItens());
+                    log.AppendLine(nfeReader.GetInputItens());
                     Log_TextBlock.Text = log.ToString();
-                    foreach (InputXML item in xmlReader.Inputs)
+                    foreach (InputNFe item in nfeReader.Inputs)
                     {
                         int idProd = (from p in Products
                                       where p.Group == item.Group
@@ -125,11 +125,11 @@ namespace StockManagerCore
                 if (sales)
                 {
                     //Instance the service
-                    xmlReader = new XMLReader(filename, sales);
+                    nfeReader = new NFeReader(filename, sales);
                     //Reading inputs and returning Log
-                    log.AppendLine(xmlReader.GetInputItens());
+                    log.AppendLine(nfeReader.GetInputItens());
                     Log_TextBlock.Text = log.ToString();
-                    foreach (InputXML item in xmlReader.Inputs)
+                    foreach (InputNFe item in nfeReader.Inputs)
                     {
                         int idProd = (from p in Products
                                       where p.Group == item.Group

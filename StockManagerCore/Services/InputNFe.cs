@@ -2,7 +2,7 @@
 
 namespace StockManagerCore.Services
 {
-    public class InputXML
+    public class InputNFe
     {
         public DateTime DhEmi { get; set; }
         public string NItem { get; set; }
