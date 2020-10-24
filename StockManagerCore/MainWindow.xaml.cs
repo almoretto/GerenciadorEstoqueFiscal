@@ -108,12 +108,8 @@ namespace StockManagerCore
                 log.AppendLine(ex.Message);
                 Log_TextBlock.Text = log.ToString();
             }
-
-
         }
         public List<SoldProduct> ListOfSales { get; set; }
-
-
         private void ProcessSales_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -152,13 +148,11 @@ namespace StockManagerCore
                         _context.SoldProducts.Add(item);
                         _context.SaveChanges();
                     }
-
                 }
                 else
                 {
                     throw new Exception(Log_TextBlock.Text = "Não pode processar entrada como venda");
                 }
-
             }
             catch (IOException ex)
             {
@@ -167,7 +161,5 @@ namespace StockManagerCore
                 Log_TextBlock.Text = log.ToString();
             }
         }
-
-
     }
 }
