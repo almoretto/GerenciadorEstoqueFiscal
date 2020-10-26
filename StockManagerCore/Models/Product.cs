@@ -1,4 +1,6 @@
-﻿namespace StockManagerCore.Models
+﻿using System.Collections.Generic;
+
+namespace StockManagerCore.Models
 {
     public class Product
     {
@@ -6,9 +8,12 @@
         public string Group { get; set; }
 
         //navigation to IncomeProduct
-        public InputProduct InputProduct { get; set; }
+        public ICollection<InputProduct> InputProduct { get; set; }
 
         //Navigation to Sales Product
-        public SoldProduct SoldProduct { get; set; }
+        public ICollection<SoldProduct> SoldProduct { get; set; }
+        
+        public Product() { }
+
     }
 }

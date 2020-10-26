@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StockManagerCore.Models
 {
+    [NotMapped]
     public class Stock
     {
-        [Key]
-        public int Id { get; set; }
-        public List<InputProduct>  InputProducts { get; set; }
-        public List<SoldProduct> SoldProducts { get; set; }
+       
+        public ICollection<InputProduct>  InputProducts { get; set; }
+       
+        public ICollection<SoldProduct> SoldProducts { get; set; }
 
-        //Navigation
-        public ICollection<InputProduct> ProductsInputs { get; set; }
-        public ICollection<SoldProduct> ProductsSales { get; set; }
+   
 
     }
 }

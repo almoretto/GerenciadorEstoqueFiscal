@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System;
 
 namespace StockManagerCore.Models
@@ -8,36 +7,28 @@ namespace StockManagerCore.Models
     {
         [Key]
         public int Id { get; set; }
-        public string NItem { get; set; }
-        public string XProd { get; set; }
-        public int QCom { get; set; }
-        public double VUnCom { get; set; }
-        public string UCom { get; set; }
-        public double Vtotal { get; set; }
-        public double VUnTrib { get; set; }
-        public double VTotTrib { get; set; }
-        public DateTime DhEmi { get; set; }
+        public string NItem { get; set; } //number
+        public string XProd { get; set; } //group
+        public int QCom { get; set; } //Qty
+        public double VUnCom { get; set; } //Unitary Valor
+        public double Vtotal { get; set; } // Total Valor
+        public DateTime DhEmi { get; set; } //Input data
 
-        [ForeignKey("Product")]
-        public int ProductId { get; set; }
-
+        
         //Navigation Prop
         public Product Product { get; set; }
 
-        public SoldProduct(string nItem, string xProd, int qCom, double vUnCom, string uCom, double vtotal, 
-            double vUnTrib, double vTotTrib, int productId, DateTime dhEmi)
+        public SoldProduct() { }
+
+        public SoldProduct(string nItem, string xProd, int qCom, double vUnCom, double vtotal, DateTime dhEmi, Product product)
         {
-            
             NItem = nItem;
             XProd = xProd;
             QCom = qCom;
             VUnCom = vUnCom;
-            UCom = uCom;
             Vtotal = vtotal;
-            VUnTrib = vUnTrib;
-            VTotTrib = vTotTrib;
-            ProductId = productId;
             DhEmi = dhEmi;
+            Product = product;
         }
     }
 }

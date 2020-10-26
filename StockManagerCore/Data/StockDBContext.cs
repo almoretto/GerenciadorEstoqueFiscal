@@ -22,19 +22,19 @@ namespace StockManagerCore.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().HasData(
-                 new Product { Id = 1, Group = "Anel" },
-                 new Product { Id = 2, Group = "Argola" },
-                 new Product { Id = 3, Group = "Bracelete" },
-                 new Product { Id = 4, Group = "Brinco" },
-                 new Product { Id = 5, Group = "Choker" },
-                 new Product { Id = 6, Group = "Colar" },
-                 new Product { Id = 7, Group = "Corrente" },
-                 new Product { Id = 8, Group = "Pingente" },
-                 new Product { Id = 9, Group = "Pulseira" },
-                 new Product { Id = 10, Group = "Tornozeleira" },
-                 new Product { Id = 11, Group = "Peças Montagem" },
-                 new Product { Id = 12, Group = "Variados" },
-                 new Product { Id = 13, Group = "Broche" });
+                 new Product { Id = 1, Group = "ANEL" },
+                 new Product { Id = 2, Group = "ARGOLA" },
+                 new Product { Id = 3, Group = "BRACELETE" },
+                 new Product { Id = 4, Group = "BRINCO" },
+                 new Product { Id = 5, Group = "CHOCER" },
+                 new Product { Id = 6, Group = "COLAR" },
+                 new Product { Id = 7, Group = "CORRENTE" },
+                 new Product { Id = 8, Group = "PINGENTE" },
+                 new Product { Id = 9, Group = "PULSEIRA" },
+                 new Product { Id = 10, Group = "TORNOZELEIRA" },
+                 new Product { Id = 11, Group = "PEAÇAS" },
+                 new Product { Id = 12, Group = "VARIADOS" },
+                 new Product { Id = 13, Group = "BROCHE" });
         }
     }
 }

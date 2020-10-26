@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockManagerCore.Data;
 
 namespace StockManagerCore.Migrations
 {
     [DbContext(typeof(StockDBContext))]
-    partial class StockDBContextModelSnapshot : ModelSnapshot
+    [Migration("20201026194851_v6AlterModelSoldProducts")]
+    partial class v6AlterModelSoldProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,67 +83,67 @@ namespace StockManagerCore.Migrations
                         new
                         {
                             Id = 1,
-                            Group = "ANEL"
+                            Group = "Anel"
                         },
                         new
                         {
                             Id = 2,
-                            Group = "ARGOLA"
+                            Group = "Argola"
                         },
                         new
                         {
                             Id = 3,
-                            Group = "BRACELETE"
+                            Group = "Bracelete"
                         },
                         new
                         {
                             Id = 4,
-                            Group = "BRINCO"
+                            Group = "Brinco"
                         },
                         new
                         {
                             Id = 5,
-                            Group = "CHOCER"
+                            Group = "Choker"
                         },
                         new
                         {
                             Id = 6,
-                            Group = "COLAR"
+                            Group = "Colar"
                         },
                         new
                         {
                             Id = 7,
-                            Group = "CORRENTE"
+                            Group = "Corrente"
                         },
                         new
                         {
                             Id = 8,
-                            Group = "PINGENTE"
+                            Group = "Pingente"
                         },
                         new
                         {
                             Id = 9,
-                            Group = "PULSEIRA"
+                            Group = "Pulseira"
                         },
                         new
                         {
                             Id = 10,
-                            Group = "TORNOZELEIRA"
+                            Group = "Tornozeleira"
                         },
                         new
                         {
                             Id = 11,
-                            Group = "PEAÇAS"
+                            Group = "Peças Montagem"
                         },
                         new
                         {
                             Id = 12,
-                            Group = "VARIADOS"
+                            Group = "Variados"
                         },
                         new
                         {
                             Id = 13,
-                            Group = "BROCHE"
+                            Group = "Broche"
                         });
                 });
 

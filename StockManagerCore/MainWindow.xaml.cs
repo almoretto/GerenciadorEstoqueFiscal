@@ -17,7 +17,7 @@ namespace StockManagerCore
     {
         private readonly StockDBContext _context;
         string filename;
-        NFeReader nfeReader;
+        FileReader nfeReader;
         bool sales;
 
         StringBuilder log = new StringBuilder();
@@ -25,8 +25,6 @@ namespace StockManagerCore
         {
             _context = context;
             InitializeComponent();
-            
-
         }
         private void BtnFileOpen_Click(object sender, RoutedEventArgs e)
         {
@@ -56,30 +54,34 @@ namespace StockManagerCore
                 log.AppendLine(ex.Message);
                 Log_TextBlock.Text = log.ToString();
             }
-
         }
         public List<InputProduct> ListInputProduct { get; set; } = new List<InputProduct>();
+        public List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
         public IQueryable<Product> Products { get; set; }
-
+        public Product Prod { get; set; } = new Product();
         private void ProcessInputs_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (filename.EndsWith("csv")||filename.EndsWith("CSV"))
+                {
+                    throw new Exception("Não pode processar arquivo de venda como entrada!");
+                }
                 Products = from p in _context.Products select p;
-                sales = (bool)InputOutput.IsChecked;
+                sales = false;
                 log.Clear();
                 if (!sales)
                 {
                     //Instance the service
-                    nfeReader = new NFeReader(filename, sales);
+                    nfeReader = new FileReader(filename, sales);
                     //Reading inputs and returning Log
                     log.AppendLine(nfeReader.GetInputItens());
                     Log_TextBlock.Text = log.ToString();
                     foreach (InputNFe item in nfeReader.Inputs)
                     {
-                        int idProd = (from p in Products
+                        Prod = (from p in Products
                                       where p.Group == item.Group
-                                      select p.Id).SingleOrDefault();
+                                      select p).SingleOrDefault();
                         ListInputProduct.Add(new InputProduct
                             (item.NItem,
                             item.XProd,
@@ -89,16 +91,20 @@ namespace StockManagerCore
                             item.Vtotal,
                             item.VUnTrib,
                             item.VTotTrib,
-                            idProd,
+                            Prod,
                             item.DhEmi));
 
                     }
-                    foreach (InputProduct item in ListInputProduct)
-                    {
-                        _context.InputProducts.Add(item);
-                        _context.SaveChanges();
-                    }
-
+                    _context.InputProducts.AddRange(ListInputProduct);
+                    _context.SaveChanges();
+                   
+                }
+                else
+                {
+                    Log_TextBlock.Text = "";
+                    log.AppendLine("Não pode processar venda como Compra!");
+                    Log_TextBlock.Text = log.ToString();
+                    throw new Exception("Não pode processar venda como Compra!");
                 }
 
             }
@@ -106,57 +112,54 @@ namespace StockManagerCore
             {
                 Log_TextBlock.Text = "";
                 log.AppendLine(ex.Message);
+                if (ex.InnerException!=null)
+                {
+                    log.AppendLine(ex.InnerException.Message);
+                }
+                
                 Log_TextBlock.Text = log.ToString();
             }
-
-
         }
-        public List<SoldProduct> ListOfSales { get; set; }
-
-
         private void ProcessSales_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 Products = from p in _context.Products select p;
-                sales = (bool)InputOutput.IsChecked;
+                sales = true;
                 log.Clear();
 
                 if (sales)
                 {
                     //Instance the service
-                    nfeReader = new NFeReader(filename, sales);
+                    nfeReader = new FileReader(filename, sales);
                     //Reading inputs and returning Log
                     log.AppendLine(nfeReader.GetInputItens());
                     Log_TextBlock.Text = log.ToString();
                     foreach (InputNFe item in nfeReader.Inputs)
                     {
-                        int idProd = (from p in Products
+                        Prod = (from p in Products
                                       where p.Group == item.Group
-                                      select p.Id).SingleOrDefault();
+                                      select p).SingleOrDefault();
                         ListOfSales.Add(new SoldProduct
                             (item.NItem,
                             item.XProd,
                             item.QCom,
                             item.VUnCom,
-                            item.UCom,
                             item.Vtotal,
-                            item.VUnTrib,
-                            item.VTotTrib,
-                            idProd,
-                            item.DhEmi));
+                            item.DhEmi,
+                            Prod));
 
                     }
-                    foreach (SoldProduct item in ListOfSales)
-                    {
-                        _context.SoldProducts.Add(item);
-                        _context.SaveChanges();
-                    }
-
+                    _context.SoldProducts.AddRange(ListOfSales);
+                    _context.SaveChanges();
+                    
                 }
                 else
                 {
-                    throw new Exception(Log_TextBlock.Text = "Não pode processar entrada como venda");
+                    Log_TextBlock.Text = "";
+                    log.AppendLine("Não pode processar entrada como venda!");
+                    Log_TextBlock.Text = log.ToString();
+                    throw new Exception("Não pode processar entrada como venda!");
                 }
 
             }
@@ -164,10 +167,12 @@ namespace StockManagerCore
             {
                 Log_TextBlock.Text = "";
                 log.AppendLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    log.AppendLine(ex.InnerException.Message);
+                }
                 Log_TextBlock.Text = log.ToString();
             }
         }
-
-
     }
 }

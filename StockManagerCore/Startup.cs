@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Logging;
 using StockManagerCore.Data;
-using StockManagerCore.Services;
-using System;
 
 namespace StockManagerCore
 {

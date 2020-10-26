@@ -18,15 +18,13 @@ namespace StockManagerCore.Models
         public double VTotTrib { get; set; }
         public DateTime DhEmi { get; set; }
 
-
-
-        [ForeignKey("Product")]
-        public int ProductId { get; set; }
         //Navigation prop
-        public Product ProductNav { get; set; }
+        public Product Product { get; set; }
+
+        public InputProduct() { }
 
         public InputProduct(string nItem, string xProd, int qCom, double vUnCom, string uCom, double vtotal,
-            double vUnTrib, double vTotTrib, int productId, DateTime dhEmi)
+            double vUnTrib, double vTotTrib, Product product, DateTime dhEmi)
         {
             NItem = nItem;
             XProd = xProd;
@@ -36,7 +34,7 @@ namespace StockManagerCore.Models
             Vtotal = vtotal;
             VUnTrib = vUnTrib;
             VTotTrib = vTotTrib;
-            ProductId = productId;
+            Product = product;
             DhEmi = dhEmi;
 
         }

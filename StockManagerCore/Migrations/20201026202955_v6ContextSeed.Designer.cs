@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockManagerCore.Data;
 
 namespace StockManagerCore.Migrations
 {
     [DbContext(typeof(StockDBContext))]
-    partial class StockDBContextModelSnapshot : ModelSnapshot
+    [Migration("20201026202955_v6ContextSeed")]
+    partial class v6ContextSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
