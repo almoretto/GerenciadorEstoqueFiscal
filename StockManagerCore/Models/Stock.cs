@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StockManagerCore.Models
 {
@@ -16,12 +17,14 @@ namespace StockManagerCore.Models
         public DateTime CalcDate { get; set; }
         public Company Company { get; set; }
 
-        public ICollection<InputProduct> InputProducts { get; set; }
-        public ICollection<SoldProduct> SoldProducts { get; set; }
+        [NotMapped]
+        public List<InputProduct> InputProducts { get; set; }
+        [NotMapped]
+        public List<SoldProduct> SoldProducts { get; set; }
 
         public Stock() { }
 
-        public Stock(int id, Product product, int qtyPurchased, int qtySold, double amountPurchased, 
+        public Stock(int id, Product product, int qtyPurchased, int qtySold, double amountPurchased,
             double amountSold, DateTime calcDate, Company company)
         {
             Id = id;

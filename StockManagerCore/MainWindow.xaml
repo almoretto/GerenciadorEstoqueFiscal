@@ -12,18 +12,21 @@
         <TabControl Margin="0,42,0,0">
             <TabItem Header="Funções">
                 <Grid Background="#FFE5E5E5">
-                    <TextBox x:Name="FileNameTextBox" HorizontalAlignment="Left" Margin="40,23,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="386"/>
-                    <Button x:Name="BtnFileOpen" Content="Selecionar" HorizontalAlignment="Left" Margin="437,21,0,0" VerticalAlignment="Top" Click="BtnFileOpen_Click"/>
+                    <TextBox x:Name="FileNameTextBox" HorizontalAlignment="Left" Margin="40,23,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="386" d:IsLocked="True"/>
+                    <Button x:Name="BtnFileOpen" Content="Selecionar" HorizontalAlignment="Left" Margin="437,21,0,0" VerticalAlignment="Top" Click="BtnFileOpen_Click" d:IsLocked="True"/>
                     <Button x:Name="ProcessFile" Content="Processar Arquivo" HorizontalAlignment="Left" Margin="40,73,0,0" VerticalAlignment="Top" Click="ProcessInputs_Click"/>
                     <Button x:Name="ProcessSales" Content="Processar Saídas" HorizontalAlignment="Left" Margin="160,73,0,0" VerticalAlignment="Top" Width="103" Click="ProcessSales_Click"/>
-                    <TextBlock x:Name="Log_TextBlock" HorizontalAlignment="Left" Margin="40,169,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="741" Height="160" FontWeight="Normal"/>
+                    <TextBlock x:Name="Log_TextBlock" HorizontalAlignment="Left" Margin="40,169,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="741" Height="160" FontWeight="Normal" d:IsLocked="True"/>
                     <ComboBox x:Name="CMB_Company" HorizontalAlignment="Left" Margin="40,46,0,0" VerticalAlignment="Top" Width="386" ItemsSource="{Binding Name}" IsEnabled="False">
                         <ComboBox.DataContext>
                             <Models:Company/>
                         </ComboBox.DataContext>
                     </ComboBox>
-                    <TextBox x:Name="Date_txt" HorizontalAlignment="Left" Margin="40,110,0,0" Text="Data Cálculo" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date"/>
-                    <Button Content="Calcular" HorizontalAlignment="Left" Margin="172,110,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+                    <TextBox x:Name="Txt_DateInitial" HorizontalAlignment="Left" Margin="40,110,0,0" Text="Data Inicial" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date"/>
+                    <Button x:Name="Btn_Calculate" Content="Calcular" HorizontalAlignment="Left" Margin="174,117,0,0" VerticalAlignment="Top" Click="Btn_Calculate_Click"/>
+                    <RadioButton x:Name="Rdn_In" HorizontalAlignment="Left" Margin="246,112,0,0" VerticalAlignment="Top" GroupName="E/S" Content="Entradas" IsChecked="True"/>
+                    <RadioButton x:Name="Rdn_Out" Content="Saídas" HorizontalAlignment="Left" Margin="246,132,0,0" VerticalAlignment="Top" RenderTransformOrigin="0,0.34" GroupName="E/S"/>
+                    <TextBox x:Name="Txt_DateFinal" HorizontalAlignment="Left" Margin="40,133,0,0" Text="Data Final" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Dados">
