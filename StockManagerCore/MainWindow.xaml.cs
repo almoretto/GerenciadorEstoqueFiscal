@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Windows;
 using StockManagerCore.Services;
 using StockManagerCore.Data;
@@ -7,6 +6,7 @@ using StockManagerCore.Models;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 
 namespace StockManagerCore
 {
@@ -19,17 +19,33 @@ namespace StockManagerCore
         string filename;
         FileReader nfeReader;
         bool sales;
+        DateTime date = new DateTime();
+        CultureInfo provider = CultureInfo.InvariantCulture;
+        public Company selectedCompany { get; set; }  = new Company();
+        public IQueryable<Company> listCompanies { get; set; }
+        public List<InputProduct> ListInputProduct { get; set; } = new List<InputProduct>();
+        public List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
+        public IQueryable<Product> Products { get; set; }
+        public Product Prod { get; set; } = new Product();
 
         StringBuilder log = new StringBuilder();
         public MainWindow(StockDBContext context)
         {
             _context = context;
             InitializeComponent();
+
         }
         private void BtnFileOpen_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                listCompanies = from c in _context.Companies select c;
+                CMB_Company.IsEnabled = true;
+                foreach (Company c in listCompanies)
+                {
+                    CMB_Company.Items.Add(c.Name);
+                }
+
                 // Create OpenFileDialog
                 Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
@@ -48,24 +64,28 @@ namespace StockManagerCore
                     FileNameTextBox.Text = filename;
                 }
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
                 Log_TextBlock.Text = "";
                 log.AppendLine(ex.Message);
                 Log_TextBlock.Text = log.ToString();
             }
         }
-        public List<InputProduct> ListInputProduct { get; set; } = new List<InputProduct>();
-        public List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
-        public IQueryable<Product> Products { get; set; }
-        public Product Prod { get; set; } = new Product();
+       
         private void ProcessInputs_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (filename.EndsWith("csv")||filename.EndsWith("CSV"))
+                
+                selectedCompany = (from c in listCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
+
+                if (filename.EndsWith("csv") || filename.EndsWith("CSV"))
                 {
                     throw new Exception("Não pode processar arquivo de venda como entrada!");
+                }
+                if (selectedCompany==null)
+                {
+                    throw new Exception("Selecione uma empresa!");
                 }
                 Products = from p in _context.Products select p;
                 sales = false;
@@ -80,8 +100,8 @@ namespace StockManagerCore
                     foreach (InputNFe item in nfeReader.Inputs)
                     {
                         Prod = (from p in Products
-                                      where p.Group == item.Group
-                                      select p).SingleOrDefault();
+                                where p.Group == item.Group
+                                select p).SingleOrDefault();
                         ListInputProduct.Add(new InputProduct
                             (item.NItem,
                             item.XProd,
@@ -92,12 +112,13 @@ namespace StockManagerCore
                             item.VUnTrib,
                             item.VTotTrib,
                             Prod,
-                            item.DhEmi));
+                            item.DhEmi,
+                            selectedCompany));
 
                     }
                     _context.InputProducts.AddRange(ListInputProduct);
                     _context.SaveChanges();
-                   
+
                 }
                 else
                 {
@@ -112,11 +133,11 @@ namespace StockManagerCore
             {
                 Log_TextBlock.Text = "";
                 log.AppendLine(ex.Message);
-                if (ex.InnerException!=null)
+                if (ex.InnerException != null)
                 {
                     log.AppendLine(ex.InnerException.Message);
                 }
-                
+
                 Log_TextBlock.Text = log.ToString();
             }
         }
@@ -124,6 +145,17 @@ namespace StockManagerCore
         {
             try
             {
+                selectedCompany = (from c in listCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
+
+                if (filename.EndsWith("TXT") || filename.EndsWith("txt"))
+                {
+                    throw new Exception("Não pode processar arquivo de entrada como venda!");
+                }
+                if (selectedCompany == null)
+                {
+                    throw new Exception("Selecione uma empresa!");
+                }
+
                 Products = from p in _context.Products select p;
                 sales = true;
                 log.Clear();
@@ -138,8 +170,12 @@ namespace StockManagerCore
                     foreach (InputNFe item in nfeReader.Inputs)
                     {
                         Prod = (from p in Products
-                                      where p.Group == item.Group
-                                      select p).SingleOrDefault();
+                                where p.Group == item.Group
+                                select p).SingleOrDefault();
+                        if (Prod == null)
+                        {
+                            throw new Exception("Produto Não encontrado!");
+                        }
                         ListOfSales.Add(new SoldProduct
                             (item.NItem,
                             item.XProd,
@@ -147,12 +183,13 @@ namespace StockManagerCore
                             item.VUnCom,
                             item.Vtotal,
                             item.DhEmi,
-                            Prod));
+                            Prod,
+                            selectedCompany));
 
                     }
                     _context.SoldProducts.AddRange(ListOfSales);
                     _context.SaveChanges();
-                    
+
                 }
                 else
                 {
@@ -163,7 +200,26 @@ namespace StockManagerCore
                 }
 
             }
-            catch (IOException ex)
+            catch (Exception ex)
+            {
+                Log_TextBlock.Text = "";
+                log.AppendLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    log.AppendLine(ex.InnerException.Message);
+                }
+                Log_TextBlock.Text = log.ToString();
+            }
+        }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                date = DateTime.ParseExact(Date_txt.Text, "dd/MM/yyyy", provider);
+
+
+            }
+            catch (Exception ex)
             {
                 Log_TextBlock.Text = "";
                 log.AppendLine(ex.Message);

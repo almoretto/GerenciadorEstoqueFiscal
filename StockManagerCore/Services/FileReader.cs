@@ -97,9 +97,9 @@ namespace StockManagerCore.Services
                 {
                     Inputs[i].Group = "BRINCO";
                 }
-                else if (Inputs[i].XProd.Contains("CHOCKER") || Inputs[i].XProd.Contains("GARGANTILHA"))
+                else if (Inputs[i].XProd.Contains("CHOKER") || Inputs[i].XProd.Contains("GARGANTILHA") || Inputs[i].XProd.Contains("GARGANTILHAS"))
                 {
-                    Inputs[i].Group = "CHOCKER";
+                    Inputs[i].Group = "CHOKER";
                 }
                 else if (Inputs[i].XProd.Contains("COLAR") || Inputs[i].XProd.Contains("CORDAO"))
                 {
@@ -265,6 +265,7 @@ namespace StockManagerCore.Services
             }
 
             GenerateGroups();
+          
         }
 
     }

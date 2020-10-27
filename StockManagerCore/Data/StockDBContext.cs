@@ -18,9 +18,11 @@ namespace StockManagerCore.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<SoldProduct> SoldProducts { get; set; }
         public DbSet<Stock> Stocks { get; set; }
+        public DbSet<Company> Companies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<Product>().HasData(
                  new Product { Id = 1, Group = "ANEL" },
                  new Product { Id = 2, Group = "ARGOLA" },
@@ -35,6 +37,12 @@ namespace StockManagerCore.Data
                  new Product { Id = 11, Group = "PEAÇAS" },
                  new Product { Id = 12, Group = "VARIADOS" },
                  new Product { Id = 13, Group = "BROCHE" });
+
+            modelBuilder.Entity<Company>().HasData(
+                 new Company { Id = 1, Name = "ATACADAO" },
+                 new Company { Id = 2, Name = "JR" });
+
+
         }
     }
 }

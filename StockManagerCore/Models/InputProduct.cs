@@ -17,6 +17,8 @@ namespace StockManagerCore.Models
         public double VUnTrib { get; set; }
         public double VTotTrib { get; set; }
         public DateTime DhEmi { get; set; }
+        public Company Company { get; set; }
+
 
         //Navigation prop
         public Product Product { get; set; }
@@ -24,7 +26,7 @@ namespace StockManagerCore.Models
         public InputProduct() { }
 
         public InputProduct(string nItem, string xProd, int qCom, double vUnCom, string uCom, double vtotal,
-            double vUnTrib, double vTotTrib, Product product, DateTime dhEmi)
+            double vUnTrib, double vTotTrib, Product product, DateTime dhEmi, Company company)
         {
             NItem = nItem;
             XProd = xProd;
@@ -36,6 +38,7 @@ namespace StockManagerCore.Models
             VTotTrib = vTotTrib;
             Product = product;
             DhEmi = dhEmi;
+            Company = company;
 
         }
     }
