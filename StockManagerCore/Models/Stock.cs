@@ -24,10 +24,10 @@ namespace StockManagerCore.Models
 
         public Stock() { }
 
-        public Stock(int id, Product product, int qtyPurchased, int qtySold, double amountPurchased,
+        public Stock(Product product, int qtyPurchased, int qtySold, double amountPurchased,
             double amountSold, DateTime calcDate, Company company)
         {
-            Id = id;
+
             Product = product;
             QtyPurchased = qtyPurchased;
             QtySold = qtySold;

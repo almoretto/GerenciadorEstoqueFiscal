@@ -14,9 +14,8 @@ namespace StockManagerCore.Models
 
         public Company() { }
 
-        public Company(int id, string name)
+        public Company( string name)
         {
-            Id = id;
             Name = name;
         }
     }

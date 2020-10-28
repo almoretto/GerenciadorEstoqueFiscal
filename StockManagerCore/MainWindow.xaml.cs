@@ -72,7 +72,6 @@ namespace StockManagerCore
                 Log_TextBlock.Text = log.ToString();
             }
         }
-
         private void ProcessInputs_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -217,22 +216,42 @@ namespace StockManagerCore
             try
             {
 
-                dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
-                DateFinal = DateTime.ParseExact(Txt_DateFinal.Text, "dd/MM/yyyy", provider);
                 ListInputProduct.Clear();
                 ListOfSales.Clear();
                 log.AppendLine("Lista Entradas: " + ListInputProduct.Count);
                 log.AppendLine("Lista Saídas: " + ListOfSales.Count);
+                Log_TextBlock.Text = log.ToString();
                 if (Rdn_In.IsChecked == true)
                 {
-                    ListInputProduct = (from inp in _context.InputProducts 
-                                        where inp.DhEmi == dateInitial 
+                    dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
+                    ListInputProduct = (from inp in _context.InputProducts
+                                        where inp.DhEmi.Date == dateInitial.d
                                         select inp).ToList();
+
+                    var grupos = from g in ListInputProduct
+                                 group g by g.Product;
+                    var qty = 0;
+                    var amount = 0.0;
+                    foreach (IGrouping<Product, InputProduct> group in grupos)
+                    {
+                        log.Append("Produto: " + group.Key.Group);
+                        Log_TextBlock.Text = log.ToString();
+                        foreach (InputProduct item in group)
+                        {
+                            qty += item.QCom;
+                            amount += item.Vtotal;
+                        }
+                        log.Append("Qte: " + qty.ToString());
+                        log.Append(" | Valor: " + amount.ToString("F2", CultureInfo.CurrentCulture));
+                        Log_TextBlock.Text = log.ToString();
+                    }
                 }
                 if (Rdn_Out.IsChecked == true)
                 {
-                    ListOfSales = (from sal in _context.SoldProducts 
-                                   where sal.DhEmi >= dateInitial && sal.DhEmi <= DateFinal 
+                    dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
+                    DateFinal = DateTime.ParseExact(Txt_DateFinal.Text, "dd/MM/yyyy", provider);
+                    ListOfSales = (from sal in _context.SoldProducts
+                                   where sal.DhEmi >= dateInitial && sal.DhEmi <= DateFinal
                                    select sal).ToList();
                 }
                 log.AppendLine("Lista Entradas: " + ListInputProduct.Count);

@@ -15,9 +15,9 @@ namespace StockManagerCore.Models
         
         public Product() { }
 
-        public Product(int id, string group)
+        public Product( string group)
         {
-            Id = id;
+
             Group = group;
         }
     }

@@ -151,7 +151,9 @@ namespace StockManagerCore.Services
 
             if (line[0] == "B")
             {
-                dhEmi = DateTime.Parse(line[7], provider, DateTimeStyles.None);
+                DateTime date = new DateTime();
+                date= DateTime.Parse(line[7], provider, DateTimeStyles.None);
+                dhEmi = date.Date;
             }
             else if (line[0] == "H")
             {
