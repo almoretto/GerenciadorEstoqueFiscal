@@ -35,7 +35,6 @@ namespace StockManagerCore
         {
             _context = context;
             InitializeComponent();
-
         }
         private void BtnFileOpen_Click(object sender, RoutedEventArgs e)
         {

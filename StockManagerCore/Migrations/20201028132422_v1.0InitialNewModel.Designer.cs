@@ -10,8 +10,8 @@ using StockManagerCore.Data;
 namespace StockManagerCore.Migrations
 {
     [DbContext(typeof(StockDBContext))]
-    [Migration("20201027140803_v7StockModel_Company")]
-    partial class v7StockModel_Company
+    [Migration("20201028132422_v1.0InitialNewModel")]
+    partial class v10InitialNewModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,19 +33,7 @@ namespace StockManagerCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("companies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "ATACADAO"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "JR"
-                        });
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("StockManagerCore.Models.InputProduct", b =>
@@ -68,9 +56,6 @@ namespace StockManagerCore.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("QCom")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("StockId")
                         .HasColumnType("int");
 
                     b.Property<string>("UCom")
@@ -97,8 +82,6 @@ namespace StockManagerCore.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("StockId");
-
                     b.ToTable("InputProducts");
                 });
 
@@ -115,73 +98,6 @@ namespace StockManagerCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Group = "ANEL"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Group = "ARGOLA"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Group = "BRACELETE"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Group = "BRINCO"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Group = "CHOCER"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Group = "COLAR"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Group = "CORRENTE"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Group = "PINGENTE"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Group = "PULSEIRA"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Group = "TORNOZELEIRA"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Group = "PEAÇAS"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Group = "VARIADOS"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Group = "BROCHE"
-                        });
                 });
 
             modelBuilder.Entity("StockManagerCore.Models.SoldProduct", b =>
@@ -206,9 +122,6 @@ namespace StockManagerCore.Migrations
                     b.Property<int>("QCom")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StockId")
-                        .HasColumnType("int");
-
                     b.Property<double>("VUnCom")
                         .HasColumnType("float");
 
@@ -223,8 +136,6 @@ namespace StockManagerCore.Migrations
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("StockId");
 
                     b.ToTable("SoldProducts");
                 });
@@ -275,10 +186,6 @@ namespace StockManagerCore.Migrations
                     b.HasOne("StockManagerCore.Models.Product", "Product")
                         .WithMany("InputProduct")
                         .HasForeignKey("ProductId");
-
-                    b.HasOne("StockManagerCore.Models.Stock", null)
-                        .WithMany("InputProducts")
-                        .HasForeignKey("StockId");
                 });
 
             modelBuilder.Entity("StockManagerCore.Models.SoldProduct", b =>
@@ -290,10 +197,6 @@ namespace StockManagerCore.Migrations
                     b.HasOne("StockManagerCore.Models.Product", "Product")
                         .WithMany("SoldProduct")
                         .HasForeignKey("ProductId");
-
-                    b.HasOne("StockManagerCore.Models.Stock", null)
-                        .WithMany("SoldProducts")
-                        .HasForeignKey("StockId");
                 });
 
             modelBuilder.Entity("StockManagerCore.Models.Stock", b =>

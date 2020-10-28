@@ -32,18 +32,6 @@ namespace StockManagerCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "ATACADAO"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "JR"
-                        });
                 });
 
             modelBuilder.Entity("StockManagerCore.Models.InputProduct", b =>
@@ -108,73 +96,6 @@ namespace StockManagerCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Group = "ANEL"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Group = "ARGOLA"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Group = "BRACELETE"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Group = "BRINCO"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Group = "CHOCER"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Group = "COLAR"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Group = "CORRENTE"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Group = "PINGENTE"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Group = "PULSEIRA"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Group = "TORNOZELEIRA"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Group = "PEAÇAS"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Group = "VARIADOS"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Group = "BROCHE"
-                        });
                 });
 
             modelBuilder.Entity("StockManagerCore.Models.SoldProduct", b =>

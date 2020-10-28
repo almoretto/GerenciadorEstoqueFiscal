@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StockManagerCore.Models;
+using System;
 
 namespace StockManagerCore.Data
 {
@@ -20,29 +21,7 @@ namespace StockManagerCore.Data
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Company> Companies { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
 
-            modelBuilder.Entity<Product>().HasData(
-                 new Product { Id = 1, Group = "ANEL" },
-                 new Product { Id = 2, Group = "ARGOLA" },
-                 new Product { Id = 3, Group = "BRACELETE" },
-                 new Product { Id = 4, Group = "BRINCO" },
-                 new Product { Id = 5, Group = "CHOCER" },
-                 new Product { Id = 6, Group = "COLAR" },
-                 new Product { Id = 7, Group = "CORRENTE" },
-                 new Product { Id = 8, Group = "PINGENTE" },
-                 new Product { Id = 9, Group = "PULSEIRA" },
-                 new Product { Id = 10, Group = "TORNOZELEIRA" },
-                 new Product { Id = 11, Group = "PEAÇAS" },
-                 new Product { Id = 12, Group = "VARIADOS" },
-                 new Product { Id = 13, Group = "BROCHE" });
-
-            modelBuilder.Entity<Company>().HasData(
-                 new Company { Id = 1, Name = "ATACADAO" },
-                 new Company { Id = 2, Name = "JR" });
-
-
-        }
+       
     }
 }
