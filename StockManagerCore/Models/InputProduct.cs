@@ -17,10 +17,12 @@ namespace StockManagerCore.Models
         public double VUnTrib { get; set; }
         public double VTotTrib { get; set; }
         public DateTime DhEmi { get; set; }
+
+        [Required]
         public Company Company { get; set; }
 
-
         //Navigation prop
+        [Required]
         public Product Product { get; set; }
 
         public InputProduct() { }
@@ -41,5 +43,8 @@ namespace StockManagerCore.Models
             Company = company;
 
         }
+
+        
     }
 }
+

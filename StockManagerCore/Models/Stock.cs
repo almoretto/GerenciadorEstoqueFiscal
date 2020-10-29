@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StockManagerCore.Models
@@ -7,14 +8,16 @@ namespace StockManagerCore.Models
 
     public class Stock
     {
-
+        [Key]
         public int Id { get; set; }
+        [Required]
         public Product Product { get; set; }
         public int QtyPurchased { get; set; }
         public int QtySold { get; set; }
         public double AmountPurchased { get; set; }
         public double AmountSold { get; set; }
         public DateTime CalcDate { get; set; }
+        [Required]
         public Company Company { get; set; }
 
         [NotMapped]

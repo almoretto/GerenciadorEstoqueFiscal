@@ -13,10 +13,12 @@ namespace StockManagerCore.Models
         public double VUnCom { get; set; } //Unitary Valor
         public double Vtotal { get; set; } // Total Valor
         public DateTime DhEmi { get; set; } //Input data
+        [Required]
         public Company Company { get; set; }
 
 
         //Navigation Prop
+        [Required]
         public Product Product { get; set; }
 
         public SoldProduct() { }

@@ -15,6 +15,70 @@ namespace StockManagerCore.Services
         public double VTotTrib { get; set; }
         public string Group { get; set; }
 
-      
+        public void AlternateNames()
+        {
+            //get names of the groups from name of product
+            if (XProd.Contains("ANEL"))
+            {
+                XProd = "ANEL";
+            }
+            else if (XProd.Contains("ARGOLA"))
+            {
+                XProd = "ARGOLA";
+            }
+            else if (XProd.Contains("BRACELETE"))
+            {
+                XProd = "BRACELETE";
+            }
+            else if (XProd.Contains("BRINCO"))
+            {
+                XProd = "BRINCO";
+            }
+            else if (XProd.Contains("CHOKER") || XProd.Contains("GARGANTILHA") || XProd.Contains("GARGANTILHAS"))
+            {
+                XProd = "CHOKER";
+            }
+            else if (XProd.Contains("COLAR") || XProd.Contains("CORDAO"))
+            {
+                XProd = "COLAR";
+            }
+            else if (XProd.Contains("CORRENTE"))
+            {
+                XProd = "CORRENTE";
+            }
+            else if (XProd.Contains("PINGENTE"))
+            {
+                XProd = "PINGENTE";
+            }
+            else if (XProd.Contains("PULSEIRA"))
+            {
+                XProd = "PULSEIRA";
+            }
+            else if (XProd.Contains("TORNOZELEIRA"))
+            {
+                XProd = "TORNOZELEIRA";
+            }
+            else if (XProd.Contains("VARIADOS"))
+            {
+                XProd = "VARIADOS";
+            }
+            else if (XProd.Contains("BROCHE"))
+            {
+                XProd = "BROCHE";
+            }
+            else if (XProd.Contains("PARTES E"))
+            {
+                XProd = "PEÇAS";
+            }
+            else if (XProd.Contains("CONJUNTO") || XProd.Contains("KIT"))
+            {
+                XProd = "CONJUNTO";
+            }
+            else
+            {
+                XProd = "VARIADOS";
+            }
+        }
     }
+
 }

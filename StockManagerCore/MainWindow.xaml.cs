@@ -7,6 +7,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 
 namespace StockManagerCore
 {
@@ -28,6 +29,7 @@ namespace StockManagerCore
         private List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
         private List<Stock> ListStocks { get; set; } = new List<Stock>();
         private IQueryable<Product> Products { get; set; }
+
         private Product Prod { get; set; } = new Product();
 
         StringBuilder log = new StringBuilder();
@@ -35,17 +37,16 @@ namespace StockManagerCore
         {
             _context = context;
             InitializeComponent();
+            listCompanies = from c in _context.Companies select c;
+            foreach (Company c in listCompanies)
+            {
+                CMB_Company.Items.Add(c.Name);
+            }
         }
         private void BtnFileOpen_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                listCompanies = from c in _context.Companies select c;
-                CMB_Company.IsEnabled = true;
-                foreach (Company c in listCompanies)
-                {
-                    CMB_Company.Items.Add(c.Name);
-                }
 
                 // Create OpenFileDialog
                 Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -102,6 +103,7 @@ namespace StockManagerCore
                         Prod = (from p in Products
                                 where p.Group == item.Group
                                 select p).SingleOrDefault();
+                        item.AlternateNames();
                         ListInputProduct.Add(new InputProduct
                             (item.NItem,
                             item.XProd,
@@ -114,7 +116,6 @@ namespace StockManagerCore
                             Prod,
                             item.DhEmi,
                             selectedCompany));
-
                     }
                     _context.InputProducts.AddRange(ListInputProduct);
                     _context.SaveChanges();
@@ -216,36 +217,51 @@ namespace StockManagerCore
             try
             {
 
-                ListInputProduct.Clear();
-                ListOfSales.Clear();
-                log.AppendLine("Lista Entradas: " + ListInputProduct.Count);
-                log.AppendLine("Lista Saídas: " + ListOfSales.Count);
-                Log_TextBlock.Text = log.ToString();
                 if (Rdn_In.IsChecked == true)
                 {
-                    dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
-                    ListInputProduct = (from inp in _context.InputProducts
-                                        where inp.DhEmi.Date == dateInitial.d
-                                        select inp).ToList();
 
-                    var grupos = from g in ListInputProduct
-                                 group g by g.Product;
-                    var qty = 0;
-                    var amount = 0.0;
-                    foreach (IGrouping<Product, InputProduct> group in grupos)
+                    dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
+                    selectedCompany = (from c in listCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
+
+                    var InputProducts = _context.InputProducts
+                        .Where(i => i.DhEmi.Year == dateInitial.Year
+                        && i.DhEmi.Month == dateInitial.Month
+                        && i.DhEmi.Day == dateInitial.Day)
+                        .Include(i => i.Product)
+                        .Include(i => i.Company)
+                        .ToList();
+                    var productsGroup = InputProducts
+                        .Where(c => c.Company.Id == selectedCompany.Id)
+                        .GroupBy(p => p.XProd).ToList();
+
+
+                    int qteTot = 0;
+                    int qty = 0;
+                    double amount = 0.0;
+                    double totAmount = 0.0;
+                    foreach (IGrouping<string, InputProduct> group in productsGroup)
                     {
-                        log.Append("Produto: " + group.Key.Group);
-                        Log_TextBlock.Text = log.ToString();
+                        log.Append("Produto: " + group.Key);
+                        txt_Console.Text = log.ToString();
                         foreach (InputProduct item in group)
                         {
                             qty += item.QCom;
                             amount += item.Vtotal;
                         }
+                        
                         log.Append("Qte: " + qty.ToString());
-                        log.Append(" | Valor: " + amount.ToString("F2", CultureInfo.CurrentCulture));
-                        Log_TextBlock.Text = log.ToString();
+                        log.AppendLine(" | Valor: " + amount.ToString("C2", CultureInfo.CurrentCulture));
+                        txt_Console.Text = log.ToString();
+                        qteTot += qty;
+                        totAmount += amount;                      
+                        qty = 0;
+                        amount = 0.0;
                     }
+                    log.Append("QteTotal: " + qteTot.ToString());
+                    log.AppendLine(" | ValorTotal: " + totAmount.ToString("C2", CultureInfo.CurrentCulture));
+                    txt_Console.Text = log.ToString();
                 }
+
                 if (Rdn_Out.IsChecked == true)
                 {
                     dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);

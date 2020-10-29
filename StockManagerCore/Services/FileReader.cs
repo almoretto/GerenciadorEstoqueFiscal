@@ -73,9 +73,9 @@ namespace StockManagerCore.Services
                 }
             }
 
-            return "Inputs Added : " + count;
+            return "Inputs Added : " + Inputs.Count;
         }
-      
+
         private void GenerateGroups()
         {
             //get names of the groups from name of product
@@ -152,8 +152,9 @@ namespace StockManagerCore.Services
             if (line[0] == "B")
             {
                 DateTime date = new DateTime();
-                date= DateTime.Parse(line[7], provider, DateTimeStyles.None);
+                date = DateTime.Parse(line[7], provider, DateTimeStyles.None);
                 dhEmi = date.Date;
+
             }
             else if (line[0] == "H")
             {
@@ -232,7 +233,7 @@ namespace StockManagerCore.Services
             }
             foreach (InputNFe item in Inputs)
             {
-                somaNFe += item.VTotTrib;
+                somaNFe += item.Vtotal;
                 qteTotal += item.QCom;
             }
             if (totalNFe > somaNFe)
@@ -267,7 +268,7 @@ namespace StockManagerCore.Services
             }
 
             GenerateGroups();
-          
+
         }
 
     }
