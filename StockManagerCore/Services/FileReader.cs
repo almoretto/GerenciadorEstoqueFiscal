@@ -242,7 +242,8 @@ namespace StockManagerCore.Services
                 difUn = dif / qteTotal;
                 foreach (InputNFe item in Inputs)
                 {
-                    item.VUnTrib += difUn;
+                    item.Vtotal += (difUn*item.QCom);
+                    item.VUnCom += difUn;
                 }
             }
 

@@ -41,6 +41,21 @@ namespace StockManagerCore.Models
 
         }
 
-
+        public void MovimentInput(Product p, int qty, double amount, DateTime d, Company c)
+        {
+           Product = p;
+           QtyPurchased += qty;
+           AmountPurchased += amount;
+           CalcDate = d.Date;
+           Company = c;
+        }
+        public void MovimentSale(Product p, int qty, double amount, DateTime d, Company c)
+        {
+            Product = p;
+            QtySold += qty;
+            AmountSold += amount;
+            CalcDate = d.Date;
+            Company = c;
+        }
     }
 }
