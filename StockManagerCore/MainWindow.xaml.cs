@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+#region --== Dependency Declaration ==--
+using System;
 using System.Windows;
 using StockManagerCore.Services;
 using StockManagerCore.Data;
@@ -8,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
+#endregion
 
 namespace StockManagerCore
 {
@@ -16,7 +19,13 @@ namespace StockManagerCore
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region --== Instances of Context, Provider and StringBuilder ==--
         private readonly StockDBContext _context;
+        CultureInfo provider = CultureInfo.InvariantCulture;
+        StringBuilder log = new StringBuilder();
+        #endregion
+
+        #region --== Local Variables ==--
         string filename;
         FileReader nfeReader;
         bool sales;
@@ -26,7 +35,9 @@ namespace StockManagerCore
         int qty = 0;
         double amount = 0.0;
         double totAmount = 0.0;
-        CultureInfo provider = CultureInfo.InvariantCulture;
+        #endregion
+
+        #region --== Models instantitation and support Lists ==--
         private Company selectedCompany { get; set; } = new Company();
         public IQueryable<Company> listCompanies { get; set; }
         private List<InputProduct> ListInputProduct { get; set; } = new List<InputProduct>();
@@ -35,10 +46,9 @@ namespace StockManagerCore
         private List<IGrouping<string, Product>> GroupProducts { get; set; } = new List<IGrouping<string, Product>>();
         private List<IGrouping<string, SoldProduct>> GroupOfSales { get; set; } = new List<IGrouping<string, SoldProduct>>();
         private IQueryable<Product> Products { get; set; }
-
         private Product Prod { get; set; } = new Product();
+        #endregion
 
-        StringBuilder log = new StringBuilder();
         public MainWindow(StockDBContext context)
         {
             _context = context;
@@ -223,7 +233,6 @@ namespace StockManagerCore
         {
             try
             {
-
                 if (Rdn_In.IsChecked == true)
                 {
                     dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
@@ -237,11 +246,8 @@ namespace StockManagerCore
                     //moving through grouping
                     foreach (IGrouping<string, InputProduct> group in GroupProducts)
                     {
-                        Product prd = new Product();
-                        prd = GetProduct(group.Key, Products);
                         Stock stock = new Stock();
                         stock = ListStocks.Where(s => s.Product.Group == group.Key).FirstOrDefault();
-                        ListStocks.Remove(stock);
 
                         log.Append("Produto: " + group.Key);
                         txt_Console.Text = log.ToString();
@@ -252,8 +258,23 @@ namespace StockManagerCore
                             amount += item.Vtotal;
                         }
 
-                        stock.MovimentInput(prd, qty, amount, dateInitial, selectedCompany);
-                        ListStocks.Add(stock);
+                        stock.MovimentInput(qty, amount, dateInitial);
+
+                        try
+                        {
+                            _context.Stocks.Update(stock);
+                            _context.SaveChanges();
+                        }
+                        catch (DbUpdateException ex)
+                        {
+                            Log_TextBlock.Text = "";
+                            log.AppendLine(ex.Message);
+                            if (ex.InnerException != null)
+                            {
+                                log.AppendLine(ex.InnerException.Message);
+                            }
+                            Log_TextBlock.Text = log.ToString();
+                        }
 
                         log.Append(" | Qte: " + qty.ToString());
                         log.AppendLine(" | Valor: " + amount.ToString("C2", CultureInfo.CurrentCulture));
@@ -263,28 +284,27 @@ namespace StockManagerCore
                         qty = 0;
                         amount = 0.0;
                     }
+
                     log.Append("QteTotal: " + qteTot.ToString());
                     log.AppendLine(" | ValorTotal: " + totAmount.ToString("C2", CultureInfo.CurrentCulture));
                     txt_Console.Text = log.ToString();
-
                 }
-
                 if (Rdn_Out.IsChecked == true)//Continue from here 30/10
                 {
                     dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
                     DateFinal = DateTime.ParseExact(Txt_DateFinal.Text, "dd/MM/yyyy", provider);
+
                     selectedCompany = (from c in listCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
 
                     GroupOfSales = GroupSales(selectedCompany, dateInitial, DateFinal);
+
                     ListStocks = GetStocks(selectedCompany);
+
                     //moving through grouping
                     foreach (IGrouping<string, SoldProduct> group in GroupOfSales)
                     {
-                        Product prd = new Product();
-                        prd = GetProduct(group.Key, Products);
                         Stock stock = new Stock();
                         stock = ListStocks.Where(s => s.Product.Group == group.Key).FirstOrDefault();
-                        ListStocks.Remove(stock);
 
                         log.Append("Produto: " + group.Key);
                         txt_Console.Text = log.ToString();
@@ -295,8 +315,23 @@ namespace StockManagerCore
                             amount += item.Vtotal;
                         }
 
-                        stock.MovimentSale(prd, qty, amount, dateInitial, selectedCompany);
-                        ListStocks.Add(stock);
+                        stock.MovimentSale(qty, amount, dateInitial);
+                       
+                        try
+                        {
+                            _context.Stocks.Update(stock);
+                            _context.SaveChanges();
+                        }
+                        catch (DbUpdateException ex)
+                        {
+                            Log_TextBlock.Text = "";
+                            log.AppendLine(ex.Message);
+                            if (ex.InnerException != null)
+                            {
+                                log.AppendLine(ex.InnerException.Message);
+                            }
+                            Log_TextBlock.Text = log.ToString();
+                        }
 
                         log.Append(" | Qte: " + qty.ToString());
                         log.AppendLine(" | Valor: " + amount.ToString("C2", CultureInfo.CurrentCulture));
@@ -310,11 +345,9 @@ namespace StockManagerCore
                     log.AppendLine(" | ValorTotal: " + totAmount.ToString("C2", CultureInfo.CurrentCulture));
                     txt_Console.Text = log.ToString();
 
-
                 }
                 log.AppendLine("Lista Entradas: " + ListInputProduct.Count);
                 log.AppendLine("Lista Saídas: " + ListOfSales.Count);
-
 
             }
             catch (Exception ex)
@@ -372,7 +405,7 @@ namespace StockManagerCore
                 .ToList();
 
             return soldGroup;
-                          
+
         }
         private Product GetProduct(string g, IQueryable<Product> lP)
         {
