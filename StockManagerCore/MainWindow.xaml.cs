@@ -20,7 +20,11 @@ namespace StockManagerCore
     public partial class MainWindow : Window
     {
         #region --== Instances of Context, Provider and StringBuilder ==--
-        private readonly StockDBContext _context;
+        private readonly InputService _inputService;
+        private readonly SaleService _saleService;
+        private readonly ProductService _productService;
+        private readonly CompanyService _companyService;
+        private readonly StockService _stockService;
         CultureInfo provider = CultureInfo.InvariantCulture;
         StringBuilder log = new StringBuilder();
         #endregion
@@ -39,26 +43,32 @@ namespace StockManagerCore
 
         #region --== Models instantitation and support Lists ==--
         private Company SelectedCompany { get; set; } = new Company();
-        public IQueryable<Company> ListCompanies { get; set; }
+        public IEnumerable<Company> ListCompanies { get; set; }
         private List<InputProduct> ListInputProduct { get; set; } = new List<InputProduct>();
         private List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
-        private List<Stock> ListStocks { get; set; } = new List<Stock>();
-        //private List<IGrouping<string, Product>> GroupProducts { get; set; }
-        //private IEnumerable<IGrouping<string, SoldProduct>> GroupOfSales { get; set; }
-        private IQueryable<Product> Products { get; set; }
+        private IEnumerable<Stock> ListStocks { get; set; } = new List<Stock>();
+        private IEnumerable<Product> Products { get; set; }
         private Product Prod { get; set; } = new Product();
         #endregion
 
-        public MainWindow(StockDBContext context)
+        public MainWindow(InputService inputService, SaleService saleService, ProductService productService,
+            CompanyService companyService, StockService stockService)
         {
-            _context = context;
+            _inputService = inputService;
+            _saleService = saleService;
+            _productService = productService;
+            _companyService = companyService;
+            _stockService = stockService;
+
             InitializeComponent();
-            ListCompanies = from c in _context.Companies select c;
+
+            ListCompanies = _companyService.GetCompanies();
             foreach (Company c in ListCompanies)
             {
                 CMB_Company.Items.Add(c.Name);
             }
-            Products = from p in _context.Products select p;
+
+            Products = _productService.GetProducts();
         }
         private void BtnFileOpen_Click(object sender, RoutedEventArgs e)
         {
@@ -94,16 +104,15 @@ namespace StockManagerCore
         {
             try
             {
-
-                SelectedCompany = (from c in ListCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
+                SelectedCompany = _companyService.FindByName((string)CMB_Company.SelectedItem);
 
                 if (filename.EndsWith("csv") || filename.EndsWith("CSV"))
                 {
-                    throw new Exception("Não pode processar arquivo de venda como entrada!");
+                    throw new ApplicationException("Não pode processar arquivo de venda como entrada!");
                 }
                 if (SelectedCompany == null)
                 {
-                    throw new Exception("Selecione uma empresa!");
+                    throw new ApplicationException("Selecione uma empresa!");
                 }
 
                 sales = false;
@@ -118,7 +127,7 @@ namespace StockManagerCore
                     foreach (InputNFe item in nfeReader.Inputs)
                     {
                         Product p = new Product();
-                        p = GetProduct(item.Group, Products);
+                        p = _productService.FindByGroup(item.Group);
 
                         item.AlternateNames();
 
@@ -135,8 +144,8 @@ namespace StockManagerCore
                             item.DhEmi,
                             SelectedCompany));
                     }
-                    _context.InputProducts.AddRange(ListInputProduct);
-                    _context.SaveChanges();
+                    // _context.InputProducts.AddRange(ListInputProduct);
+                    //  _context.SaveChanges();
 
                 }
                 else
@@ -205,8 +214,8 @@ namespace StockManagerCore
                             SelectedCompany));
 
                     }
-                    _context.SoldProducts.AddRange(ListOfSales);
-                    _context.SaveChanges();
+                    //  _context.SoldProducts.AddRange(ListOfSales);
+                    //  _context.SaveChanges();
 
                 }
                 else
@@ -234,12 +243,12 @@ namespace StockManagerCore
             try
             {
                 SelectedCompany = (from c in ListCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
-                
+
                 if (SelectedCompany == null)
                 {
                     throw new ApplicationException("Empresa deve ser selecionada!");
                 }
-                
+
                 if (Rdn_In.IsChecked == true)
                 {
                     dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
@@ -271,8 +280,8 @@ namespace StockManagerCore
 
                         try
                         {
-                            _context.Stocks.Update(stock);
-                            _context.SaveChanges();
+                            //  _context.Stocks.Update(stock);
+                            //  _context.SaveChanges();
                         }
                         catch (DbUpdateException ex)
                         {
@@ -329,8 +338,8 @@ namespace StockManagerCore
 
                         try
                         {
-                            _context.Stocks.Update(stock);
-                            _context.SaveChanges();
+                            //  _context.Stocks.Update(stock);
+                            //  _context.SaveChanges();
                         }
                         catch (DbUpdateException ex)
                         {
@@ -373,45 +382,37 @@ namespace StockManagerCore
         private void GetStocks(Company c)
         {
             ListStocks.Clear();
-            ListStocks = _context.Stocks
-                   .Where(s => s.Company.Id == c.Id)
-                   .Include(p => p.Product)
-                   .Include(co => co.Company)
-                   .ToList();
+            /* ListStocks = _context.Stocks
+                    .Where(s => s.Company.Id == c.Id)
+                    .Include(p => p.Product)
+                    .Include(co => co.Company)
+                    .ToList();*/
         }
         private void GetInputs(DateTime d)
         {
             ListInputProduct.Clear();
 
-            ListInputProduct = _context.InputProducts
-                       .Where(i => i.DhEmi.Year == d.Year
-                       && i.DhEmi.Month == d.Month
-                       && i.DhEmi.Day == d.Day)
-                       .Include(i => i.Product)
-                       .Include(i => i.Company)
-                       .ToList();
+            /* ListInputProduct = _context.InputProducts
+                        .Where(i => i.DhEmi.Year == d.Year
+                        && i.DhEmi.Month == d.Month
+                        && i.DhEmi.Day == d.Day)
+                        .Include(i => i.Product)
+                        .Include(i => i.Company)
+                        .ToList();*/
         }
         private void GetSales(DateTime di, DateTime df)
         {
             ListOfSales.Clear();
-            ListOfSales = _context.SoldProducts
-                .Where(s => s.DhEmi.Year >= di.Year
-                       && s.DhEmi.Month >= di.Month
-                       && s.DhEmi.Day >= di.Day
-                       && s.DhEmi.Year <= df.Year
-                       && s.DhEmi.Month <= df.Month
-                       && s.DhEmi.Day <= df.Day)
-                .Include(s => s.Product)
-                .Include(s => s.Company)
-                .ToList();
-        }
-        private Product GetProduct(string g, IQueryable<Product> lP)
-        {
-            Prod = (from p in lP
-                    where p.Group == g
-                    select p).SingleOrDefault();
-
-            return Prod;
+            /* ListOfSales = _context.SoldProducts
+                 .Where(s => s.DhEmi.Year >= di.Year
+                        && s.DhEmi.Month >= di.Month
+                        && s.DhEmi.Day >= di.Day
+                        && s.DhEmi.Year <= df.Year
+                        && s.DhEmi.Month <= df.Month
+                        && s.DhEmi.Day <= df.Day)
+                 .Include(s => s.Product)
+                 .Include(s => s.Company)
+                 .ToList();*/
         }
     }
 }

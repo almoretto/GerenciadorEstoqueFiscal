@@ -2,6 +2,7 @@
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using StockManagerCore.Data;
+using StockManagerCore.Services;
 
 namespace StockManagerCore
 {
@@ -18,7 +19,12 @@ namespace StockManagerCore
             {
                 options.UseSqlServer("server=tcp:192.168.100.2,1433;Initial Catalog =StockKManagerDB;User Id=sa;Password=$3nh@2018;");
             });
-            services.AddScoped<SeedDataService>(); //Initiates the service in the injection dependecy of application
+            services.AddScoped<InputService>();
+            services.AddScoped<SaleService>();
+            services.AddScoped<CompanyService>();
+            services.AddScoped<ProductService>();
+            services.AddScoped<StockService>();
+            services.AddScoped<SeedDataService>();//Initiates the service in the injection dependecy of application
             services.AddSingleton<MainWindow>();
             serviceProvider = services.BuildServiceProvider();
         }
