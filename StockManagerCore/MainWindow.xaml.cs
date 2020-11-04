@@ -38,13 +38,13 @@ namespace StockManagerCore
         #endregion
 
         #region --== Models instantitation and support Lists ==--
-        private Company selectedCompany { get; set; } = new Company();
-        public IQueryable<Company> listCompanies { get; set; }
+        private Company SelectedCompany { get; set; } = new Company();
+        public IQueryable<Company> ListCompanies { get; set; }
         private List<InputProduct> ListInputProduct { get; set; } = new List<InputProduct>();
         private List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
         private List<Stock> ListStocks { get; set; } = new List<Stock>();
-        private List<IGrouping<string, Product>> GroupProducts { get; set; } = new List<IGrouping<string, Product>>();
-        private List<IGrouping<string, SoldProduct>> GroupOfSales { get; set; } = new List<IGrouping<string, SoldProduct>>();
+        //private List<IGrouping<string, Product>> GroupProducts { get; set; }
+        //private IEnumerable<IGrouping<string, SoldProduct>> GroupOfSales { get; set; }
         private IQueryable<Product> Products { get; set; }
         private Product Prod { get; set; } = new Product();
         #endregion
@@ -53,8 +53,8 @@ namespace StockManagerCore
         {
             _context = context;
             InitializeComponent();
-            listCompanies = from c in _context.Companies select c;
-            foreach (Company c in listCompanies)
+            ListCompanies = from c in _context.Companies select c;
+            foreach (Company c in ListCompanies)
             {
                 CMB_Company.Items.Add(c.Name);
             }
@@ -95,13 +95,13 @@ namespace StockManagerCore
             try
             {
 
-                selectedCompany = (from c in listCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
+                SelectedCompany = (from c in ListCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
 
                 if (filename.EndsWith("csv") || filename.EndsWith("CSV"))
                 {
                     throw new Exception("Não pode processar arquivo de venda como entrada!");
                 }
-                if (selectedCompany == null)
+                if (SelectedCompany == null)
                 {
                     throw new Exception("Selecione uma empresa!");
                 }
@@ -133,7 +133,7 @@ namespace StockManagerCore
                             item.VTotTrib,
                             p,
                             item.DhEmi,
-                            selectedCompany));
+                            SelectedCompany));
                     }
                     _context.InputProducts.AddRange(ListInputProduct);
                     _context.SaveChanges();
@@ -164,13 +164,13 @@ namespace StockManagerCore
         {
             try
             {
-                selectedCompany = (from c in listCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
+                SelectedCompany = (from c in ListCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
 
                 if (filename.EndsWith("TXT") || filename.EndsWith("txt"))
                 {
                     throw new Exception("Não pode processar arquivo de entrada como venda!");
                 }
-                if (selectedCompany == null)
+                if (SelectedCompany == null)
                 {
                     throw new Exception("Selecione uma empresa!");
                 }
@@ -202,7 +202,7 @@ namespace StockManagerCore
                             item.Vtotal,
                             item.DhEmi,
                             p,
-                            selectedCompany));
+                            SelectedCompany));
 
                     }
                     _context.SoldProducts.AddRange(ListOfSales);
@@ -233,18 +233,27 @@ namespace StockManagerCore
         {
             try
             {
+                SelectedCompany = (from c in ListCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
+                
+                if (SelectedCompany == null)
+                {
+                    throw new ApplicationException("Empresa deve ser selecionada!");
+                }
+                
                 if (Rdn_In.IsChecked == true)
                 {
                     dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
 
-                    selectedCompany = (from c in listCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
+                    GetInputs(dateInitial);
 
-                    GroupProducts = GroupInputs(selectedCompany, dateInitial);
+                    var groupProducts = ListInputProduct
+                        .Where(co => co.Company.Id == SelectedCompany.Id)
+                        .GroupBy(p => p.XProd);
 
-                    ListStocks = GetStocks(selectedCompany);
+                    GetStocks(SelectedCompany);
 
                     //moving through grouping
-                    foreach (IGrouping<string, InputProduct> group in GroupProducts)
+                    foreach (IGrouping<string, InputProduct> group in groupProducts)
                     {
                         Stock stock = new Stock();
                         stock = ListStocks.Where(s => s.Product.Group == group.Key).FirstOrDefault();
@@ -289,19 +298,20 @@ namespace StockManagerCore
                     log.AppendLine(" | ValorTotal: " + totAmount.ToString("C2", CultureInfo.CurrentCulture));
                     txt_Console.Text = log.ToString();
                 }
-                if (Rdn_Out.IsChecked == true)//Continue from here 30/10
+                if (Rdn_Out.IsChecked == true && SelectedCompany != null)//Continue from here 30/10
                 {
                     dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
                     DateFinal = DateTime.ParseExact(Txt_DateFinal.Text, "dd/MM/yyyy", provider);
 
-                    selectedCompany = (from c in listCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
+                    GetSales(dateInitial, DateFinal);
+                    var groupOfSales = ListOfSales
+                        .Where(co => co.Company.Id == SelectedCompany.Id)
+                        .GroupBy(p => p.Product.Group);
 
-                    GroupOfSales = GroupSales(selectedCompany, dateInitial, DateFinal);
-
-                    ListStocks = GetStocks(selectedCompany);
+                    GetStocks(SelectedCompany);
 
                     //moving through grouping
-                    foreach (IGrouping<string, SoldProduct> group in GroupOfSales)
+                    foreach (IGrouping<string, SoldProduct> group in groupOfSales)
                     {
                         Stock stock = new Stock();
                         stock = ListStocks.Where(s => s.Product.Group == group.Key).FirstOrDefault();
@@ -316,7 +326,7 @@ namespace StockManagerCore
                         }
 
                         stock.MovimentSale(qty, amount, dateInitial);
-                       
+
                         try
                         {
                             _context.Stocks.Update(stock);
@@ -348,9 +358,8 @@ namespace StockManagerCore
                 }
                 log.AppendLine("Lista Entradas: " + ListInputProduct.Count);
                 log.AppendLine("Lista Saídas: " + ListOfSales.Count);
-
             }
-            catch (Exception ex)
+            catch (ApplicationException ex)
             {
                 Log_TextBlock.Text = "";
                 log.AppendLine(ex.Message);
@@ -361,35 +370,31 @@ namespace StockManagerCore
                 Log_TextBlock.Text = log.ToString();
             }
         }
-        private List<Stock> GetStocks(Company c)
+        private void GetStocks(Company c)
         {
-            List<Stock> list = new List<Stock>();
-            list = _context.Stocks
+            ListStocks.Clear();
+            ListStocks = _context.Stocks
                    .Where(s => s.Company.Id == c.Id)
                    .Include(p => p.Product)
                    .Include(co => co.Company)
                    .ToList();
-
-            return list;
         }
-        private List<IGrouping<string, Product>> GroupInputs(Company c, DateTime d)
+        private void GetInputs(DateTime d)
         {
-            var inputProducts = _context.InputProducts
-                       .Where(i => i.DhEmi.Year == dateInitial.Year
-                       && i.DhEmi.Month == dateInitial.Month
-                       && i.DhEmi.Day == dateInitial.Day)
+            ListInputProduct.Clear();
+
+            ListInputProduct = _context.InputProducts
+                       .Where(i => i.DhEmi.Year == d.Year
+                       && i.DhEmi.Month == d.Month
+                       && i.DhEmi.Day == d.Day)
                        .Include(i => i.Product)
                        .Include(i => i.Company)
                        .ToList();
-            var productsGroup = inputProducts
-                .Where(c => c.Company.Id == selectedCompany.Id)
-                .GroupBy(p => p.XProd).ToList();
-
-            return (List<IGrouping<string, Product>>)(IGrouping<string, Product>)productsGroup;
         }
-        private List<IGrouping<string, SoldProduct>> GroupSales(Company c, DateTime di, DateTime df)
+        private void GetSales(DateTime di, DateTime df)
         {
-            var soldProducts = _context.SoldProducts
+            ListOfSales.Clear();
+            ListOfSales = _context.SoldProducts
                 .Where(s => s.DhEmi.Year >= di.Year
                        && s.DhEmi.Month >= di.Month
                        && s.DhEmi.Day >= di.Day
@@ -399,13 +404,6 @@ namespace StockManagerCore
                 .Include(s => s.Product)
                 .Include(s => s.Company)
                 .ToList();
-            var soldGroup = soldProducts
-                .Where(co => co.Company.Id == c.Id)
-                .GroupBy(p => p.Product.Group)
-                .ToList();
-
-            return soldGroup;
-
         }
         private Product GetProduct(string g, IQueryable<Product> lP)
         {

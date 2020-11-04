@@ -6,17 +6,17 @@
         xmlns:local="clr-namespace:StockManagerCore"
         xmlns:Models="clr-namespace:StockManagerCore.Models" x:Class="StockManagerCore.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="537" Width="800">
     <Grid>
         <TextBlock HorizontalAlignment="Center" Margin="30,10,0,0" Text="Sistema de Controle de Estoque" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-2.313,-0.875" Background="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" FontSize="20" FontWeight="Bold"/>
         <TabControl Margin="0,42,0,0">
             <TabItem Header="Funções">
-                <Grid Background="#FFE5E5E5">
+                <Grid Background="#FFE5E5E5" Height="441">
                     <TextBox x:Name="FileNameTextBox" HorizontalAlignment="Left" Margin="40,23,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="386"/>
                     <Button x:Name="BtnFileOpen" Content="Selecionar" HorizontalAlignment="Left" Margin="437,21,0,0" VerticalAlignment="Top" Click="BtnFileOpen_Click"/>
-                    <Button x:Name="ProcessFile" Content="Processar Arquivo" HorizontalAlignment="Left" Margin="40,73,0,0" VerticalAlignment="Top" Click="ProcessInputs_Click"/>
+                    <Button x:Name="ProcessFile" Content="Processar Entradas" HorizontalAlignment="Left" Margin="40,73,0,0" VerticalAlignment="Top" Click="ProcessInputs_Click"/>
                     <Button x:Name="ProcessSales" Content="Processar Saídas" HorizontalAlignment="Left" Margin="160,73,0,0" VerticalAlignment="Top" Width="103" Click="ProcessSales_Click"/>
-                    <TextBlock x:Name="Log_TextBlock" HorizontalAlignment="Center" Margin="0,317,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="742" Height="37" FontWeight="Normal" FontSize="10"/>
+                    <TextBlock x:Name="Log_TextBlock" HorizontalAlignment="Center" Margin="0,317,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="742" Height="100" FontWeight="Normal" FontSize="10"/>
                     <ComboBox x:Name="CMB_Company" HorizontalAlignment="Left" Margin="40,46,0,0" VerticalAlignment="Top" Width="386" ItemsSource="{Binding Name}">
                         <ComboBox.DataContext>
                             <Models:Company/>
