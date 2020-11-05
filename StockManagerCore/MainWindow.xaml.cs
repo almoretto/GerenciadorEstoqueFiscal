@@ -34,7 +34,7 @@ namespace StockManagerCore
         FileReader nfeReader;
         bool sales;
         DateTime dateInitial = new DateTime();
-        DateTime DateFinal = new DateTime();
+        DateTime dateFinal = new DateTime();
         int qteTot = 0;
         int qty = 0;
         double amount = 0.0;
@@ -43,12 +43,10 @@ namespace StockManagerCore
 
         #region --== Models instantitation and support Lists ==--
         private Company SelectedCompany { get; set; } = new Company();
-        public IEnumerable<Company> ListCompanies { get; set; }
-        private List<InputProduct> ListInputProduct { get; set; } = new List<InputProduct>();
-        private List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
-        private IEnumerable<Stock> ListStocks { get; set; } = new List<Stock>();
-        private IEnumerable<Product> Products { get; set; }
         private Product Prod { get; set; } = new Product();
+        private InputProduct InputProduct { get; set; } = new InputProduct();
+        private List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
+        public IEnumerable<Company> ListCompanies { get; set; }
         #endregion
 
         public MainWindow(InputService inputService, SaleService saleService, ProductService productService,
@@ -67,8 +65,6 @@ namespace StockManagerCore
             {
                 CMB_Company.Items.Add(c.Name);
             }
-
-            Products = _productService.GetProducts();
         }
         private void BtnFileOpen_Click(object sender, RoutedEventArgs e)
         {
@@ -131,7 +127,7 @@ namespace StockManagerCore
 
                         item.AlternateNames();
 
-                        ListInputProduct.Add(new InputProduct
+                        InputProduct = new InputProduct
                             (item.NItem,
                             item.XProd,
                             item.QCom,
@@ -142,18 +138,17 @@ namespace StockManagerCore
                             item.VTotTrib,
                             p,
                             item.DhEmi,
-                            SelectedCompany));
-                    }
-                    // _context.InputProducts.AddRange(ListInputProduct);
-                    //  _context.SaveChanges();
+                            SelectedCompany);
 
+                        _inputService.InsertInputs(InputProduct);
+                    }
                 }
-                else
+                else //Exception
                 {
                     Log_TextBlock.Text = "";
                     log.AppendLine("Não pode processar venda como Compra!");
                     Log_TextBlock.Text = log.ToString();
-                    throw new Exception("Não pode processar venda como Compra!");
+                    throw new ApplicationException("Não pode processar venda como Compra!");
                 }
 
             }
@@ -173,15 +168,15 @@ namespace StockManagerCore
         {
             try
             {
-                SelectedCompany = (from c in ListCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
+                SelectedCompany = _companyService.FindByName((string)CMB_Company.SelectedItem);
 
                 if (filename.EndsWith("TXT") || filename.EndsWith("txt"))
                 {
-                    throw new Exception("Não pode processar arquivo de entrada como venda!");
+                    throw new ApplicationException("Não pode processar arquivo de entrada como venda!");
                 }
                 if (SelectedCompany == null)
                 {
-                    throw new Exception("Selecione uma empresa!");
+                    throw new ApplicationException("Selecione uma empresa!");
                 }
 
                 sales = true;
@@ -197,11 +192,11 @@ namespace StockManagerCore
                     foreach (InputNFe item in nfeReader.Inputs)
                     {
                         Product p = new Product();
-                        p = GetProduct(item.Group, Products);
+                        p = _productService.FindByGroup(item.Group);
 
                         if (p == null)
                         {
-                            throw new Exception("Produto Não encontrado!");
+                            throw new ApplicationException(" Pelo menos um produto da Nota não foi encontrado! \n Importação abortada!");
                         }
                         ListOfSales.Add(new SoldProduct
                             (item.NItem,
@@ -212,18 +207,15 @@ namespace StockManagerCore
                             item.DhEmi,
                             p,
                             SelectedCompany));
-
                     }
-                    //  _context.SoldProducts.AddRange(ListOfSales);
-                    //  _context.SaveChanges();
-
+                    _saleService.InsertMultiSales(ListOfSales);
                 }
                 else
                 {
                     Log_TextBlock.Text = "";
                     log.AppendLine("Não pode processar entrada como venda!");
                     Log_TextBlock.Text = log.ToString();
-                    throw new Exception("Não pode processar entrada como venda!");
+                    throw new ApplicationException("Não pode processar entrada como venda!");
                 }
 
             }
@@ -242,7 +234,8 @@ namespace StockManagerCore
         {
             try
             {
-                SelectedCompany = (from c in ListCompanies where c.Name == (string)CMB_Company.SelectedItem select c).FirstOrDefault();
+                int count = 0;
+                SelectedCompany = _companyService.FindByName((string)CMB_Company.SelectedItem);
 
                 if (SelectedCompany == null)
                 {
@@ -253,19 +246,15 @@ namespace StockManagerCore
                 {
                     dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
 
-                    GetInputs(dateInitial);
+                    IEnumerable<InputProduct> listInputProduct = _inputService.GetInputsByDateAndCompany(dateInitial, SelectedCompany);
 
-                    var groupProducts = ListInputProduct
-                        .Where(co => co.Company.Id == SelectedCompany.Id)
-                        .GroupBy(p => p.XProd);
-
-                    GetStocks(SelectedCompany);
+                    var groupProducts = listInputProduct.GroupBy(p => p.XProd);
 
                     //moving through grouping
                     foreach (IGrouping<string, InputProduct> group in groupProducts)
                     {
                         Stock stock = new Stock();
-                        stock = ListStocks.Where(s => s.Product.Group == group.Key).FirstOrDefault();
+                        stock = _stockService.GetStockByCompanyAndGroup(SelectedCompany, group.Key);
 
                         log.Append("Produto: " + group.Key);
                         txt_Console.Text = log.ToString();
@@ -274,25 +263,11 @@ namespace StockManagerCore
                         {
                             qty += item.QCom;
                             amount += item.Vtotal;
+                            count++;
                         }
 
                         stock.MovimentInput(qty, amount, dateInitial);
-
-                        try
-                        {
-                            //  _context.Stocks.Update(stock);
-                            //  _context.SaveChanges();
-                        }
-                        catch (DbUpdateException ex)
-                        {
-                            Log_TextBlock.Text = "";
-                            log.AppendLine(ex.Message);
-                            if (ex.InnerException != null)
-                            {
-                                log.AppendLine(ex.InnerException.Message);
-                            }
-                            Log_TextBlock.Text = log.ToString();
-                        }
+                        _stockService.UpdateStock(stock);
 
                         log.Append(" | Qte: " + qty.ToString());
                         log.AppendLine(" | Valor: " + amount.ToString("C2", CultureInfo.CurrentCulture));
@@ -310,20 +285,17 @@ namespace StockManagerCore
                 if (Rdn_Out.IsChecked == true && SelectedCompany != null)//Continue from here 30/10
                 {
                     dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
-                    DateFinal = DateTime.ParseExact(Txt_DateFinal.Text, "dd/MM/yyyy", provider);
+                    dateFinal = DateTime.ParseExact(Txt_DateFinal.Text, "dd/MM/yyyy", provider);
 
-                    GetSales(dateInitial, DateFinal);
-                    var groupOfSales = ListOfSales
-                        .Where(co => co.Company.Id == SelectedCompany.Id)
-                        .GroupBy(p => p.Product.Group);
+                    IEnumerable<SoldProduct> salesByDateAndCompany = _saleService.GetSalesByDateAndCompany(dateInitial, dateFinal, SelectedCompany);
 
-                    GetStocks(SelectedCompany);
+                    var groupOfSales = salesByDateAndCompany.GroupBy(p => p.Product.Group);
 
                     //moving through grouping
                     foreach (IGrouping<string, SoldProduct> group in groupOfSales)
                     {
                         Stock stock = new Stock();
-                        stock = ListStocks.Where(s => s.Product.Group == group.Key).FirstOrDefault();
+                        stock = _stockService.GetStockByCompanyAndGroup(SelectedCompany, group.Key);
 
                         log.Append("Produto: " + group.Key);
                         txt_Console.Text = log.ToString();
@@ -335,22 +307,9 @@ namespace StockManagerCore
                         }
 
                         stock.MovimentSale(qty, amount, dateInitial);
-
-                        try
-                        {
-                            //  _context.Stocks.Update(stock);
-                            //  _context.SaveChanges();
-                        }
-                        catch (DbUpdateException ex)
-                        {
-                            Log_TextBlock.Text = "";
-                            log.AppendLine(ex.Message);
-                            if (ex.InnerException != null)
-                            {
-                                log.AppendLine(ex.InnerException.Message);
-                            }
-                            Log_TextBlock.Text = log.ToString();
-                        }
+                        
+                        stock.MovimentInput(qty, amount, dateInitial);
+                        _stockService.UpdateStock(stock);
 
                         log.Append(" | Qte: " + qty.ToString());
                         log.AppendLine(" | Valor: " + amount.ToString("C2", CultureInfo.CurrentCulture));
@@ -365,7 +324,7 @@ namespace StockManagerCore
                     txt_Console.Text = log.ToString();
 
                 }
-                log.AppendLine("Lista Entradas: " + ListInputProduct.Count);
+                log.AppendLine("Lista Entradas: " + count.ToString());
                 log.AppendLine("Lista Saídas: " + ListOfSales.Count);
             }
             catch (ApplicationException ex)
@@ -378,41 +337,6 @@ namespace StockManagerCore
                 }
                 Log_TextBlock.Text = log.ToString();
             }
-        }
-        private void GetStocks(Company c)
-        {
-            ListStocks.Clear();
-            /* ListStocks = _context.Stocks
-                    .Where(s => s.Company.Id == c.Id)
-                    .Include(p => p.Product)
-                    .Include(co => co.Company)
-                    .ToList();*/
-        }
-        private void GetInputs(DateTime d)
-        {
-            ListInputProduct.Clear();
-
-            /* ListInputProduct = _context.InputProducts
-                        .Where(i => i.DhEmi.Year == d.Year
-                        && i.DhEmi.Month == d.Month
-                        && i.DhEmi.Day == d.Day)
-                        .Include(i => i.Product)
-                        .Include(i => i.Company)
-                        .ToList();*/
-        }
-        private void GetSales(DateTime di, DateTime df)
-        {
-            ListOfSales.Clear();
-            /* ListOfSales = _context.SoldProducts
-                 .Where(s => s.DhEmi.Year >= di.Year
-                        && s.DhEmi.Month >= di.Month
-                        && s.DhEmi.Day >= di.Day
-                        && s.DhEmi.Year <= df.Year
-                        && s.DhEmi.Month <= df.Month
-                        && s.DhEmi.Day <= df.Day)
-                 .Include(s => s.Product)
-                 .Include(s => s.Company)
-                 .ToList();*/
         }
     }
 }

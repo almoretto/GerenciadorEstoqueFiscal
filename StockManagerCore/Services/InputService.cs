@@ -31,6 +31,16 @@ namespace StockManagerCore.Services
                        .Include(i => i.Company)
                        .ToList();
         }
+        public IEnumerable<InputProduct> GetInputsByDateAndCompany(DateTime date, Company co)
+        {
+            return _context.InputProducts
+                       .Where(i => i.Company.Id == co.Id)
+                       .Where(i => i.DhEmi.Year == date.Year
+                       && i.DhEmi.Month == date.Month
+                       && i.DhEmi.Day == date.Day)
+                       .Include(i => i.Product)
+                       .Include(i => i.Company);
+        }
 
         public void InsertInputs(InputProduct input)
         {
@@ -44,5 +54,7 @@ namespace StockManagerCore.Services
                 throw new DbUpdateConcurrencyException(ex.Message);
             }
         }
+
+
     }
 }
