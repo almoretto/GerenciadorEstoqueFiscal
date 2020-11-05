@@ -4,6 +4,7 @@ namespace StockManagerCore.Services
 {
     public class InputNFe
     {
+        #region --== Field properties ==--
         public DateTime DhEmi { get; set; }
         public string NItem { get; set; }
         public string XProd { get; set; }
@@ -14,7 +15,9 @@ namespace StockManagerCore.Services
         public double VUnTrib { get; set; }
         public double VTotTrib { get; set; }
         public string Group { get; set; }
-
+        #endregion
+       
+        //Methods
         public void AlternateNames()
         {
             //get names of the groups from name of product

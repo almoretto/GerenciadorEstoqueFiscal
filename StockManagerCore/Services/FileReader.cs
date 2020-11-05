@@ -1,12 +1,15 @@
-﻿using System;
+﻿#region --== Dependency declaration ==--
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+#endregion
 
 namespace StockManagerCore.Services
 {
     class FileReader
     {
+        #region --== Local variables declarations ==--
         CultureInfo provider = CultureInfo.InvariantCulture;
         DateTime dhEmi;
         string nItem;
@@ -21,17 +24,24 @@ namespace StockManagerCore.Services
         double somaNFe = 0.0;
         int qteTotal = 0;
         double dif, difUn;
+        #endregion
+
+        #region --== Class properties ==--
         public List<InputNFe> Inputs { get; set; } = new List<InputNFe>();
         public List<string[]> FileNfe { get; set; }
         public string Path { get; set; }
         public bool Sales { get; set; }
+        #endregion
 
+        #region --== Constructors ==--
         public FileReader(string path, bool sales)
         {
             Path = path;
             Sales = sales;
         }
+        #endregion
 
+        #region --== Functional methods ==--
         public string GetInputItens()
         {
             FileNfe = new List<string[]>();
@@ -75,7 +85,6 @@ namespace StockManagerCore.Services
 
             return "Inputs Added : " + Inputs.Count;
         }
-
         private void GenerateGroups()
         {
             //get names of the groups from name of product
@@ -143,7 +152,6 @@ namespace StockManagerCore.Services
                 }
             }
         }
-
         //Incomings, treat each line collumn 0
         private void ProcessLines(string[] line)
         {
@@ -271,6 +279,6 @@ namespace StockManagerCore.Services
             GenerateGroups();
 
         }
-
+        #endregion
     }
 }

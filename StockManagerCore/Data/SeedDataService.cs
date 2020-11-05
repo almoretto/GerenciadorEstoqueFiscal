@@ -1,30 +1,33 @@
-﻿using System;
+﻿#region --== Dependency declaration ==--
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
 using StockManagerCore.Models;
-
+#endregion
 
 namespace StockManagerCore.Data
 {
     class SeedDataService
     {
+        #region --== Constructor for dependency injection ==--
         private StockDBContext _Context;
+        //This Constructor is for Injection of Dependency
+        public SeedDataService(StockDBContext context) { _Context = context; }
+        #endregion
+
+        #region --== Properties ==--
         private List<Product> Ps { get; set; } = new List<Product>();
         private List<Company> Cs { get; set; } = new List<Company>();
         private List<Stock> Ss { get; set; } = new List<Stock>();
-        public SeedDataService(StockDBContext context) //This Constructor is for Injection of Dependency
-        {
-            _Context = context;
-        }
+        #endregion
+
         public void Seed()
         {
             if (_Context.Products.Any() || _Context.Companies.Any() || _Context.Stocks.Any())
             {
                 return; //DB Has been populated
             }
-            //Seeding Products groups
+            #region --== Seeding Products groups ==--
             Ps.Add(new Product("ANEL"));
             Ps.Add(new Product("ARGOLA"));
             Ps.Add(new Product("BRACELETE"));
@@ -39,20 +42,21 @@ namespace StockManagerCore.Data
             Ps.Add(new Product("VARIADOS"));
             Ps.Add(new Product("BROCHE"));
 
-            _Context.Products.AddRange(Ps);
-            
-            //Seeding Companies
+            _Context.Products.AddRange(Ps); //Adding to DBSet
+            #endregion
+
+            #region --== Seeding Companies ==--
             Cs.Add(new Company("ATACADAO"));
             Cs.Add(new Company("JR"));
 
-            _Context.Companies.AddRange(Cs);
-            _Context.SaveChanges();
-           
+            _Context.Companies.AddRange(Cs); //Add to dbset
+            _Context.SaveChanges(); //Persist
+            #endregion
 
-            //Seeding Stocks Company Id=1
+            #region --== Seeding Stocks Company Id=1 ==--
             var prd = _Context.Products.Where(p => p.Id == 1).FirstOrDefault();
             var com = _Context.Companies.Where(c => c.Id == 1).FirstOrDefault();
-            Stock s1 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01),com);
+            Stock s1 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
             prd = _Context.Products.Where(p => p.Id == 2).FirstOrDefault();
             Stock s2 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
             prd = _Context.Products.Where(p => p.Id == 3).FirstOrDefault();
@@ -77,8 +81,9 @@ namespace StockManagerCore.Data
             Stock s12 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
             prd = _Context.Products.Where(p => p.Id == 13).FirstOrDefault();
             Stock s13 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
+            #endregion
 
-            //Seeding Stocks Company id=2
+            #region --== Seeding Stocks Company id=2 ==--
             prd = _Context.Products.Where(p => p.Id == 1).FirstOrDefault();
             com = _Context.Companies.Where(c => c.Id == 2).FirstOrDefault();
             Stock s14 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
@@ -106,14 +111,14 @@ namespace StockManagerCore.Data
             Stock s25 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
             prd = _Context.Products.Where(p => p.Id == 13).FirstOrDefault();
             Stock s26 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
+            #endregion
 
-                   
-
+            #region --== Dbset and commit ==--
             _Context.Stocks.AddRange(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13,
                                     s14, s15, s16, s17, s18, s19, s20, s21, s22, s23, s24, s25, s26);
-           
+
             _Context.SaveChanges();
-           
+            #endregion
         }
     }
 }

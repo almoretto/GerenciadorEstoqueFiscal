@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿#region --== Dependency declaration ==--
+using System.ComponentModel.DataAnnotations;
 using System;
+#endregion
 
 namespace StockManagerCore.Models
 {
     public class InputProduct
     {
+        #region --== Model Properties ==--
         [Key]
         public int Id { get; set; }
         public string NItem { get; set; }
@@ -24,7 +26,9 @@ namespace StockManagerCore.Models
         //Navigation prop
         [Required]
         public Product Product { get; set; }
+        #endregion
 
+        #region --== Constructors ==--
         public InputProduct() { }
 
         public InputProduct(string nItem, string xProd, int qCom, double vUnCom, string uCom, double vtotal,
@@ -41,10 +45,9 @@ namespace StockManagerCore.Models
             Product = product;
             DhEmi = dhEmi;
             Company = company;
-
         }
+        #endregion
 
-        
     }
 }
 

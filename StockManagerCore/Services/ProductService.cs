@@ -1,19 +1,20 @@
-﻿using System;
+﻿#region --== Dependency Declaration ==--
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
 using StockManagerCore.Data;
 using StockManagerCore.Models;
+#endregion
 
 namespace StockManagerCore.Services
 {
     public class ProductService
     {
-
+        #region --== Constructor for dependency injection ==--
         private readonly StockDBContext _context;
         public ProductService(StockDBContext context) { _context = context; }
+        #endregion
 
+        #region --== Methods ==--
         public IEnumerable<Product> GetProducts()
         {
             return _context.Products;
@@ -28,5 +29,6 @@ namespace StockManagerCore.Services
         {
             return _context.Products.Where(p => p.Group == gr).FirstOrDefault();
         }
+        #endregion
     }
 }

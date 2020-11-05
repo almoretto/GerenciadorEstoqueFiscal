@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿#region --== Dependency declaration ==--
+using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using StockManagerCore.Data;
 using StockManagerCore.Services;
+#endregion
 
 namespace StockManagerCore
 {

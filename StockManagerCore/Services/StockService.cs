@@ -1,18 +1,21 @@
-﻿using System;
+﻿#region --== Dependency declaration ==--
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using StockManagerCore.Data;
 using StockManagerCore.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+#endregion
 
 namespace StockManagerCore.Services
 {
     public class StockService
     {
+        #region --== Constructor for dependency injection ==--
         private readonly StockDBContext _context;
         public StockService(StockDBContext context) { _context = context; }
+        #endregion
 
+        #region --== Methods ==--
         public IEnumerable<Stock> GetStocksByCompany(Company company)
         {
             return _context.Stocks
@@ -48,5 +51,6 @@ namespace StockManagerCore.Services
                 throw new DbUpdateConcurrencyException(ex.Message);
             }
         }
+        #endregion
     }
 }

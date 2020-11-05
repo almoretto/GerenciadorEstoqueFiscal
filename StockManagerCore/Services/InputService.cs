@@ -1,19 +1,22 @@
-﻿using System;
+﻿#region --== Dependency declaration ==--
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using StockManagerCore.Data;
 using StockManagerCore.Models;
-
+#endregion
 
 namespace StockManagerCore.Services
 {
     public class InputService
     {
+        #region --== Constructor for dependency injector ==--
         private readonly StockDBContext _context;
         public InputService(StockDBContext context) { _context = context; }
+        #endregion
 
+        #region --== Methods ==--
         public IEnumerable<InputProduct> GetInputs()
         {
             return _context.InputProducts
@@ -41,7 +44,6 @@ namespace StockManagerCore.Services
                        .Include(i => i.Product)
                        .Include(i => i.Company);
         }
-
         public void InsertInputs(InputProduct input)
         {
             try
@@ -54,7 +56,6 @@ namespace StockManagerCore.Services
                 throw new DbUpdateConcurrencyException(ex.Message);
             }
         }
-
-
+        #endregion
     }
 }

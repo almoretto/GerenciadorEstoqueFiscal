@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿#region --== Dependency declaration ==--
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using StockManagerCore.Data;
+#endregion
 
 namespace StockManagerCore
 {

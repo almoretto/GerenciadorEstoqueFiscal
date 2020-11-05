@@ -1,13 +1,15 @@
-﻿using System;
+﻿#region --== Dependencies declaration ==--
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+#endregion
 
 namespace StockManagerCore.Models
 {
-
     public class Stock
     {
+        #region --== Model Properties ==--
         [Key]
         public int Id { get; set; }
         [Required]
@@ -20,14 +22,17 @@ namespace StockManagerCore.Models
         public DateTime LastSales { get; set; }
         [Required]
         public Company Company { get; set; }
+        #endregion
 
+        #region --== Class Properties Not Mapped ==--
         [NotMapped]
         public List<InputProduct> InputProducts { get; set; }
         [NotMapped]
         public List<SoldProduct> SoldProducts { get; set; }
+        #endregion
 
+        #region --== Constructors ==--
         public Stock() { }
-
         public Stock(Product product, int qtyPurchased, int qtySold, double amountPurchased,
             double amountSold, DateTime lstImput, Company company)
         {
@@ -39,7 +44,9 @@ namespace StockManagerCore.Models
             LastInput = lstImput;
             Company = company;
         }
+        #endregion
 
+        #region --== Methods ==--
         public void MovimentInput(int qty, double amount, DateTime lstD)
         {
             QtyPurchased += qty;
@@ -52,5 +59,6 @@ namespace StockManagerCore.Models
             AmountSold += amount;
             LastSales = lstD.Date;
         }
+        #endregion
     }
 }

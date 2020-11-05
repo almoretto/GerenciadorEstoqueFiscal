@@ -43,7 +43,6 @@ namespace StockManagerCore
 
         #region --== Models instantitation and support Lists ==--
         private Company SelectedCompany { get; set; } = new Company();
-        private Product Prod { get; set; } = new Product();
         private InputProduct InputProduct { get; set; } = new InputProduct();
         private List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
         public IEnumerable<Company> ListCompanies { get; set; }

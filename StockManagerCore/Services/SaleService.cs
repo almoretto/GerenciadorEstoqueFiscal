@@ -1,17 +1,22 @@
-﻿using System;
+﻿#region --== Dependency declatation ==--
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using StockManagerCore.Data;
 using StockManagerCore.Models;
+#endregion
 
 namespace StockManagerCore.Services
 {
     public class SaleService
     {
+        #region --== Constructor for dependency injections ==--
         private readonly StockDBContext _context;
         public SaleService(StockDBContext context) { _context = context; }
+        #endregion
+
+        #region --== Methods ==--
         public void InsertMultiSales(List<SoldProduct> sales)
         {
             try
@@ -55,5 +60,6 @@ namespace StockManagerCore.Services
                 && s.DhEmi.Month <= df.Month
                 && s.DhEmi.Day <= df.Day);
         }
+        #endregion
     }
 }

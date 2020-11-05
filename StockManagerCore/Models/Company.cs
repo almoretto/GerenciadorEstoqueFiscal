@@ -1,12 +1,13 @@
-﻿using System;
+﻿#region --== Dependency declaration ==--
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
+#endregion
 
 namespace StockManagerCore.Models
 {
     public class Company
     {
+        #region --== Model properties ==--
         [Required]
         public int Id { get; set; }
         [Required]
@@ -14,12 +15,15 @@ namespace StockManagerCore.Models
         public ICollection<InputProduct> InputProducts { get; set; }
         public ICollection<SoldProduct> SoldProducts { get; set; }
         public ICollection<Stock> Stocks { get; set; }
+        #endregion
 
+        #region --== Constructors ==--
         public Company() { }
 
         public Company( string name)
         {
             Name = name;
         }
+        #endregion
     }
 }
