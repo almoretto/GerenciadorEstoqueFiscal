@@ -27,7 +27,7 @@ namespace StockManagerCore.Services
         }
         public Product FindByGroup(string gr)
         {
-            return _context.Products.Where(p => p.Group == gr).FirstOrDefault();
+            return _context.Products.Where(p => p.GroupP == gr).FirstOrDefault();
         }
         #endregion
     }

@@ -18,7 +18,6 @@ namespace StockManagerCore.Data
         #region --== Properties ==--
         private List<Product> Ps { get; set; } = new List<Product>();
         private List<Company> Cs { get; set; } = new List<Company>();
-        private List<Stock> Ss { get; set; } = new List<Stock>();
         #endregion
 
         public void Seed()
@@ -32,7 +31,7 @@ namespace StockManagerCore.Data
             Ps.Add(new Product("ARGOLA"));
             Ps.Add(new Product("BRACELETE"));
             Ps.Add(new Product("BRINCO"));
-            Ps.Add(new Product("CHOCER"));
+            Ps.Add(new Product("CHOKER"));
             Ps.Add(new Product("COLAR"));
             Ps.Add(new Product("CORRENTE"));
             Ps.Add(new Product("PINGENTE"));
@@ -41,6 +40,7 @@ namespace StockManagerCore.Data
             Ps.Add(new Product("PEAÇAS"));
             Ps.Add(new Product("VARIADOS"));
             Ps.Add(new Product("BROCHE"));
+            Ps.Add(new Product("CONJUNTO"));
 
             _Context.Products.AddRange(Ps); //Adding to DBSet
             #endregion
@@ -81,6 +81,8 @@ namespace StockManagerCore.Data
             Stock s12 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
             prd = _Context.Products.Where(p => p.Id == 13).FirstOrDefault();
             Stock s13 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
+            prd = _Context.Products.Where(p => p.Id == 14).FirstOrDefault();
+            Stock s27 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
             #endregion
 
             #region --== Seeding Stocks Company id=2 ==--
@@ -111,6 +113,8 @@ namespace StockManagerCore.Data
             Stock s25 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
             prd = _Context.Products.Where(p => p.Id == 13).FirstOrDefault();
             Stock s26 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
+            prd = _Context.Products.Where(p => p.Id == 14).FirstOrDefault();
+            Stock s28 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
             #endregion
 
             #region --== Dbset and commit ==--

@@ -130,7 +130,7 @@ namespace StockManagerCore.Services
                 {
                     Inputs[i].Group = "TORNOZELEIRA";
                 }
-                else if (Inputs[i].XProd.Contains("VARIADOS"))
+                else if (Inputs[i].XProd.Contains("VARIADOS") || Inputs[i].XProd.Contains("VARIADO"))
                 {
                     Inputs[i].Group = "VARIADOS";
                 }
@@ -142,7 +142,7 @@ namespace StockManagerCore.Services
                 {
                     Inputs[i].Group = "PEÇAS";
                 }
-                else if (Inputs[i].XProd.Contains("CONJUNTO") || Inputs[i].XProd.Contains("KIT"))
+                else if (Inputs[i].XProd.Contains("CONJUNTO") || Inputs[i].XProd.Contains("KIT") || Inputs[i].XProd.Contains("CONJUNTOS"))
                 {
                     Inputs[i].Group = "CONJUNTO";
                 }
@@ -250,7 +250,7 @@ namespace StockManagerCore.Services
                 difUn = dif / qteTotal;
                 foreach (InputNFe item in Inputs)
                 {
-                    item.Vtotal += (difUn*item.QCom);
+                    item.Vtotal += (difUn * item.QCom);
                     item.VUnCom += difUn;
                 }
             }

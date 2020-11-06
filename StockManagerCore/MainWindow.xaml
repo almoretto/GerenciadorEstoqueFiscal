@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit"
         xmlns:local="clr-namespace:StockManagerCore"
         xmlns:Models="clr-namespace:StockManagerCore.Models" x:Class="StockManagerCore.MainWindow"
         mc:Ignorable="d"
@@ -10,28 +11,39 @@
     <Grid>
         <TextBlock HorizontalAlignment="Center" Margin="30,10,0,0" Text="Sistema de Controle de Estoque" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-2.313,-0.875" Background="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" FontSize="20" FontWeight="Bold"/>
         <TabControl Margin="0,42,0,0">
-            <TabItem Header="Funções">
+            <TabItem x:Name="Tb_Functions" Header="Funções" Height="20">
                 <Grid Background="#FFE5E5E5" Height="441">
-                    <TextBox x:Name="FileNameTextBox" HorizontalAlignment="Left" Margin="40,23,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="386"/>
-                    <Button x:Name="BtnFileOpen" Content="Selecionar" HorizontalAlignment="Left" Margin="437,21,0,0" VerticalAlignment="Top" Click="BtnFileOpen_Click"/>
-                    <Button x:Name="ProcessFile" Content="Processar Entradas" HorizontalAlignment="Left" Margin="40,73,0,0" VerticalAlignment="Top" Click="ProcessInputs_Click"/>
-                    <Button x:Name="ProcessSales" Content="Processar Saídas" HorizontalAlignment="Left" Margin="160,73,0,0" VerticalAlignment="Top" Width="103" Click="ProcessSales_Click"/>
-                    <TextBlock x:Name="Log_TextBlock" HorizontalAlignment="Center" Margin="0,317,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="742" Height="100" FontWeight="Normal" FontSize="10"/>
-                    <ComboBox x:Name="CMB_Company" HorizontalAlignment="Left" Margin="40,46,0,0" VerticalAlignment="Top" Width="386" ItemsSource="{Binding Name}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="21*"/>
+                        <ColumnDefinition Width="15*"/>
+                        <ColumnDefinition Width="45*"/>
+                        <ColumnDefinition Width="713*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="FileNameTextBox" HorizontalAlignment="Left" Margin="4,23,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="386" Grid.ColumnSpan="2" Grid.Column="2"/>
+                    <Button x:Name="BtnFileOpen" Content="Selecionar" HorizontalAlignment="Left" Margin="356,21,0,0" VerticalAlignment="Top" Click="BtnFileOpen_Click" Grid.Column="3"/>
+                    <Button x:Name="ProcessFile" Content="Processar Entradas" HorizontalAlignment="Left" Margin="4,73,0,0" VerticalAlignment="Top" Click="ProcessInputs_Click" Grid.ColumnSpan="2" Grid.Column="2"/>
+                    <Button x:Name="ProcessSales" Content="Processar Saídas" HorizontalAlignment="Left" Margin="79,73,0,0" VerticalAlignment="Top" Width="103" Click="ProcessSales_Click" Grid.Column="3"/>
+                    <TextBlock x:Name="Log_TextBlock" HorizontalAlignment="Left" Margin="5,317,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="742" Height="100" FontWeight="Normal" FontSize="10" Grid.ColumnSpan="3" Grid.Column="1"/>
+                    <ComboBox x:Name="CMB_Company" HorizontalAlignment="Left" Margin="4,46,0,0" VerticalAlignment="Top" Width="386" ItemsSource="{Binding Name}" Grid.ColumnSpan="2" Grid.Column="2">
                         <ComboBox.DataContext>
                             <Models:Company/>
                         </ComboBox.DataContext>
                     </ComboBox>
-                    <TextBox x:Name="Txt_DateInitial" HorizontalAlignment="Left" Margin="40,110,0,0" Text="Data Inicial" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date"/>
-                    <Button x:Name="Btn_Calculate" Content="Calcular" HorizontalAlignment="Left" Margin="174,117,0,0" VerticalAlignment="Top" Click="Btn_Calculate_Click"/>
-                    <RadioButton x:Name="Rdn_In" HorizontalAlignment="Left" Margin="246,112,0,0" VerticalAlignment="Top" GroupName="E/S" Content="Entradas" IsChecked="True"/>
-                    <RadioButton x:Name="Rdn_Out" Content="Saídas" HorizontalAlignment="Left" Margin="246,132,0,0" VerticalAlignment="Top" RenderTransformOrigin="0,0.34" GroupName="E/S"/>
-                    <TextBox x:Name="Txt_DateFinal" HorizontalAlignment="Left" Margin="40,133,0,0" Text="Data Final" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date"/>
-                    <TextBox x:Name="txt_Console" HorizontalAlignment="Left" Margin="40,182,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="710" Height="109" FontSize="10" AllowDrop="False" IsReadOnlyCaretVisible="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox x:Name="Txt_DateInitial" HorizontalAlignment="Left" Margin="4,110,0,0" Text="Data Inicial" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date" Grid.ColumnSpan="2" Grid.Column="2"/>
+                    <Button x:Name="Btn_Calculate" Content="Calcular" HorizontalAlignment="Left" Margin="93,117,0,0" VerticalAlignment="Top" Click="Btn_Calculate_Click" Grid.Column="3"/>
+                    <RadioButton x:Name="Rdn_In" HorizontalAlignment="Left" Margin="165,112,0,0" VerticalAlignment="Top" GroupName="E/S" Content="Entradas" IsChecked="True" Grid.Column="3"/>
+                    <RadioButton x:Name="Rdn_Out" Content="Saídas" HorizontalAlignment="Left" Margin="165,132,0,0" VerticalAlignment="Top" RenderTransformOrigin="0,0.34" GroupName="E/S" Grid.Column="3"/>
+                    <TextBox x:Name="Txt_DateFinal" HorizontalAlignment="Left" Margin="4,133,0,0" Text="Data Final" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date" Grid.ColumnSpan="2" Grid.Column="2"/>
+                    <TextBox x:Name="txt_Console" HorizontalAlignment="Left" Margin="4,182,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="710" Height="109" FontSize="10" AllowDrop="False" IsReadOnlyCaretVisible="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2" Grid.Column="2"/>
+                    <Button x:Name="Btn_ShowStock" Content="Mostrar Estoque" HorizontalAlignment="Left" Margin="197,73,0,0" VerticalAlignment="Top" Width="103" Grid.Column="3" Click="Btn_ShowStock_Click"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Dados">
-                <Grid Background="#FFE5E5E5" Height="364"/>
+            <TabItem x:Name="Tb_DataView" Header="Dados" HorizontalAlignment="Right" Width="46">
+                <Grid Background="#FFE5E5E5" Height="364">
+                    <TextBlock x:Name="TxtB_Company" HorizontalAlignment="Left" Margin="92,24,0,0" Text="Company Name" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Height="21" FontSize="16" FontWeight="Bold"/>
+                    <DataGrid x:Name="Grd_View" Margin="47,57,47,57" Width="700" Height="250" Grid.RowSpan="15" Grid.ColumnSpan="7" Grid.Row="15" Grid.Column="7" GridLinesVisibility="Horizontal" IsTextSearchEnabled="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" EnableRowVirtualization="False" AlternationCount="2" RowBackground="Beige" AlternatingRowBackground="LightBlue" ItemsSource="{Binding DataGridTable}"/>
+                   
+                </Grid>
             </TabItem>
         </TabControl>
 

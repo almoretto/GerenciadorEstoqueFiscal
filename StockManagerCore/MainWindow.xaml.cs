@@ -3,13 +3,13 @@
 using System;
 using System.Windows;
 using StockManagerCore.Services;
-using StockManagerCore.Data;
 using StockManagerCore.Models;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
-using Microsoft.EntityFrameworkCore;
+using System.Windows.Controls;
+using System.Data;
 #endregion
 
 namespace StockManagerCore
@@ -27,6 +27,7 @@ namespace StockManagerCore
         private readonly StockService _stockService;
         CultureInfo provider = CultureInfo.InvariantCulture;
         StringBuilder log = new StringBuilder();
+        DataGridTextColumn c = new DataGridTextColumn();
         #endregion
 
         #region --== Local Variables ==--
@@ -46,6 +47,8 @@ namespace StockManagerCore
         private InputProduct InputProduct { get; set; } = new InputProduct();
         private List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
         public IEnumerable<Company> ListCompanies { get; set; }
+        public IQueryable<Stock> ListOfStocks { get; set; }
+        private DataTable DataGridTable { get; set; } = new DataTable();
         #endregion
 
         public MainWindow(InputService inputService, SaleService saleService, ProductService productService,
@@ -58,7 +61,7 @@ namespace StockManagerCore
             _stockService = stockService;
 
             InitializeComponent();
-
+          
             ListCompanies = _companyService.GetCompanies();
             foreach (Company c in ListCompanies)
             {
@@ -288,7 +291,7 @@ namespace StockManagerCore
 
                     IEnumerable<SoldProduct> salesByDateAndCompany = _saleService.GetSalesByDateAndCompany(dateInitial, dateFinal, SelectedCompany);
 
-                    var groupOfSales = salesByDateAndCompany.GroupBy(p => p.Product.Group);
+                    var groupOfSales = salesByDateAndCompany.GroupBy(p => p.Product.GroupP);
 
                     //moving through grouping
                     foreach (IGrouping<string, SoldProduct> group in groupOfSales)
@@ -306,7 +309,7 @@ namespace StockManagerCore
                         }
 
                         stock.MovimentSale(qty, amount, dateInitial);
-                        
+
                         stock.MovimentInput(qty, amount, dateInitial);
                         _stockService.UpdateStock(stock);
 
@@ -334,6 +337,46 @@ namespace StockManagerCore
                 {
                     log.AppendLine(ex.InnerException.Message);
                 }
+                Log_TextBlock.Text = log.ToString();
+            }
+        }
+        private void Btn_ShowStock_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                SelectedCompany = _companyService.FindByName((string)CMB_Company.SelectedItem);
+
+                if (SelectedCompany == null)
+                {
+                    throw new ApplicationException("Selecione uma empresa!");
+                }
+                Tb_DataView.IsSelected = true;
+                TxtB_Company.Text = CMB_Company.SelectedItem.ToString();
+                ListOfStocks = _stockService.GetStocksByCompany(SelectedCompany);
+                 
+                DataGridTable.Columns.Add("Produto");
+                DataGridTable.Columns.Add("Qte Comprada");
+                DataGridTable.Columns.Add("Qte Vendida");
+                DataGridTable.Columns.Add("Total Comprado");
+                DataGridTable.Columns.Add("Total Vendido");
+                DataGridTable.Columns.Add("Qte Saldo");
+                DataGridTable.Columns.Add("Valor Saldo");
+
+                foreach (Stock item in ListOfStocks)
+                {
+                    DataGridTable.Rows.Add(item);
+                }
+
+            }
+            catch (ApplicationException ex)
+            {
+                Log_TextBlock.Text = "";
+                log.AppendLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    log.AppendLine(ex.InnerException.Message);
+                }
+
                 Log_TextBlock.Text = log.ToString();
             }
         }

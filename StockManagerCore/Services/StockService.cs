@@ -1,4 +1,5 @@
 ﻿#region --== Dependency declaration ==--
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,7 @@ namespace StockManagerCore.Services
         #endregion
 
         #region --== Methods ==--
-        public IEnumerable<Stock> GetStocksByCompany(Company company)
+        public IQueryable<Stock> GetStocksByCompany(Company company)
         {
             return _context.Stocks
                 .Include(s => s.Product)
@@ -25,11 +26,11 @@ namespace StockManagerCore.Services
         }
         public Stock GetStockByCompanyAndGroup(Company co, string grp)
         {
-            return _context.Stocks
+            return (_context.Stocks
+                .Where(s => s.Company.Id == co.Id))
+                .Where(s=>s.Product.GroupP==grp)
                 .Include(s => s.Product)
                 .Include(s => s.Company)
-                .Where(s => s.Company.Id == co.Id)
-                .Where(s=>s.Product.Group==grp)
                 .FirstOrDefault();
         }
         public IEnumerable<Stock> GetStocks()
@@ -37,7 +38,7 @@ namespace StockManagerCore.Services
             return _context.Stocks
                 .Include(s => s.Product)
                 .Include(s => s.Company)
-                .OrderBy(s => s.Product.Group);
+                .OrderBy(s => s.Product.GroupP);
         }
         public void UpdateStock(Stock stk)
         {

@@ -12,7 +12,7 @@ namespace StockManagerCore.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Group { get; set; }
+        public string GroupP { get; set; }
 
         //navigation to IncomeProduct
         public ICollection<InputProduct> InputProduct { get; set; }
@@ -26,7 +26,7 @@ namespace StockManagerCore.Models
 
         public Product(string group)
         {
-            Group = group;
+            GroupP = group;
         }
         #endregion
     }
