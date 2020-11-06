@@ -360,7 +360,7 @@ namespace StockManagerCore
                 DataGridTable.Columns.Add("Total Comprado");
                 DataGridTable.Columns.Add("Total Vendido");
                 DataGridTable.Columns.Add("Qte Saldo");
-                DataGridTable.Columns.Add("Valor Saldo");
+                DataGridTable.Columns.Add("Valor Saldo"); 
 
                 foreach (Stock item in ListOfStocks)
                 {
