@@ -13,14 +13,22 @@ namespace StockManagerCore.Models
         [Key]
         public int Id { get; set; }
         [Required]
+        [Display(Name ="Produto")]
         public Product Product { get; set; }
+        [Display(Name ="Qte. Comprada")]
         public int QtyPurchased { get; private set; }
+        [Display(Name ="Qte. Vendida")]
         public int QtySold { get; private set; }
+        [Display(Name ="Valor Compra")]
         public double AmountPurchased { get; set; }
+        [Display(Name ="Valor Venda")]
         public double AmountSold { get; set; }
+        [Display(Name ="Ultima Entrada")]
         public DateTime LastInput { get; set; }
+        [Display(Name ="Ultima Saída")]
         public DateTime LastSales { get; set; }
         [Required]
+        [Display(Name ="Empresa")]
         public Company Company { get; set; }
         #endregion
 

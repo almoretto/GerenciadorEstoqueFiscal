@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using System.Windows.Controls;
-using System.Data;
 #endregion
 
 namespace StockManagerCore
@@ -47,8 +46,7 @@ namespace StockManagerCore
         private InputProduct InputProduct { get; set; } = new InputProduct();
         private List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
         public IEnumerable<Company> ListCompanies { get; set; }
-        public IQueryable<Stock> ListOfStocks { get; set; }
-        private DataTable DataGridTable { get; set; } = new DataTable();
+        public IEnumerable<object> ListOfStocks { get; set; }
         #endregion
 
         public MainWindow(InputService inputService, SaleService saleService, ProductService productService,
@@ -61,7 +59,7 @@ namespace StockManagerCore
             _stockService = stockService;
 
             InitializeComponent();
-          
+
             ListCompanies = _companyService.GetCompanies();
             foreach (Company c in ListCompanies)
             {
@@ -351,22 +349,12 @@ namespace StockManagerCore
                     throw new ApplicationException("Selecione uma empresa!");
                 }
                 Tb_DataView.IsSelected = true;
+                Grd_View.AutoGenerateColumns = true;
                 TxtB_Company.Text = CMB_Company.SelectedItem.ToString();
-                ListOfStocks = _stockService.GetStocksByCompany(SelectedCompany);
-                 
-                DataGridTable.Columns.Add("Produto");
-                DataGridTable.Columns.Add("Qte Comprada");
-                DataGridTable.Columns.Add("Qte Vendida");
-                DataGridTable.Columns.Add("Total Comprado");
-                DataGridTable.Columns.Add("Total Vendido");
-                DataGridTable.Columns.Add("Qte Saldo");
-                DataGridTable.Columns.Add("Valor Saldo"); 
+                ListOfStocks = _stockService.GetStocksFormated(SelectedCompany);
 
-                foreach (Stock item in ListOfStocks)
-                {
-                    DataGridTable.Rows.Add(item);
-                }
-
+                Grd_View.ItemsSource = ListOfStocks.ToList();
+                InitializeComponent();
             }
             catch (ApplicationException ex)
             {
