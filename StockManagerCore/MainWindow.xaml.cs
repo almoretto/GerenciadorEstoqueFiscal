@@ -3,6 +3,7 @@
 using System;
 using System.Windows;
 using StockManagerCore.Services;
+using StockManagerCore.Services.Exceptions;
 using StockManagerCore.Models;
 using System.Text;
 using System.Collections.Generic;
@@ -66,6 +67,8 @@ namespace StockManagerCore
                 CMB_Company.Items.Add(c.Name);
             }
         }
+
+        #region --== Functions of Tb_Functions TAB ==--
         private void BtnFileOpen_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -368,5 +371,70 @@ namespace StockManagerCore
                 Log_TextBlock.Text = log.ToString();
             }
         }
+        #endregion
+
+        #region --== CRUD Companies And Products ==--
+        private void Btn_Create_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (Txt_CoName == null)
+                {
+                    throw new RequiredFieldException("Favor preencher o nome da empresa para cadastrar");
+                }
+
+                log.AppendLine(_companyService.Create(Txt_CoName.Text));
+
+                TxtBlk_LogCRUD.Text = log.ToString();
+            }
+            catch (Exception ex)
+            {
+                TxtBlk_LogCRUD.Text = "";
+                log.Clear();
+                log.AppendLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    log.AppendLine(ex.InnerException.Message);
+                }
+                Log_TextBlock.Text = log.ToString();
+            }
+        }
+        private void Btn_Read_Click(object sender, RoutedEventArgs e)
+        {
+            ListCompanies = _companyService.GetCompanies();
+            var listC = from c in ListCompanies select new { Nome = c.Name, Codigo = c.Id };
+            Grd_View.AutoGenerateColumns = true;
+            TxtB_Company.Text = "Lista de Empresas";
+            Grd_View.ItemsSource = listC.ToList();
+            InitializeComponent();
+            Tb_DataView.IsSelected = true;
+
+        }
+        private void Btn_Update_Click(object sender, RoutedEventArgs e)
+        {
+            Company toUpdate = new Company();
+            if (Txt_CoId.Text == null && Txt_CoName == null)
+            {
+                throw new RequiredFieldException("Favor preencher o nome ou ID da empresa para Editar");
+            }
+            else if (Txt_CoId.Text == null && Txt_CoName != null)
+            {
+                toUpdate = _companyService.FindToUdate(Txt_CoName.Text, null);
+            }
+            else if (Txt_CoName.Text == null && Txt_CoId != null)
+            {
+                toUpdate = _companyService.FindToUdate("", Convert.ToInt32(Txt_CoId.Text));
+            }
+            log.AppendLine(_companyService.Update(toUpdate));
+            TxtBlk_LogCRUD.Text = log.ToString();
+
+        }
+        private void Btn_Delete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
+
+
     }
 }
