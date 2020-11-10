@@ -52,6 +52,18 @@ namespace StockManagerCore.Models
             LastInput = lstImput;
             Company = company;
         }
+        public Stock(Product product, int qtyPurchased, int qtySold, double amountPurchased,
+           double amountSold, DateTime lstImput, DateTime lstSale , Company company)
+        {
+            Product = product;
+            QtyPurchased = qtyPurchased;
+            QtySold = qtySold;
+            AmountPurchased = amountPurchased;
+            AmountSold = amountSold;
+            LastInput = lstImput;
+            LastSales = lstSale;
+            Company = company;
+        }
         #endregion
 
         #region --== Methods ==--

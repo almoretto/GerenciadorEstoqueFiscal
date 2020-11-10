@@ -48,6 +48,7 @@ namespace StockManagerCore
         private List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
         public IEnumerable<Company> ListCompanies { get; set; }
         public IEnumerable<object> ListOfStocks { get; set; }
+        public IEnumerable<Product> ListOfProducts { get; set; }
         #endregion
 
         public MainWindow(InputService inputService, SaleService saleService, ProductService productService,
@@ -62,9 +63,15 @@ namespace StockManagerCore
             InitializeComponent();
 
             ListCompanies = _companyService.GetCompanies();
+            ListOfProducts = _productService.GetProducts();
             foreach (Company c in ListCompanies)
             {
                 CMB_Company.Items.Add(c.Name);
+                Cmb_StkCompany.Items.Add(c.Name);
+            }
+            foreach (Product product in ListOfProducts)
+            {
+                Cmb_StkProduct.Items.Add(product.GroupP);
             }
         }
 
@@ -373,8 +380,9 @@ namespace StockManagerCore
         }
         #endregion
 
-        #region --== CRUD Companies And Products ==--
-        private void Btn_Create_Click(object sender, RoutedEventArgs e)
+        #region --== CRUD Companies, Products and Stock==--
+        //Crud Company
+        private void Btn_CreateComp_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -399,7 +407,7 @@ namespace StockManagerCore
                 Log_TextBlock.Text = log.ToString();
             }
         }
-        private void Btn_Read_Click(object sender, RoutedEventArgs e)
+        private void Btn_ReadComp_Click(object sender, RoutedEventArgs e)
         {
             ListCompanies = _companyService.GetCompanies();
             var listC = from c in ListCompanies select new { Nome = c.Name, Codigo = c.Id };
@@ -410,7 +418,7 @@ namespace StockManagerCore
             Tb_DataView.IsSelected = true;
 
         }
-        private void Btn_Update_Click(object sender, RoutedEventArgs e)
+        private void Btn_UpdateComp_Click(object sender, RoutedEventArgs e)
         {
             Company toUpdate = new Company();
             if (Txt_CoId.Text == null && Txt_CoName == null)
@@ -425,14 +433,156 @@ namespace StockManagerCore
             {
                 toUpdate = _companyService.FindToUdate("", Convert.ToInt32(Txt_CoId.Text));
             }
+            if (toUpdate==null)
+            {
+                throw new NotFoundException("Nenhuma empresa localizada");
+            }
             log.AppendLine(_companyService.Update(toUpdate));
             TxtBlk_LogCRUD.Text = log.ToString();
 
         }
-        private void Btn_Delete_Click(object sender, RoutedEventArgs e)
+        private void Btn_DeleteComp_Click(object sender, RoutedEventArgs e)
+        {
+            Company toDelete = new Company();
+            if (Txt_CoId.Text == null && Txt_CoName == null)
+            {
+                throw new RequiredFieldException("Favor preencher o nome ou ID da empresa para Deletar");
+            }
+            else if (Txt_CoId.Text == null && Txt_CoName != null)
+            {
+                toDelete = _companyService.FindToUdate(Txt_CoName.Text, null);
+            }
+            else if (Txt_CoName.Text == null && Txt_CoId != null)
+            {
+                toDelete = _companyService.FindToUdate("", Convert.ToInt32(Txt_CoId.Text));
+            }
+            if (toDelete == null)
+            {
+                throw new NotFoundException("Nenhuma empresa localizada");
+            }
+            log.AppendLine(_companyService.Delete(toDelete));
+            TxtBlk_LogCRUD.Text = log.ToString();
+        }
+        
+        //Products CRUD
+        private void Btn_CreateProd_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (Txt_ProdGroupP == null)
+                {
+                    throw new RequiredFieldException("Favor preencher o nome do produto para cadastrar");
+                }
+
+                log.AppendLine(_productService.Create(Txt_ProdGroupP.Text));
+
+                TxtBlk_LogCRUD.Text = log.ToString();
+            }
+            catch (Exception ex)
+            {
+                TxtBlk_LogCRUD.Text = "";
+                log.Clear();
+                log.AppendLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    log.AppendLine(ex.InnerException.Message);
+                }
+                Log_TextBlock.Text = log.ToString();
+            }
+        }
+        private void Btn_ReadProd_Click(object sender, RoutedEventArgs e)
+        {
+            ListOfProducts = _productService.GetProducts();
+            var listP = from p in ListOfProducts select new { Nome = p.GroupP, Codigo = p.Id };
+            Grd_View.AutoGenerateColumns = true;
+            TxtB_Company.Text = "Lista de Produtos";
+            Grd_View.ItemsSource = listP.ToList();
+            InitializeComponent();
+            Tb_DataView.IsSelected = true;
+        }
+        private void Btn_UpdateProd_Click(object sender, RoutedEventArgs e)
+        {
+            Product toUpdate = new Product();
+            if (Txt_prodId.Text == null && Txt_ProdGroupP == null)
+            {
+                throw new RequiredFieldException("Favor preencher o nome ou ID do Produto para Editar");
+            }
+            else if (Txt_prodId.Text == null && Txt_ProdGroupP != null)
+            {
+                toUpdate = _productService.FindToUdate(Txt_ProdGroupP.Text, null);
+            }
+            else if (Txt_ProdGroupP.Text == null && Txt_prodId != null)
+            {
+                toUpdate = _productService.FindToUdate("", Convert.ToInt32(Txt_prodId.Text));
+            }
+            if (toUpdate == null)
+            {
+                throw new NotFoundException("Nenhum Produto localizado");
+            }
+            log.AppendLine(_productService.Update(toUpdate));
+            TxtBlk_LogCRUD.Text = log.ToString();
+        }
+        private void Btn_DeleteProd_Click(object sender, RoutedEventArgs e)
+        {
+            Product toDelete = new Product();
+            if (Txt_prodId.Text == null && Txt_ProdGroupP == null)
+            {
+                throw new RequiredFieldException("Favor preencher o nome ou ID do Produto para Deletar");
+            }
+            else if (Txt_prodId.Text == null && Txt_ProdGroupP != null)
+            {
+                toDelete = _productService.FindToUdate(Txt_ProdGroupP.Text, null);
+            }
+            else if (Txt_ProdGroupP.Text == null && Txt_prodId != null)
+            {
+                toDelete = _productService.FindToUdate("", Convert.ToInt32(Txt_prodId.Text));
+            }
+            if (toDelete == null)
+            {
+                throw new NotFoundException("Nenhum Produto localizado");
+            }
+            log.AppendLine(_productService.Delete(toDelete));
+            TxtBlk_LogCRUD.Text = log.ToString();
+        }
+
+
+        //Crud Stock
+        private void Btn_CreateStock_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+               // log.AppendLine(_productService.Create(Txt_ProdGroupP.Text));
+
+                TxtBlk_LogCRUD.Text = log.ToString();
+            }
+            catch (MyApplicationException ex)
+            {
+                Log_TextBlock.Text = "";
+                log.AppendLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    log.AppendLine(ex.InnerException.Message);
+                }
+                Log_TextBlock.Text = log.ToString();
+            }
+        }
+
+        private void Btn_ReadStock_Click(object sender, RoutedEventArgs e)
         {
 
         }
+
+        private void Btn_UpdateStock_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_DeleteStock_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
         #endregion
 
 

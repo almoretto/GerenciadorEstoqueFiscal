@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using StockManagerCore.Data;
 using StockManagerCore.Models;
 using StockManagerCore.Services.Exceptions;
+using System.Windows;
 #endregion
 
 
@@ -71,7 +72,11 @@ namespace StockManagerCore.Services
         {
             try
             {
-                _context.Update(co);
+                if (co == null)
+                {
+                    throw new DbComcurrancyException("Entity could not be null or empty!");
+                }
+                _context.Companies.Update(co);
                 _context.SaveChanges();
             }
             catch (DbComcurrancyException ex)
@@ -81,9 +86,39 @@ namespace StockManagerCore.Services
                 {
                     msg += "\n" + ex.InnerException;
                 }
-                throw new DbComcurrancyException("Não foi possivel atualizar veja mensagem \n" + msg);
+                throw new DbComcurrancyException("Não foi possivel atualizar veja mensagem: \n" + msg);
             }
             return "Update realizado com sucesso!";
+        }
+        public string Delete(Company co)
+        {
+            MessageBoxResult result = MessageBox.Show("O registro da Empresa: "
+                + co.Name
+                + ".\n Será excluído continuar?",
+                "Confirmation",
+                MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    _context.Companies.Remove(co);
+                    _context.SaveChanges();
+                }
+                catch (DbComcurrancyException ex)
+                {
+                    string msg = ex.Message;
+                    if (ex.InnerException != null)
+                    {
+                        msg += "\n" + ex.InnerException;
+                    }
+                    throw new DbRelationalException("Não foi possivel excluir por violação de relacionamento veja mensagem: \n" + msg);
+                }
+                return "Excluido com sucesso!";
+            }
+            else
+            {
+                return "Operação Canceladas!";
+            }
         }
         #endregion
         #endregion
