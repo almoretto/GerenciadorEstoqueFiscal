@@ -23,13 +23,33 @@ namespace StockManagerCore.Services
         }
         public Product Find(Product p)
         {
-            return _context.Products
+            Product product = new Product();
+            if (p==null)
+            {
+                throw new RequiredFieldException("Campo requerido para pesquisa");
+            }
+            product= _context.Products
                 .Where(pr => pr.Id == p.Id)
                 .SingleOrDefault();
+            if (product == null)
+            {
+                throw new NotFoundException("Entidade não encontrada");
+            }
+            return product;
         }
         public Product FindByGroup(string gr)
         {
-            return _context.Products.Where(p => p.GroupP == gr).FirstOrDefault();
+            Product product = new Product();
+            if (gr==null || gr=="")
+            {
+                throw new RequiredFieldException("Campo requerido para busca");
+            }
+            product = _context.Products.Where(p => p.GroupP == gr).FirstOrDefault();
+            if (product==null)
+            {
+                throw new NotFoundException("Entidade não encontrada");
+            }
+            return product;
         }
        
         #region --== CRUD ==--

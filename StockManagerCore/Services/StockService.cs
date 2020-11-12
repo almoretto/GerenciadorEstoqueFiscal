@@ -21,19 +21,40 @@ namespace StockManagerCore.Services
         #region --== Methods ==--
         public IQueryable<Stock> GetStocksByCompany(Company company)
         {
-            return _context.Stocks
-                .Include(s => s.Product)
-                .Include(s => s.Company)
-                .Where(s => s.Company.Id == company.Id);
+            if (company==null)
+            {
+                throw new RequiredFieldException("Empresa é obrigatoria para retornar lista de estoques");
+            }
+            try
+            {
+                return _context.Stocks
+                    .Include(s => s.Product)
+                    .Include(s => s.Company)
+                    .Where(s => s.Company.Id == company.Id);
+            }
+            catch(NotFoundException ex)
+            {
+                throw new NotFoundException(ex.Message);
+            }
         }
         public Stock GetStockByCompanyAndGroup(Company co, string grp)
         {
-            return (_context.Stocks
+            Stock stock = new Stock();
+            if (co == null || grp == null || grp == "")
+            {
+                throw new RequiredFieldException("Empresa e Produto são obrigatórios para localizar um estoque");
+            }
+            stock = (_context.Stocks
                 .Where(s => s.Company.Id == co.Id))
                 .Where(s => s.Product.GroupP == grp)
                 .Include(s => s.Product)
                 .Include(s => s.Company)
                 .FirstOrDefault();
+            if (stock==null)
+            {
+                throw new NotFoundException("Estoque não encontrado com os parâmetros");
+            }
+            return stock;
         }
         public IEnumerable<Stock> GetStocks()
         {
@@ -41,18 +62,6 @@ namespace StockManagerCore.Services
                 .Include(s => s.Product)
                 .Include(s => s.Company)
                 .OrderBy(s => s.Product.GroupP);
-        }
-        public void UpdateStock(Stock stk)
-        {
-            try
-            {
-                _context.Stocks.Update(stk);
-                _context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                throw new DbUpdateConcurrencyException(ex.Message);
-            }
         }
         public IEnumerable<object> GetStocksFormated(Company company)
         {
@@ -74,7 +83,18 @@ namespace StockManagerCore.Services
                         };
             return query.ToList();
         }
-
+        public void Update(Stock stk)
+        {
+            try
+            {
+                _context.Stocks.Update(stk);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw new DbUpdateConcurrencyException(ex.Message);
+            }
+        }
         #region --== Crud ==--
         public string Create(Product product, int? qtyPurchased, int? qtySold, double? amountPurchased,
             double? amountSold, DateTime lstImput, DateTime? lstSale, Company company)
@@ -134,28 +154,6 @@ namespace StockManagerCore.Services
                 return stk;
             }
             throw new NotFoundException("Insuficient Data to find entity!");
-        }
-        public string Update(Stock stock)
-        {
-            try
-            {
-                if (stock == null)
-                {
-                    throw new DbComcurrancyException("Entity could not be null or empty!");
-                }
-                _context.Stocks.Update(stock);
-                _context.SaveChanges();
-            }
-            catch (DbComcurrancyException ex)
-            {
-                string msg = ex.Message;
-                if (ex.InnerException != null)
-                {
-                    msg += "\n" + ex.InnerException;
-                }
-                throw new DbComcurrancyException("Não foi possivel atualizar veja mensagem: \n" + msg);
-            }
-            return "Update realizado com sucesso!";
         }
         public string Delete(Stock stock)
         {

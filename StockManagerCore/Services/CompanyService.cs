@@ -24,13 +24,34 @@ namespace StockManagerCore.Services
         }
         public Company Find(Company c)
         {
-            return _context.Companies
-                .Where(co => co.Id == c.Id)
-                .SingleOrDefault();
+            Company company = new Company();
+            if (c == null)
+            {
+                throw new RequiredFieldException("Informe uma empresa para localizar");
+            }
+            company = _context.Companies
+                 .Where(co => co.Id == c.Id)
+                 .SingleOrDefault();
+            if (company == null)
+            {
+                throw new NotFoundException("Entidade não encontrada");
+            }
+            return company;
+
         }
         public Company FindByName(string name)
         {
-            return _context.Companies.Where(c => c.Name == name).SingleOrDefault();
+            Company company = new Company();
+            if (name == "" || name == null)
+            {
+                throw new RequiredFieldException("Campo necessario para busca");
+            }
+            company = _context.Companies.Where(c => c.Name == name).SingleOrDefault();
+            if (company == null)
+            {
+                throw new NotFoundException("Entidade não encontrada");
+            }
+            return company;
         }
 
         #region --== CRUD ==--
@@ -44,22 +65,13 @@ namespace StockManagerCore.Services
 
             return response;
         }
-        public Company FindToUdate(string name, int? id)
+        public Company FindToUdate(int id)
         {
             Company co = new Company();
 
-            if (id.HasValue)
+            if (id!=0)
             {
                 co = _context.Companies.Find(id);
-                if (co == null)
-                {
-                    throw new NotFoundException("Id :" + id.ToString() + "Não encontrado");
-                }
-                return co;
-            }
-            else if (name != "")
-            {
-                co = _context.Companies.Where(c => c.Name == name).FirstOrDefault();
                 if (co == null)
                 {
                     throw new NotFoundException("Id :" + id.ToString() + "Não encontrado");
