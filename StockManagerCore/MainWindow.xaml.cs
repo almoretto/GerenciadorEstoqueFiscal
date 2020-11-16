@@ -385,7 +385,8 @@ namespace StockManagerCore
         #region --== CRUD Companies, Products and Stock==--
         private void Btn_Select_Click(object sender, RoutedEventArgs e)
         {
-            switch (Cmb_Switch.SelectedItem.ToString())
+            string switchcase = Cmb_Switch.SelectedItem.ToString();
+            switch (switchcase)
             {
                 case "Empresa":
                     SelectedCompany = _companyService.FindByName(Txt_Selection.Text.ToUpper());
@@ -476,24 +477,7 @@ namespace StockManagerCore
             log.AppendLine(_companyService.Update(toUpdate));
             TxtBlk_LogCRUD.Text = log.ToString();
         }
-        private void Btn_DeleteComp_Click(object sender, RoutedEventArgs e)
-        {
-            Company toDelete = new Company();
-            if (Txt_CoId.Text == null && Txt_CoName == null)
-            {
-                throw new RequiredFieldException("Favor preencher o nome ou ID da empresa para Deletar");
-            }
-            else if (Txt_CoName.Text == null && Txt_CoId != null)
-            {
-                toDelete = _companyService.FindToUdate(Convert.ToInt32(Txt_CoId.Text));
-            }
-            if (toDelete == null)
-            {
-                throw new NotFoundException("Nenhuma empresa localizada");
-            }
-            log.AppendLine(_companyService.Delete(toDelete));
-            TxtBlk_LogCRUD.Text = log.ToString();
-        }
+      
 
         //Products CRUD
         private void Btn_CreateProd_Click(object sender, RoutedEventArgs e)
@@ -551,28 +535,7 @@ namespace StockManagerCore
             log.AppendLine(_productService.Update(toUpdate));
             TxtBlk_LogCRUD.Text = log.ToString();
         }
-        private void Btn_DeleteProd_Click(object sender, RoutedEventArgs e)
-        {
-            Product toDelete = new Product();
-            if (Txt_prodId.Text == null && Txt_ProdGroupP == null)
-            {
-                throw new RequiredFieldException("Favor preencher o nome ou ID do Produto para Deletar");
-            }
-            else if (Txt_prodId.Text == null && Txt_ProdGroupP != null)
-            {
-                toDelete = _productService.FindToUdate(Txt_ProdGroupP.Text, null);
-            }
-            else if (Txt_ProdGroupP.Text == null && Txt_prodId != null)
-            {
-                toDelete = _productService.FindToUdate("", Convert.ToInt32(Txt_prodId.Text));
-            }
-            if (toDelete == null)
-            {
-                throw new NotFoundException("Nenhum Produto localizado");
-            }
-            log.AppendLine(_productService.Delete(toDelete));
-            TxtBlk_LogCRUD.Text = log.ToString();
-        }
+       
         
         //Crud Stock
         private void Btn_CreateStock_Click(object sender, RoutedEventArgs e)
@@ -630,14 +593,7 @@ namespace StockManagerCore
                 throw new RequiredFieldException("Informa a empresa para filtrar os estoques");
             }
         }
-        private void Btn_DeleteStock_Click(object sender, RoutedEventArgs e)
-        {
-            if (SelectedStock != null)
-            {
-                log.AppendLine(_stockService.Delete(SelectedStock));
-                TxtBlk_LogCRUD.Text = log.ToString();
-            }
-        }
+     
 
         #endregion
 

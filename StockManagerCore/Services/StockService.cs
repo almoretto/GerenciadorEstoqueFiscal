@@ -155,39 +155,7 @@ namespace StockManagerCore.Services
             }
             throw new NotFoundException("Insuficient Data to find entity!");
         }
-        public string Delete(Stock stock)
-        {
-            MessageBoxResult result = MessageBox.Show("O registro de estoque da Empresa: "
-                + stock.Company.Name
-                + ".\n Produto: "
-                + stock.Product.GroupP
-                + ".\n Será excluído continuar?",
-                "Confirmation",
-                MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
-            {
-                try
-                {
-                    _context.Stocks.Remove(stock);
-                    _context.SaveChanges();
-                }
-                catch (DbComcurrancyException ex)
-                {
-                    string msg = ex.Message;
-                    if (ex.InnerException != null)
-                    {
-                        msg += "\n" + ex.InnerException;
-                    }
-                    throw new DbRelationalException("Não foi possivel excluir por violação de relacionamento veja mensagem: \n" + msg);
-                }
-                return "Excluido com sucesso!";
-            }
-            else
-            {
-                return "Operação cancelada!";
-            }
-
-        }
+        
         #endregion
         #endregion
     }

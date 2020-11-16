@@ -102,36 +102,7 @@ namespace StockManagerCore.Services
             }
             return "Update realizado com sucesso!";
         }
-        public string Delete(Company co)
-        {
-            MessageBoxResult result = MessageBox.Show("O registro da Empresa: "
-                + co.Name
-                + ".\n Será excluído continuar?",
-                "Confirmation",
-                MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
-            {
-                try
-                {
-                    _context.Companies.Remove(co);
-                    _context.SaveChanges();
-                }
-                catch (DbComcurrancyException ex)
-                {
-                    string msg = ex.Message;
-                    if (ex.InnerException != null)
-                    {
-                        msg += "\n" + ex.InnerException;
-                    }
-                    throw new DbRelationalException("Não foi possivel excluir por violação de relacionamento veja mensagem: \n" + msg);
-                }
-                return "Excluido com sucesso!";
-            }
-            else
-            {
-                return "Operação Canceladas!";
-            }
-        }
+       
         #endregion
         #endregion
     }

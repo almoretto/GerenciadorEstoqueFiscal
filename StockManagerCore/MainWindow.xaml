@@ -40,7 +40,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem x:Name="Tb_CRUD" Header="CVED">
+            <TabItem x:Name="Tb_CRUD" Header="CVED" IsEnabled="False">
                 <Grid x:Name="grdbackComp" Background="#FFE5E5E5" Height="502">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="23*"/>
@@ -55,7 +55,6 @@
                             <Button x:Name="Btn_CreateComp" Content="Criar" HorizontalAlignment="Left" Margin="35,97,0,0" VerticalAlignment="Top" Width="60" Click="Btn_CreateComp_Click" />
                             <Button x:Name="Btn_ReadComp" Content="Visualizar" HorizontalAlignment="Left" Margin="110,97,0,0" VerticalAlignment="Top" Width="60" Click="Btn_ReadComp_Click" />
                             <Button x:Name="Btn_UpdateComp" Content="Editar" HorizontalAlignment="Left" Margin="185,97,0,0" VerticalAlignment="Top" Width="60" Click="Btn_UpdateComp_Click" />
-                            <Button x:Name="Btn_DeleteComp" Content="Deletar" HorizontalAlignment="Left" Margin="260,97,0,0" VerticalAlignment="Top" Width="60" Click="Btn_DeleteComp_Click" />
                         </Grid>
                     </GroupBox>
                     <GroupBox x:Name="Grp_Products" Header="Produtos" Margin="460,56,51,270" Grid.Column="1">
@@ -67,7 +66,6 @@
                             <Button x:Name="Btn_CreateProd" Content="Criar" HorizontalAlignment="Left" Margin="27,102,0,0" VerticalAlignment="Top" Width="60" Click="Btn_CreateProd_Click"/>
                             <Button x:Name="Btn_ReadProd" Content="Visualizar" HorizontalAlignment="Left" Margin="102,102,0,0" VerticalAlignment="Top" Width="60" Click="Btn_ReadProd_Click"/>
                             <Button x:Name="Btn_UpdateProd" Content="Editar" HorizontalAlignment="Left" Margin="177,102,0,0" VerticalAlignment="Top" Width="60" Click="Btn_UpdateProd_Click"/>
-                            <Button x:Name="Btn_DeleteProd" Content="Deletar" HorizontalAlignment="Left" Margin="252,102,0,0" VerticalAlignment="Top" Width="60" Click="Btn_DeleteProd_Click"/>
                         </Grid>
                     </GroupBox>
                     <GroupBox x:Name="Grp_Stock" Grid.Column="1" Header="Estoques" Margin="32,237,210,68">
@@ -92,7 +90,6 @@
                             <DatePicker x:Name="Dpk_StkLastSale" HorizontalAlignment="Left" Margin="148,130,0,0" VerticalAlignment="Top"/>
                             <Button x:Name="Btn_CreateStock" Content="Criar" HorizontalAlignment="Left" Margin="304,130,0,0" VerticalAlignment="Top" Width="60" Click="Btn_CreateStock_Click"/>
                             <Button x:Name="Btn_ReadStock" Content="Visualizar" HorizontalAlignment="Left" Margin="379,130,0,0" VerticalAlignment="Top" Width="60" Click="Btn_ReadStock_Click"/>
-                            <Button x:Name="Btn_DeleteStock" Content="Deletar" HorizontalAlignment="Left" Margin="453,130,0,0" VerticalAlignment="Top" Width="60" Click="Btn_DeleteStock_Click"/>
                         </Grid>
                     </GroupBox>
                     <TextBlock x:Name="TxtBlk_LogCRUD" HorizontalAlignment="Left" Margin="28,458,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="39" FontWeight="Normal" FontSize="10" Grid.Column="1"/>
