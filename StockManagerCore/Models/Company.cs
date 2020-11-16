@@ -15,6 +15,7 @@ namespace StockManagerCore.Models
         public ICollection<InputProduct> InputProducts { get; set; }
         public ICollection<SoldProduct> SoldProducts { get; set; }
         public ICollection<Stock> Stocks { get; set; }
+        public ICollection<NFControl> NFControls { get; set; }
         #endregion
 
         #region --== Constructors ==--

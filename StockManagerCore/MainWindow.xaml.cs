@@ -360,7 +360,7 @@ namespace StockManagerCore
                 {
                     throw new ApplicationException("Selecione uma empresa!");
                 }
-                TbDataView.IsSelected = true;
+                tbiDataView.IsSelected = true;
                 GrdView.AutoGenerateColumns = true;
                 TxtBCompany.Text = CmbCompany.SelectedItem.ToString();
                 ListOfStocks = _stockService.GetStocksFormated(SelectedCompany);
@@ -453,7 +453,7 @@ namespace StockManagerCore
             TxtBCompany.Text = "Lista de Empresas";
             GrdView.ItemsSource = listC.ToList();
             InitializeComponent();
-            TbDataView.IsSelected = true;
+            tbiDataView.IsSelected = true;
 
         }
         private void Btn_UpdateComp_Click(object sender, RoutedEventArgs e)
@@ -474,24 +474,6 @@ namespace StockManagerCore
             toUpdate.Name = TxtCoName.Text;
             toUpdate.Id = Convert.ToInt32(TxtCoId.Text);
             log.AppendLine(_companyService.Update(toUpdate));
-            TxtBlkLogCRUD.Text = log.ToString();
-        }
-        private void Btn_DeleteComp_Click(object sender, RoutedEventArgs e)
-        {
-            Company toDelete = new Company();
-            if (TxtCoId.Text == null && TxtCoName == null)
-            {
-                throw new RequiredFieldException("Favor preencher o nome ou ID da empresa para Deletar");
-            }
-            else if (TxtCoName.Text == null && TxtCoId != null)
-            {
-                toDelete = _companyService.FindToUdate(Convert.ToInt32(TxtCoId.Text));
-            }
-            if (toDelete == null)
-            {
-                throw new NotFoundException("Nenhuma empresa localizada");
-            }
-            log.AppendLine(_companyService.Delete(toDelete));
             TxtBlkLogCRUD.Text = log.ToString();
         }
 
@@ -529,7 +511,7 @@ namespace StockManagerCore
             TxtBCompany.Text = "Lista de Produtos";
             GrdView.ItemsSource = listP.ToList();
             InitializeComponent();
-            TbDataView.IsSelected = true;
+            tbiDataView.IsSelected = true;
         }
         private void Btn_UpdateProd_Click(object sender, RoutedEventArgs e)
         {
@@ -549,28 +531,6 @@ namespace StockManagerCore
             toUpdate.GroupP = TxtProdGroupP.Text;
             toUpdate.Id = Convert.ToInt32(TxtCoId.Text);
             log.AppendLine(_productService.Update(toUpdate));
-            TxtBlkLogCRUD.Text = log.ToString();
-        }
-        private void Btn_DeleteProd_Click(object sender, RoutedEventArgs e)
-        {
-            Product toDelete = new Product();
-            if (TxtProdId.Text == null && TxtProdGroupP == null)
-            {
-                throw new RequiredFieldException("Favor preencher o nome ou ID do Produto para Deletar");
-            }
-            else if (TxtProdId.Text == null && TxtProdGroupP != null)
-            {
-                toDelete = _productService.FindToUdate(TxtProdGroupP.Text, null);
-            }
-            else if (TxtProdGroupP.Text == null && TxtProdId != null)
-            {
-                toDelete = _productService.FindToUdate("", Convert.ToInt32(TxtProdId.Text));
-            }
-            if (toDelete == null)
-            {
-                throw new NotFoundException("Nenhum Produto localizado");
-            }
-            log.AppendLine(_productService.Delete(toDelete));
             TxtBlkLogCRUD.Text = log.ToString();
         }
         
@@ -623,22 +583,13 @@ namespace StockManagerCore
                 TxtBCompany.Text = "Lista de Estoques";
                 GrdView.ItemsSource = ListOfStocks.ToList();
                 InitializeComponent();
-                TbDataView.IsSelected = true;
+                tbiDataView.IsSelected = true;
             }
             else
             {
                 throw new RequiredFieldException("Informa a empresa para filtrar os estoques");
             }
         }
-        private void Btn_DeleteStock_Click(object sender, RoutedEventArgs e)
-        {
-            if (SelectedStock != null)
-            {
-                log.AppendLine(_stockService.Delete(SelectedStock));
-                TxtBlkLogCRUD.Text = log.ToString();
-            }
-        }
-
         #endregion
 
 
