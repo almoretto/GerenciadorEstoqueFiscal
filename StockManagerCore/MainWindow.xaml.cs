@@ -68,12 +68,12 @@ namespace StockManagerCore
             ListOfProducts = _productService.GetProducts();
             foreach (Company c in ListCompanies)
             {
-                CMB_Company.Items.Add(c.Name);
-                Cmb_StkCompany.Items.Add(c.Name);
+                CmbCompany.Items.Add(c.Name);
+                CmbStkCompany.Items.Add(c.Name);
             }
             foreach (Product product in ListOfProducts)
             {
-                Cmb_StkProduct.Items.Add(product.GroupP);
+                CmbStkProduct.Items.Add(product.GroupP);
             }
         }
 
@@ -103,16 +103,16 @@ namespace StockManagerCore
             }
             catch (Exception ex)
             {
-                Log_TextBlock.Text = "";
+                LogTextBlock.Text = "";
                 log.AppendLine(ex.Message);
-                Log_TextBlock.Text = log.ToString();
+                LogTextBlock.Text = log.ToString();
             }
         }
         private void ProcessInputs_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                SelectedCompany = _companyService.FindByName((string)CMB_Company.SelectedItem);
+                SelectedCompany = _companyService.FindByName((string)CmbCompany.SelectedItem);
 
                 if (filename.EndsWith("csv") || filename.EndsWith("CSV"))
                 {
@@ -131,7 +131,7 @@ namespace StockManagerCore
                     nfeReader = new FileReader(filename, sales);
                     //Reading inputs and returning Log
                     log.AppendLine(nfeReader.GetInputItens());
-                    Log_TextBlock.Text = log.ToString();
+                    LogTextBlock.Text = log.ToString();
                     foreach (InputNFe item in nfeReader.Inputs)
                     {
                         Product p = new Product();
@@ -157,30 +157,30 @@ namespace StockManagerCore
                 }
                 else //Exception
                 {
-                    Log_TextBlock.Text = "";
+                    LogTextBlock.Text = "";
                     log.AppendLine("Não pode processar venda como Compra!");
-                    Log_TextBlock.Text = log.ToString();
+                    LogTextBlock.Text = log.ToString();
                     throw new ApplicationException("Não pode processar venda como Compra!");
                 }
 
             }
             catch (Exception ex)
             {
-                Log_TextBlock.Text = "";
+                LogTextBlock.Text = "";
                 log.AppendLine(ex.Message);
                 if (ex.InnerException != null)
                 {
                     log.AppendLine(ex.InnerException.Message);
                 }
 
-                Log_TextBlock.Text = log.ToString();
+                LogTextBlock.Text = log.ToString();
             }
         }
         private void ProcessSales_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                SelectedCompany = _companyService.FindByName((string)CMB_Company.SelectedItem);
+                SelectedCompany = _companyService.FindByName((string)CmbCompany.SelectedItem);
 
                 if (filename.EndsWith("TXT") || filename.EndsWith("txt"))
                 {
@@ -200,7 +200,7 @@ namespace StockManagerCore
                     nfeReader = new FileReader(filename, sales);
                     //Reading inputs and returning Log
                     log.AppendLine(nfeReader.GetInputItens());
-                    Log_TextBlock.Text = log.ToString();
+                    LogTextBlock.Text = log.ToString();
                     foreach (InputNFe item in nfeReader.Inputs)
                     {
                         Product p = new Product();
@@ -224,22 +224,22 @@ namespace StockManagerCore
                 }
                 else
                 {
-                    Log_TextBlock.Text = "";
+                    LogTextBlock.Text = "";
                     log.AppendLine("Não pode processar entrada como venda!");
-                    Log_TextBlock.Text = log.ToString();
+                    LogTextBlock.Text = log.ToString();
                     throw new ApplicationException("Não pode processar entrada como venda!");
                 }
 
             }
             catch (Exception ex)
             {
-                Log_TextBlock.Text = "";
+                LogTextBlock.Text = "";
                 log.AppendLine(ex.Message);
                 if (ex.InnerException != null)
                 {
                     log.AppendLine(ex.InnerException.Message);
                 }
-                Log_TextBlock.Text = log.ToString();
+                LogTextBlock.Text = log.ToString();
             }
         }
         private void Btn_Calculate_Click(object sender, RoutedEventArgs e)
@@ -247,16 +247,16 @@ namespace StockManagerCore
             try
             {
                 int count = 0;
-                SelectedCompany = _companyService.FindByName((string)CMB_Company.SelectedItem);
+                SelectedCompany = _companyService.FindByName((string)CmbCompany.SelectedItem);
 
                 if (SelectedCompany == null)
                 {
                     throw new ApplicationException("Empresa deve ser selecionada!");
                 }
 
-                if (Rdn_In.IsChecked == true)
+                if (RdnIn.IsChecked == true)
                 {
-                    dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
+                    dateInitial = DateTime.ParseExact(TxtDateInitial.Text, "dd/MM/yyyy", provider);
 
                     IEnumerable<InputProduct> listInputProduct = _inputService.GetInputsByDateAndCompany(dateInitial, SelectedCompany);
 
@@ -269,7 +269,7 @@ namespace StockManagerCore
                         stock = _stockService.GetStockByCompanyAndGroup(SelectedCompany, group.Key);
 
                         log.Append("Produto: " + group.Key);
-                        txt_Console.Text = log.ToString();
+                        TxtConsole.Text = log.ToString();
 
                         foreach (InputProduct item in group)
                         {
@@ -283,7 +283,7 @@ namespace StockManagerCore
 
                         log.Append(" | Qte: " + qty.ToString());
                         log.AppendLine(" | Valor: " + amount.ToString("C2", CultureInfo.CurrentCulture));
-                        txt_Console.Text = log.ToString();
+                        TxtConsole.Text = log.ToString();
                         qteTot += qty;
                         totAmount += amount;
                         qty = 0;
@@ -292,12 +292,12 @@ namespace StockManagerCore
 
                     log.Append("QteTotal: " + qteTot.ToString());
                     log.AppendLine(" | ValorTotal: " + totAmount.ToString("C2", CultureInfo.CurrentCulture));
-                    txt_Console.Text = log.ToString();
+                    TxtConsole.Text = log.ToString();
                 }
-                if (Rdn_Out.IsChecked == true && SelectedCompany != null)//Continue from here 30/10
+                if (RdnOut.IsChecked == true && SelectedCompany != null)//Continue from here 30/10
                 {
-                    dateInitial = DateTime.ParseExact(Txt_DateInitial.Text, "dd/MM/yyyy", provider);
-                    dateFinal = DateTime.ParseExact(Txt_DateFinal.Text, "dd/MM/yyyy", provider);
+                    dateInitial = DateTime.ParseExact(TxtDateInitial.Text, "dd/MM/yyyy", provider);
+                    dateFinal = DateTime.ParseExact(TxtDateFinal.Text, "dd/MM/yyyy", provider);
 
                     IEnumerable<SoldProduct> salesByDateAndCompany = _saleService.GetSalesByDateAndCompany(dateInitial, dateFinal, SelectedCompany);
 
@@ -310,7 +310,7 @@ namespace StockManagerCore
                         stock = _stockService.GetStockByCompanyAndGroup(SelectedCompany, group.Key);
 
                         log.Append("Produto: " + group.Key);
-                        txt_Console.Text = log.ToString();
+                        TxtConsole.Text = log.ToString();
 
                         foreach (SoldProduct item in group)
                         {
@@ -325,7 +325,7 @@ namespace StockManagerCore
 
                         log.Append(" | Qte: " + qty.ToString());
                         log.AppendLine(" | Valor: " + amount.ToString("C2", CultureInfo.CurrentCulture));
-                        txt_Console.Text = log.ToString();
+                        TxtConsole.Text = log.ToString();
                         qteTot += qty;
                         totAmount += amount;
                         qty = 0;
@@ -333,7 +333,7 @@ namespace StockManagerCore
                     }
                     log.Append("QteTotal: " + qteTot.ToString());
                     log.AppendLine(" | ValorTotal: " + totAmount.ToString("C2", CultureInfo.CurrentCulture));
-                    txt_Console.Text = log.ToString();
+                    TxtConsole.Text = log.ToString();
 
                 }
                 log.AppendLine("Lista Entradas: " + count.ToString());
@@ -341,43 +341,43 @@ namespace StockManagerCore
             }
             catch (ApplicationException ex)
             {
-                Log_TextBlock.Text = "";
+                LogTextBlock.Text = "";
                 log.AppendLine(ex.Message);
                 if (ex.InnerException != null)
                 {
                     log.AppendLine(ex.InnerException.Message);
                 }
-                Log_TextBlock.Text = log.ToString();
+                LogTextBlock.Text = log.ToString();
             }
         }
         private void Btn_ShowStock_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                SelectedCompany = _companyService.FindByName((string)CMB_Company.SelectedItem);
+                SelectedCompany = _companyService.FindByName((string)CmbCompany.SelectedItem);
 
                 if (SelectedCompany == null)
                 {
                     throw new ApplicationException("Selecione uma empresa!");
                 }
-                Tb_DataView.IsSelected = true;
-                Grd_View.AutoGenerateColumns = true;
-                TxtB_Company.Text = CMB_Company.SelectedItem.ToString();
+                TbDataView.IsSelected = true;
+                GrdView.AutoGenerateColumns = true;
+                TxtBCompany.Text = CmbCompany.SelectedItem.ToString();
                 ListOfStocks = _stockService.GetStocksFormated(SelectedCompany);
 
-                Grd_View.ItemsSource = ListOfStocks.ToList();
+                GrdView.ItemsSource = ListOfStocks.ToList();
                 InitializeComponent();
             }
             catch (ApplicationException ex)
             {
-                Log_TextBlock.Text = "";
+                LogTextBlock.Text = "";
                 log.AppendLine(ex.Message);
                 if (ex.InnerException != null)
                 {
                     log.AppendLine(ex.InnerException.Message);
                 }
 
-                Log_TextBlock.Text = log.ToString();
+                LogTextBlock.Text = log.ToString();
             }
         }
         #endregion
@@ -385,34 +385,33 @@ namespace StockManagerCore
         #region --== CRUD Companies, Products and Stock==--
         private void Btn_Select_Click(object sender, RoutedEventArgs e)
         {
-            string switchcase = Cmb_Switch.SelectedItem.ToString();
-            switch (switchcase)
+            switch (CmbSwitch.SelectedItem.ToString())
             {
                 case "Empresa":
-                    SelectedCompany = _companyService.FindByName(Txt_Selection.Text.ToUpper());
-                    Txt_CoId.Text = SelectedCompany.Id.ToString();
-                    Txt_CoName.Text = SelectedCompany.Name;
+                    SelectedCompany = _companyService.FindByName(TxtSelection.Text.ToUpper());
+                    TxtCoId.Text = SelectedCompany.Id.ToString();
+                    TxtCoName.Text = SelectedCompany.Name;
                     InitializeComponent();
                     break;
                 case "Produto":
-                    SelectedProduct = _productService.FindByGroup(Txt_Selection.Text.ToUpper());
-                    Txt_prodId.Text = SelectedProduct.Id.ToString();
-                    Txt_ProdGroupP.Text = SelectedProduct.GroupP;
+                    SelectedProduct = _productService.FindByGroup(TxtSelection.Text.ToUpper());
+                    TxtProdId.Text = SelectedProduct.Id.ToString();
+                    TxtProdGroupP.Text = SelectedProduct.GroupP;
                     InitializeComponent();
                     break;
                 case "Estoque":
-                    string[] pars = Txt_Selection.Text.Split(',');
+                    string[] pars = TxtSelection.Text.Split(',');
                     SelectedCompany = _companyService.FindByName(pars[0]);
                     SelectedStock = _stockService.GetStockByCompanyAndGroup(SelectedCompany, pars[1]);
-                    Txt_StkId.Text = SelectedStock.ToString();
-                    Txt_StkQtyPurchased.Text = SelectedStock.QtyPurchased.ToString();
-                    Txt_StkQtySold.Text = SelectedStock.QtySold.ToString();
-                    Txt_StkAmountPurchased.Text = SelectedStock.AmountPurchased.ToString("C2");
-                    Txt_StkAmountSold.Text = SelectedStock.AmountSold.ToString("C2");
-                    Cmb_StkCompany.SelectedItem = SelectedStock.Company.Name;
-                    Cmb_StkProduct.SelectedItem = SelectedStock.Product.GroupP;
-                    Dpk_StkLastInput.DisplayDate = SelectedStock.LastInput.Date;
-                    Dpk_StkLastSale.DisplayDate = SelectedStock.LastSales.Date;
+                    TxtStkId.Text = SelectedStock.ToString();
+                    TxtStkQtyPurchased.Text = SelectedStock.QtyPurchased.ToString();
+                    TxtStkQtySold.Text = SelectedStock.QtySold.ToString();
+                    TxtStkAmountPurchased.Text = SelectedStock.AmountPurchased.ToString("C2");
+                    TxtStkAmountSold.Text = SelectedStock.AmountSold.ToString("C2");
+                    CmbStkCompany.SelectedItem = SelectedStock.Company.Name;
+                    CmbStkProduct.SelectedItem = SelectedStock.Product.GroupP;
+                    DPkrStkLastInput.DisplayDate = SelectedStock.LastInput.Date;
+                    DPkrStkLastSale.DisplayDate = SelectedStock.LastSales.Date;
                     InitializeComponent();
                     break;
                 default:
@@ -425,125 +424,163 @@ namespace StockManagerCore
         {
             try
             {
-                if (Txt_CoName == null)
+                if (TxtCoName == null)
                 {
                     throw new RequiredFieldException("Favor preencher o nome da empresa para cadastrar");
                 }
 
-                log.AppendLine(_companyService.Create(Txt_CoName.Text));
+                log.AppendLine(_companyService.Create(TxtCoName.Text));
 
-                TxtBlk_LogCRUD.Text = log.ToString();
+                TxtBlkLogCRUD.Text = log.ToString();
             }
             catch (Exception ex)
             {
-                TxtBlk_LogCRUD.Text = "";
+                TxtBlkLogCRUD.Text = "";
                 log.Clear();
                 log.AppendLine(ex.Message);
                 if (ex.InnerException != null)
                 {
                     log.AppendLine(ex.InnerException.Message);
                 }
-                Log_TextBlock.Text = log.ToString();
+                LogTextBlock.Text = log.ToString();
             }
         }
         private void Btn_ReadComp_Click(object sender, RoutedEventArgs e)
         {
             ListCompanies = _companyService.GetCompanies();
             var listC = from c in ListCompanies select new { Nome = c.Name, Codigo = c.Id };
-            Grd_View.AutoGenerateColumns = true;
-            TxtB_Company.Text = "Lista de Empresas";
-            Grd_View.ItemsSource = listC.ToList();
+            GrdView.AutoGenerateColumns = true;
+            TxtBCompany.Text = "Lista de Empresas";
+            GrdView.ItemsSource = listC.ToList();
             InitializeComponent();
-            Tb_DataView.IsSelected = true;
+            TbDataView.IsSelected = true;
 
         }
         private void Btn_UpdateComp_Click(object sender, RoutedEventArgs e)
         {
             Company toUpdate = new Company();
-            if (Txt_CoId.Text == null && Txt_CoName == null)
+            if (TxtCoId.Text == null && TxtCoName == null)
             {
                 throw new RequiredFieldException("Favor preencher o nome ou ID da empresa para Editar");
             }
             else
             {
-                toUpdate = _companyService.FindToUdate(Convert.ToInt32(Txt_CoId.Text));
+                toUpdate = _companyService.FindToUdate(Convert.ToInt32(TxtCoId.Text));
             }
-            if (toUpdate == null || toUpdate.Id.ToString() != Txt_CoId.Text)
+            if (toUpdate == null || toUpdate.Id.ToString() != TxtCoId.Text)
             {
                 throw new NotFoundException("Nenhuma empresa localizada");
             }
-            toUpdate.Name = Txt_CoName.Text;
-            toUpdate.Id = Convert.ToInt32(Txt_CoId.Text);
+            toUpdate.Name = TxtCoName.Text;
+            toUpdate.Id = Convert.ToInt32(TxtCoId.Text);
             log.AppendLine(_companyService.Update(toUpdate));
-            TxtBlk_LogCRUD.Text = log.ToString();
+            TxtBlkLogCRUD.Text = log.ToString();
         }
-      
+        private void Btn_DeleteComp_Click(object sender, RoutedEventArgs e)
+        {
+            Company toDelete = new Company();
+            if (TxtCoId.Text == null && TxtCoName == null)
+            {
+                throw new RequiredFieldException("Favor preencher o nome ou ID da empresa para Deletar");
+            }
+            else if (TxtCoName.Text == null && TxtCoId != null)
+            {
+                toDelete = _companyService.FindToUdate(Convert.ToInt32(TxtCoId.Text));
+            }
+            if (toDelete == null)
+            {
+                throw new NotFoundException("Nenhuma empresa localizada");
+            }
+            log.AppendLine(_companyService.Delete(toDelete));
+            TxtBlkLogCRUD.Text = log.ToString();
+        }
 
         //Products CRUD
         private void Btn_CreateProd_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (Txt_ProdGroupP == null)
+                if (TxtProdGroupP == null)
                 {
                     throw new RequiredFieldException("Favor preencher o nome do produto para cadastrar");
                 }
 
-                log.AppendLine(_productService.Create(Txt_ProdGroupP.Text));
+                log.AppendLine(_productService.Create(TxtProdGroupP.Text));
 
-                TxtBlk_LogCRUD.Text = log.ToString();
+                TxtBlkLogCRUD.Text = log.ToString();
             }
             catch (Exception ex)
             {
-                TxtBlk_LogCRUD.Text = "";
+                TxtBlkLogCRUD.Text = "";
                 log.Clear();
                 log.AppendLine(ex.Message);
                 if (ex.InnerException != null)
                 {
                     log.AppendLine(ex.InnerException.Message);
                 }
-                Log_TextBlock.Text = log.ToString();
+                LogTextBlock.Text = log.ToString();
             }
         }
         private void Btn_ReadProd_Click(object sender, RoutedEventArgs e)
         {
             ListOfProducts = _productService.GetProducts();
             var listP = from p in ListOfProducts select new { Nome = p.GroupP, Codigo = p.Id };
-            Grd_View.AutoGenerateColumns = true;
-            TxtB_Company.Text = "Lista de Produtos";
-            Grd_View.ItemsSource = listP.ToList();
+            GrdView.AutoGenerateColumns = true;
+            TxtBCompany.Text = "Lista de Produtos";
+            GrdView.ItemsSource = listP.ToList();
             InitializeComponent();
-            Tb_DataView.IsSelected = true;
+            TbDataView.IsSelected = true;
         }
         private void Btn_UpdateProd_Click(object sender, RoutedEventArgs e)
         {
             Product toUpdate = new Product();
-            if (Txt_prodId.Text == null && Txt_ProdGroupP == null)
+            if (TxtProdId.Text == null && TxtProdGroupP == null)
             {
                 throw new RequiredFieldException("Favor preencher o nome ou ID do Produto para Editar");
             }
             else
             {
-                toUpdate = _productService.FindToUdate(Txt_ProdGroupP.Text, null);
+                toUpdate = _productService.FindToUdate(TxtProdGroupP.Text, null);
             }
-            if (toUpdate == null || toUpdate.Id.ToString() != Txt_prodId.Text)
+            if (toUpdate == null || toUpdate.Id.ToString() != TxtProdId.Text)
             {
                 throw new NotFoundException("Nenhum Produto localizado");
             }
-            toUpdate.GroupP = Txt_ProdGroupP.Text;
-            toUpdate.Id = Convert.ToInt32(Txt_CoId.Text);
+            toUpdate.GroupP = TxtProdGroupP.Text;
+            toUpdate.Id = Convert.ToInt32(TxtCoId.Text);
             log.AppendLine(_productService.Update(toUpdate));
-            TxtBlk_LogCRUD.Text = log.ToString();
+            TxtBlkLogCRUD.Text = log.ToString();
         }
-       
+        private void Btn_DeleteProd_Click(object sender, RoutedEventArgs e)
+        {
+            Product toDelete = new Product();
+            if (TxtProdId.Text == null && TxtProdGroupP == null)
+            {
+                throw new RequiredFieldException("Favor preencher o nome ou ID do Produto para Deletar");
+            }
+            else if (TxtProdId.Text == null && TxtProdGroupP != null)
+            {
+                toDelete = _productService.FindToUdate(TxtProdGroupP.Text, null);
+            }
+            else if (TxtProdGroupP.Text == null && TxtProdId != null)
+            {
+                toDelete = _productService.FindToUdate("", Convert.ToInt32(TxtProdId.Text));
+            }
+            if (toDelete == null)
+            {
+                throw new NotFoundException("Nenhum Produto localizado");
+            }
+            log.AppendLine(_productService.Delete(toDelete));
+            TxtBlkLogCRUD.Text = log.ToString();
+        }
         
         //Crud Stock
         private void Btn_CreateStock_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                SelectedProduct = _productService.FindByGroup(Cmb_StkProduct.SelectedItem.ToString());
-                SelectedCompany = _companyService.FindByName(Cmb_StkCompany.SelectedItem.ToString());
+                SelectedProduct = _productService.FindByGroup(CmbStkProduct.SelectedItem.ToString());
+                SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedItem.ToString());
                 if (SelectedProduct == null)
                 {
                     throw new NotFoundException("Produto não encontrado!");
@@ -552,48 +589,55 @@ namespace StockManagerCore
                 {
                     throw new NotFoundException("Empresa não encontrada!");
                 }
-                DateTime lstin = (DateTime)Dpk_StkLastInput.SelectedDate;
-                DateTime lstout = (DateTime)Dpk_StkLastSale.SelectedDate;
+                DateTime lstin = (DateTime)DPkrStkLastInput.SelectedDate;
+                DateTime lstout = (DateTime)DPkrStkLastSale.SelectedDate;
                 log.AppendLine(_stockService.Create(SelectedProduct,
-                    Convert.ToInt32(Txt_StkQtyPurchased.Text),
-                    Convert.ToInt32(Txt_StkQtySold.Text),
-                    Convert.ToDouble(Txt_StkAmountPurchased.Text),
-                    Convert.ToDouble(Txt_StkAmountSold.Text),
+                    Convert.ToInt32(TxtStkQtyPurchased.Text),
+                    Convert.ToInt32(TxtStkQtySold.Text),
+                    Convert.ToDouble(TxtStkAmountPurchased.Text),
+                    Convert.ToDouble(TxtStkAmountSold.Text),
                     lstin.Date, lstout.Date,
                     SelectedCompany));
 
-                TxtBlk_LogCRUD.Text = log.ToString();
+                TxtBlkLogCRUD.Text = log.ToString();
             }
             catch (MyApplicationException ex)
             {
-                Log_TextBlock.Text = "";
+                LogTextBlock.Text = "";
                 log.AppendLine(ex.Message);
                 if (ex.InnerException != null)
                 {
                     log.AppendLine(ex.InnerException.Message);
                 }
-                Log_TextBlock.Text = log.ToString();
+                LogTextBlock.Text = log.ToString();
             }
         }
         private void Btn_ReadStock_Click(object sender, RoutedEventArgs e)
         {
-            if (Cmb_StkCompany != null)
+            if (CmbStkCompany != null)
             {
-                SelectedCompany = _companyService.FindByName(Cmb_StkCompany.SelectedIndex.ToString());
+                SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedIndex.ToString());
                 ListOfStocks = _stockService.GetStocksByCompany(SelectedCompany);
 
-                Grd_View.AutoGenerateColumns = true;
-                TxtB_Company.Text = "Lista de Estoques";
-                Grd_View.ItemsSource = ListOfStocks.ToList();
+                GrdView.AutoGenerateColumns = true;
+                TxtBCompany.Text = "Lista de Estoques";
+                GrdView.ItemsSource = ListOfStocks.ToList();
                 InitializeComponent();
-                Tb_DataView.IsSelected = true;
+                TbDataView.IsSelected = true;
             }
             else
             {
                 throw new RequiredFieldException("Informa a empresa para filtrar os estoques");
             }
         }
-     
+        private void Btn_DeleteStock_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedStock != null)
+            {
+                log.AppendLine(_stockService.Delete(SelectedStock));
+                TxtBlkLogCRUD.Text = log.ToString();
+            }
+        }
 
         #endregion
 
