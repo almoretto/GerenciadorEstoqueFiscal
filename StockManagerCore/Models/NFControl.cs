@@ -25,8 +25,26 @@ namespace StockManagerCore.Models
         public Company Company { get; set; }
         [Required]
         public Person Destinatary { get; set; }
+
+
         #endregion
 
+        #region --== Constructors ==--
+        public NFControl() { }
 
+        public NFControl(int nFNumber, double value, int operation, DateTime expiration, NFType operationType, Company company, Person destinatary)
+        {
+            NFNumber = nFNumber;
+            Value = value;
+            Operation = operation;
+            Expiration = expiration;
+            OperationType = operationType;
+            Company = company;
+            Destinatary = destinatary;
+        }
+
+
+
+        #endregion
     }
 }

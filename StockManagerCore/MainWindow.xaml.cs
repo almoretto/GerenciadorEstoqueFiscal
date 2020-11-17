@@ -25,6 +25,9 @@ namespace StockManagerCore
         private readonly ProductService _productService;
         private readonly CompanyService _companyService;
         private readonly StockService _stockService;
+        private readonly PersonService _personService;
+        private readonly ControlNFService _controlNFService;
+
         CultureInfo provider = CultureInfo.InvariantCulture;
         StringBuilder log = new StringBuilder();
         DataGridTextColumn c = new DataGridTextColumn();
@@ -51,29 +54,39 @@ namespace StockManagerCore
         public IEnumerable<Company> ListCompanies { get; set; }
         public IEnumerable<object> ListOfStocks { get; set; }
         public IEnumerable<Product> ListOfProducts { get; set; }
+        public IEnumerable<Person> ListPeople { get; set; }
         #endregion
 
         public MainWindow(InputService inputService, SaleService saleService, ProductService productService,
-            CompanyService companyService, StockService stockService)
+            CompanyService companyService, StockService stockService, PersonService personService, ControlNFService controlNFService )
         {
             _inputService = inputService;
             _saleService = saleService;
             _productService = productService;
             _companyService = companyService;
             _stockService = stockService;
+            _personService = personService;
+            _controlNFService = controlNFService;
 
             InitializeComponent();
 
             ListCompanies = _companyService.GetCompanies();
             ListOfProducts = _productService.GetProducts();
+            ListPeople = _personService.GetPeople();
+
             foreach (Company c in ListCompanies)
             {
                 CmbCompany.Items.Add(c.Name);
                 CmbStkCompany.Items.Add(c.Name);
+                cmbNFCompany.Items.Add(c.Name);
             }
             foreach (Product product in ListOfProducts)
             {
                 CmbStkProduct.Items.Add(product.GroupP);
+            }
+            foreach (Person person in ListPeople)
+            {
+                cmbDestinatary.Items.Add(person.Name);
             }
             InitializeComponent();
           

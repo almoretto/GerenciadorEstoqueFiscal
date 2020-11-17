@@ -94,7 +94,7 @@ namespace StockManagerCore.Services
                 {
                     Inputs[i].Group = "ANEL";
                 }
-                else if (Inputs[i].XProd.Contains("ARGOLA"))
+                else if (Inputs[i].XProd.Contains("ARGOLA") || Inputs[i].XProd.Contains("Trio de Argolas"))
                 {
                     Inputs[i].Group = "ARGOLA";
                 }

@@ -25,7 +25,7 @@ namespace StockManagerCore.Services
             {
                 XProd = "ANEL";
             }
-            else if (XProd.Contains("ARGOLA"))
+            else if (XProd.Contains("ARGOLA") || XProd.Contains("Trio de Argolas"))
             {
                 XProd = "ARGOLA";
             }
