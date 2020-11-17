@@ -17,7 +17,7 @@
                     <Button x:Name="BtnFileOpen" Content="Selecionar" HorizontalAlignment="Left" Margin="485,23,0,0" VerticalAlignment="Top" Click="BtnFileOpen_Click" Height="18" Width="70"/>
                     <Button x:Name="ProcessFile" Content="Processar Entradas" HorizontalAlignment="Left" Margin="53,73,0,0" VerticalAlignment="Top" Click="ProcessInputs_Click" Height="20" Width="120"/>
                     <Button x:Name="ProcessSales" Content="Processar Saídas" HorizontalAlignment="Left" Margin="193,73,0,0" VerticalAlignment="Top" Width="120" Click="ProcessSales_Click" Height="20"/>
-                    <TextBlock x:Name="LogTextBlock" HorizontalAlignment="Center" Margin="0,397,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="100" FontWeight="Normal" FontSize="10"/>
+                    <TextBlock x:Name="LogTextBlock" HorizontalAlignment="Center" Margin="0,397,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="100" FontWeight="Normal" FontSize="14"/>
                     <ComboBox x:Name="CmbCompany" HorizontalAlignment="Left" Margin="53,46,0,0" VerticalAlignment="Top" Width="399" ItemsSource="{Binding Name}" Height="22">
                         <ComboBox.DataContext>
                             <Models:Company/>
@@ -28,7 +28,7 @@
                     <RadioButton x:Name="RdnIn" HorizontalAlignment="Left" Margin="193,113,0,0" VerticalAlignment="Top" GroupName="E/S" Content="Entradas" IsChecked="True" Height="15" Width="64"/>
                     <RadioButton x:Name="RdnOut" Content="Saídas" HorizontalAlignment="Left" Margin="193,133,0,0" VerticalAlignment="Top" RenderTransformOrigin="0,0.34" GroupName="E/S" Height="15" Width="64"/>
                     <TextBox x:Name="TxtDateFinal" HorizontalAlignment="Left" Margin="53,133,0,0" Text="Data Final" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date" Height="18"/>
-                    <TextBox x:Name="TxtConsole" HorizontalAlignment="Left" Margin="53,182,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="798" Height="173" FontSize="10" AllowDrop="False" IsReadOnlyCaretVisible="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox x:Name="TxtConsole" HorizontalAlignment="Left" Margin="53,182,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="798" Height="173" AllowDrop="False" IsReadOnlyCaretVisible="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
                     <Button x:Name="BtnShowStock" Content="Mostrar Estoque" HorizontalAlignment="Left" Margin="333,73,0,0" VerticalAlignment="Top" Width="120" Click="Btn_ShowStock_Click" Height="20"/>
                 </Grid>
             </TabItem>
@@ -36,11 +36,11 @@
                 <Grid Background="#FFE5E5E5" Height="502">
                     <TextBlock x:Name="TxtBCompany" HorizontalAlignment="Left" Margin="92,24,0,0" Text="Empresa: " TextWrapping="Wrap" VerticalAlignment="Top" Width="225" Height="21" FontSize="16" FontWeight="Bold"/>
                     <DataGrid x:Name="GrdView" Margin="27,57,33,57" GridLinesVisibility="Horizontal" IsTextSearchEnabled="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" EnableRowVirtualization="False" AlternationCount="2" RowBackground="Beige" AlternatingRowBackground="LightBlue" ItemsSource="{Binding DataGridTable}"/>
-                    <TextBlock x:Name="TxtBlkLogData" HorizontalAlignment="Center" Margin="0,450,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="42" FontWeight="Normal" FontSize="10"/>
+                    <TextBlock x:Name="TxtBlkLogData" HorizontalAlignment="Center" Margin="0,450,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="42" FontWeight="Normal"/>
 
                 </Grid>
             </TabItem>
-            <TabItem x:Name="tbiCRUD" Header="CVED">
+            <TabItem x:Name="tbiCRUD" Header="CVED" IsEnabled="False">
                 <Grid x:Name="GrdBackComp" Background="#FFE5E5E5" Height="502">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="23*"/>
@@ -92,7 +92,7 @@
                             <Button x:Name="BtnReadStock" Content="Visualizar" HorizontalAlignment="Left" Margin="379,130,0,0" VerticalAlignment="Top" Width="60" Click="Btn_ReadStock_Click"/>
                         </Grid>
                     </GroupBox>
-                    <TextBlock x:Name="TxtBlkLogCRUD" HorizontalAlignment="Left" Margin="28,458,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="39" FontWeight="Normal" FontSize="10" Grid.Column="1"/>
+                    <TextBlock x:Name="TxtBlkLogCRUD" HorizontalAlignment="Left" Margin="28,458,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="39" FontWeight="Normal" Grid.Column="1"/>
                     <TextBlock x:Name="TxtBlkInstructStock" Grid.Column="1" HorizontalAlignment="Left" Margin="684,219,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Height="175"><Run Text="Para editarou deletar um registro selecione a empresa e o produto."/><Run Text=" Para Visualizar selecione a empresa"/><Run Text=". "/><Run/><LineBreak/><Run Language="pt-br" Text="Lembre-se que ao cadastrar um produto novo, o mesmo deverá ser cadastrado no estoque de cada uma das empresas separadamente."/><Run Text=" "/></TextBlock>
                     <ComboBox x:Name="CmbSwitch" Grid.Column="1" HorizontalAlignment="Left" Margin="32,20,0,0" VerticalAlignment="Top" Width="166">
                         <ComboBoxItem Content="Empresa"/>
@@ -104,7 +104,7 @@
                     <TextBlock x:Name="TxtBlkSign" Grid.Column="1" HorizontalAlignment="Left" Margin="479,23,0,0" Text="Empresa ou Produto/ Empresa ,Produto" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-0.041,0.001"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="tbiNFControl" Header="Controle de NF">
+            <TabItem x:Name="tbiNFControl" Header="Controle de NF" IsEnabled="False">
                 <Grid x:Name="grdNFeControl" Background="#FFE5E5E5" Height="502">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="23*"/>
@@ -150,7 +150,7 @@
                             <DatePicker x:Name="DPkrStkLastSale1" HorizontalAlignment="Left" Margin="148,130,0,0" VerticalAlignment="Top"/>
                         </Grid>
                     </GroupBox>
-                    <TextBlock x:Name="TxtBlkLogCRUD1" HorizontalAlignment="Left" Margin="28,458,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="39" FontWeight="Normal" FontSize="10" Grid.Column="1"/>
+                    <TextBlock x:Name="TxtBlkLogNF" HorizontalAlignment="Left" Margin="28,458,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="39" FontWeight="Normal" Grid.Column="1"/>
                     <ComboBox x:Name="CmbSwitch1" Grid.Column="1" HorizontalAlignment="Left" Margin="32,20,0,0" VerticalAlignment="Top" Width="166">
                         <ComboBoxItem Content="Empresa"/>
                         <ComboBoxItem Content="Produto"/>

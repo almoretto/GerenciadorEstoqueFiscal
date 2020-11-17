@@ -75,6 +75,8 @@ namespace StockManagerCore
             {
                 CmbStkProduct.Items.Add(product.GroupP);
             }
+            InitializeComponent();
+          
         }
 
         #region --== Functions of Tb_Functions TAB ==--
@@ -100,6 +102,7 @@ namespace StockManagerCore
                     filename = dlg.FileName;
                     FileNameTextBox.Text = filename;
                 }
+               
             }
             catch (Exception ex)
             {
@@ -112,8 +115,9 @@ namespace StockManagerCore
         {
             try
             {
+                LogTextBlock.Text = string.Empty;
                 SelectedCompany = _companyService.FindByName((string)CmbCompany.SelectedItem);
-
+               
                 if (filename.EndsWith("csv") || filename.EndsWith("CSV"))
                 {
                     throw new ApplicationException("Não pode processar arquivo de venda como entrada!");
@@ -122,7 +126,7 @@ namespace StockManagerCore
                 {
                     throw new ApplicationException("Selecione uma empresa!");
                 }
-
+                LogTextBlock.Text = "Importando: " + filename;
                 sales = false;
                 log.Clear();
                 if (!sales)
@@ -180,6 +184,7 @@ namespace StockManagerCore
         {
             try
             {
+                LogTextBlock.Text = string.Empty;
                 SelectedCompany = _companyService.FindByName((string)CmbCompany.SelectedItem);
 
                 if (filename.EndsWith("TXT") || filename.EndsWith("txt"))
@@ -191,6 +196,7 @@ namespace StockManagerCore
                     throw new ApplicationException("Selecione uma empresa!");
                 }
 
+                LogTextBlock.Text = "Importando: " + filename;
                 sales = true;
                 log.Clear();
 
