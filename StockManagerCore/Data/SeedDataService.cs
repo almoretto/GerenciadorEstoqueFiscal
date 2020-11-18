@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using StockManagerCore.Models;
+using StockManagerCore.Models.Enums;
 #endregion
 
 namespace StockManagerCore.Data
@@ -18,6 +19,7 @@ namespace StockManagerCore.Data
         #region --== Properties ==--
         private List<Product> Ps { get; set; } = new List<Product>();
         private List<Company> Cs { get; set; } = new List<Company>();
+        private List<City> Cty { get; set; } = new List<City>();
         #endregion
 
         public void Seed()
@@ -201,6 +203,49 @@ namespace StockManagerCore.Data
             _Context.Stocks.AddRange(s43, s44, s45, s46, s47, s48, s49, s50, s51, s52, s53, s54, s55, s56);
 
             _Context.SaveChanges();
+            #endregion
+
+            #region --== Seeding Cities ==--
+
+            if (_Context.Cities.Any())
+            {
+                return;
+            }
+            Cty.Add(new City("CURITIBA", State.PR));
+            Cty.Add(new City("BIRIGUI", State.SP));
+            Cty.Add(new City("MANHAÇU", State.MG));
+            Cty.Add(new City("LONDRINA", State.PR));
+            Cty.Add(new City("SAO LUIZ", State.MA));
+            Cty.Add(new City("SAO PAULO", State.SP));
+            Cty.Add(new City("PARANAVAI", State.PR));
+            Cty.Add(new City("GOIANIA", State.GO));
+            Cty.Add(new City("MANAUS", State.AM));
+            Cty.Add(new City("SALVADOR", State.BA));
+            Cty.Add(new City("ERECHIM", State.RS));
+            Cty.Add(new City("BELEM", State.PA));
+            Cty.Add(new City("JABOATAO DOS GUARARAPES", State.PE));
+            Cty.Add(new City("CAMPO GRANDE", State.MS));
+            Cty.Add(new City("CUIABA", State.MT));
+            Cty.Add(new City("FORTALEZA", State.CE));
+            Cty.Add(new City("TEREZINA", State.PI));
+            Cty.Add(new City("SOROCABA", State.SP));
+            Cty.Add(new City("TRES ARROIOS", State.RS));
+            Cty.Add(new City("LAURO DE FREITAS", State.BA));
+            Cty.Add(new City("ARAGUAINA", State.TO));
+            Cty.Add(new City("GURUPI", State.TO));
+            Cty.Add(new City("ADAMANTINA", State.SP));
+
+            _Context.Cities.AddRange(Cty); //Adding to DBSet
+            _Context.SaveChanges();
+            #endregion
+
+            #region ---== Seeding People ==--
+            if (_Context.People.Any())
+            {
+                return;
+            }
+
+
             #endregion
         }
     }

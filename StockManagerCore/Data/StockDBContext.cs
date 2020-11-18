@@ -21,6 +21,8 @@ namespace StockManagerCore.Data
         public DbSet<Company> Companies { get; set; }
         public DbSet<NFControl> NFControls { get; set; }
         public DbSet<Person> People { get; set; }
+        public DbSet<City> Cities { get; set; }
+
 
         #endregion
 

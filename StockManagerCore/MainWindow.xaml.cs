@@ -5,11 +5,13 @@ using System.Windows;
 using StockManagerCore.Services;
 using StockManagerCore.Services.Exceptions;
 using StockManagerCore.Models;
+using StockManagerCore.Models.Enums;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using System.Windows.Controls;
+using System.Windows.Data;
 #endregion
 
 namespace StockManagerCore
@@ -55,6 +57,8 @@ namespace StockManagerCore
         public IEnumerable<object> ListOfStocks { get; set; }
         public IEnumerable<Product> ListOfProducts { get; set; }
         public IEnumerable<Person> ListPeople { get; set; }
+        public IEnumerable<NFControl> Notes { get; set; }
+        public NFControl NF { get; set; } = new NFControl();
         #endregion
 
         public MainWindow(InputService inputService, SaleService saleService, ProductService productService,
@@ -609,8 +613,61 @@ namespace StockManagerCore
                 throw new RequiredFieldException("Informa a empresa para filtrar os estoques");
             }
         }
+
         #endregion
 
+        #region --== NF Control ==--
 
+
+
+        #endregion
+
+        private void btnSearchNF_Click(object sender, RoutedEventArgs e)
+        {
+            string selection = cmbSearchNF.SelectedItem.ToString();
+            switch (selection)
+            {
+                case "NumNF":
+                    NF = _controlNFService.FindByNumber(Convert.ToInt32(txtNumber.Text));
+                    txtNumber.Text = NF.NFNumber.ToString();
+                    txtValue.Text = NF.Value.ToString("C2");
+                    dpkExpiration.DisplayDate = NF.Expiration.Date;
+                    txtOperation.Text = NF.Operation.ToString();
+                    cmbTypeNF.SelectedIndex = (int)NF.OperationType.GetTypeCode();
+                    cmbNFCompany.SelectedItem = NF.Company.Name;
+                    cmbDestinatary.SelectedItem = NF.Destinatary.Name;
+                    InitializeComponent();
+                    break;
+                case "Empresa":
+                    Notes = _controlNFService.FindByCompany(cmbNFCompany.SelectedItem.ToString());
+                    dtgNFData.AutoGenerateColumns = true;
+                    dtgNFData.ItemsSource = Notes.ToList();
+                    tbiNFData.IsSelected = true;
+                    InitializeComponent();
+                    break;
+                case "Destinatario":
+                    Notes = _controlNFService.FindByDestination(cmbDestinatary.SelectedItem.ToString());
+                    dtgNFData.AutoGenerateColumns = true;
+                    dtgNFData.ItemsSource = Notes.ToList();
+                    tbiNFData.IsSelected = true;
+                    InitializeComponent();
+                    break;
+                case "Tipo":
+                    Notes = _controlNFService.GetControls();
+                    var group = Notes.GroupBy(g => g.OperationType);
+                    dtgNFData.AutoGenerateColumns = true;
+                    
+                    Nfs = new ListCollectionView();
+                    Customers.GroupDescriptions.Add(new PropertyGroupDescription("Gender"));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void btnSaveNFControl_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
