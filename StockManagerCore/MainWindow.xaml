@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StockManagerCore"
-        xmlns:Models="clr-namespace:StockManagerCore.Models" xmlns:DependencyInjection="clr-namespace:Microsoft.Extensions.DependencyInjection;assembly=Microsoft.Extensions.DependencyInjection" x:Class="StockManagerCore.MainWindow"
+        xmlns:Models="clr-namespace:StockManagerCore.Models" xmlns:DependencyInjection="clr-namespace:Microsoft.Extensions.DependencyInjection;assembly=Microsoft.Extensions.DependencyInjection" xmlns:Custom="http://schemas.microsoft.com/netfx/2009/xaml/presentation" x:Class="StockManagerCore.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900">
     <Window.Resources>
@@ -12,11 +12,11 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type GroupItem}">
-                        <Expander x:Name="exp" IsExpanded="True"
-                          Background="White"
+                        <Expander x:Name="dexNFData" IsExpanded="True"
+                          Background="LightBlue"
                           Foreground="Black">
                             <Expander.Header>
-                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="{Binding OperationType}"/>
                             </Expander.Header>
                             <ItemsPresenter />
                         </Expander>
@@ -136,10 +136,10 @@
                             <TextBox x:Name="txtOperation" HorizontalAlignment="Left" Margin="578,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170"/>
                             <Label x:Name="lblTypeNF" Content="Tipo" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" Width="45"/>
                             <Label x:Name="lblCompany" Content="Empresa" HorizontalAlignment="Left" Margin="194,68,0,0" VerticalAlignment="Top" Width="74"/>
-                            <ComboBox x:Name="cmbNFCompany" HorizontalAlignment="Left" Margin="255,70,0,0" VerticalAlignment="Top" Width="138" ItemsSource="{Binding ListCompanies}" Cursor="" DisplayMemberPath="Item.Name"/>
+                            <ComboBox x:Name="cmbNFCompany" HorizontalAlignment="Left" Margin="255,70,0,0" VerticalAlignment="Top" Width="138" />
                             <Label x:Name="lblDestinatary" Content="Destinatário" HorizontalAlignment="Left" Margin="398,68,0,0" VerticalAlignment="Top"/>
                             <ComboBox x:Name="cmbDestinatary" HorizontalAlignment="Left" Margin="481,70,0,0" VerticalAlignment="Top" Width="138"/>
-                            <Button x:Name="btnSaveNFControl" Content="Salvar" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top" Width="70" Click="btnSaveNFControl_Click"/>
+                            <Button x:Name="btnSaveNFControl" Content="Salvar" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Width="100" Click="btnSaveNFControl_Click"/>
                             <Button x:Name="btnSearchNF" Content="Busca" HorizontalAlignment="Left" Margin="184,10,0,0" VerticalAlignment="Top" Height="22" Width="84" Click="btnSearchNF_Click"/>
                             <ComboBox x:Name="cmbSearchNF" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="159">
                                 <ComboBoxItem Content="NumNF"/>
@@ -150,8 +150,26 @@
                         </Grid>
                     </GroupBox>
                     <TextBlock x:Name="TxtBlkLogNF" HorizontalAlignment="Left" Margin="28,458,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="39" FontWeight="Normal" Grid.Column="1"/>
-                    <DataGrid x:Name="dtgNFData" Width="798" Height="212" HorizontalAlignment="Left" VerticalAlignment="Top" IsSynchronizedWithCurrentItem="False" Margin="42,241,0,0"/>
-
+                    <Custom:DataGrid x:Name="dtgNFData" CanUserAddRows="False" AutoGenerateColumns="False"
+                         CanUserDeleteRows="False" ItemsSource="{Binding}" Margin="32,213,45,49">
+                        <Custom:DataGrid.GroupStyle>
+                            <GroupStyle ContainerStyle="{StaticResource GroupHeaderStyle}">
+                                <GroupStyle.Panel>
+                                    <ItemsPanelTemplate>
+                                        <Custom:DataGridRowsPresenter/>
+                                    </ItemsPanelTemplate>
+                                </GroupStyle.Panel>
+                            </GroupStyle>
+                        </Custom:DataGrid.GroupStyle>
+                        <Custom:DataGrid.Columns>
+                            <Custom:DataGridTextColumn Header="Nº NF" Binding="{Binding NFNumber}"/>
+                            <Custom:DataGridTextColumn Header="Valor" Binding="{Binding Value}"/>
+                            <Custom:DataGridTextColumn Header="Data de Expiração" Binding="{Binding Expiration}"/>
+                            <Custom:DataGridTextColumn Header="CFOP" Binding="{Binding Operation}"/>
+                            <Custom:DataGridTextColumn Header="Empresa" Binding="{Binding Company.Name}"/>
+                            <Custom:DataGridTextColumn Header="Destinatário" Binding="{Binding Destinatary.Name}"/>
+                        </Custom:DataGrid.Columns>
+                    </Custom:DataGrid>
                 </Grid>
             </TabItem>
             <TabItem x:Name="tbiNFData" Header="NF Dados">

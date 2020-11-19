@@ -12,6 +12,7 @@ using System.Linq;
 using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Collections.ObjectModel;
 #endregion
 
 namespace StockManagerCore
@@ -62,7 +63,7 @@ namespace StockManagerCore
         #endregion
 
         public MainWindow(InputService inputService, SaleService saleService, ProductService productService,
-            CompanyService companyService, StockService stockService, PersonService personService, ControlNFService controlNFService )
+            CompanyService companyService, StockService stockService, PersonService personService, ControlNFService controlNFService)
         {
             _inputService = inputService;
             _saleService = saleService;
@@ -77,7 +78,7 @@ namespace StockManagerCore
             ListCompanies = _companyService.GetCompanies();
             ListOfProducts = _productService.GetProducts();
             ListPeople = _personService.GetPeople();
-
+           
             foreach (Company c in ListCompanies)
             {
                 CmbCompany.Items.Add(c.Name);
@@ -93,7 +94,7 @@ namespace StockManagerCore
                 cmbDestinatary.Items.Add(person.Name);
             }
             InitializeComponent();
-          
+
         }
 
         #region --== Functions of Tb_Functions TAB ==--
@@ -119,7 +120,7 @@ namespace StockManagerCore
                     filename = dlg.FileName;
                     FileNameTextBox.Text = filename;
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -134,7 +135,7 @@ namespace StockManagerCore
             {
                 LogTextBlock.Text = string.Empty;
                 SelectedCompany = _companyService.FindByName((string)CmbCompany.SelectedItem);
-               
+
                 if (filename.EndsWith("csv") || filename.EndsWith("CSV"))
                 {
                     throw new ApplicationException("Não pode processar arquivo de venda como entrada!");
@@ -556,7 +557,7 @@ namespace StockManagerCore
             log.AppendLine(_productService.Update(toUpdate));
             TxtBlkLogCRUD.Text = log.ToString();
         }
-        
+
         //Crud Stock
         private void Btn_CreateStock_Click(object sender, RoutedEventArgs e)
         {
@@ -618,10 +619,6 @@ namespace StockManagerCore
 
         #region --== NF Control ==--
 
-
-
-        #endregion
-
         private void btnSearchNF_Click(object sender, RoutedEventArgs e)
         {
             string selection = cmbSearchNF.SelectedItem.ToString();
@@ -653,12 +650,14 @@ namespace StockManagerCore
                     InitializeComponent();
                     break;
                 case "Tipo":
-                    Notes = _controlNFService.GetControls();
-                    var group = Notes.GroupBy(g => g.OperationType);
-                    dtgNFData.AutoGenerateColumns = true;
-                    
-                    Nfs = new ListCollectionView();
-                    Customers.GroupDescriptions.Add(new PropertyGroupDescription("Gender"));
+                    InitializeComponent();
+                    ObservableCollection<NFControl> group = new ObservableCollection<NFControl>();
+                    group = _controlNFService.GetObservableNFs();
+                    dtgNFData.AutoGenerateColumns = false;
+                    ListCollectionView collection = new ListCollectionView(group);
+                    collection.GroupDescriptions.Add(new PropertyGroupDescription("OperationType"));
+                    dtgNFData.ItemsSource = collection;
+
                     break;
                 default:
                     break;
@@ -669,5 +668,7 @@ namespace StockManagerCore
         {
 
         }
+
+        #endregion
     }
 }

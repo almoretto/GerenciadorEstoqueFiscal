@@ -12,9 +12,9 @@ namespace StockManagerCore.Models
         [Required]
         public string Name { get; set; }
         public string Doc { get; set; }
-        public string City { get; set; }
+        public City City { get; set; }
         [Required]
-        public string State { get; set; }
+        public State State { get; set; }
         [Required]
         public PersonType Type { get; set; }
         [Required]
@@ -27,7 +27,7 @@ namespace StockManagerCore.Models
         #region --== Constructors ==--
         public Person() { }
 
-        public Person(string name, string doc, string city, string state, PersonType type, PersonCategory category)
+        public Person(string name, string doc, City city, State state, PersonType type, PersonCategory category)
         {
             Name = name;
             Doc = doc;

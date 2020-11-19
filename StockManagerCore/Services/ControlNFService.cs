@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using StockManagerCore.Models;
 using StockManagerCore.Models.Enums;
 using StockManagerCore.Data;
-
+using StockManagerCore.Services.Exceptions;
+using System.Collections.ObjectModel;
 
 namespace StockManagerCore.Services
 {
@@ -18,6 +20,10 @@ namespace StockManagerCore.Services
         public IEnumerable<NFControl> GetControls()
         {
             return _context.NFControls.OrderBy(c => c.Expiration);
+        }
+        public ObservableCollection<NFControl> GetObservableNFs()
+        {
+             return (ObservableCollection<NFControl>)_context.NFControls.OrderBy(c => c.Expiration);
         }
         public NFControl FindByNumber(int number)
         {
@@ -36,6 +42,35 @@ namespace StockManagerCore.Services
                 .OrderBy(n => n.Expiration);
         }
 
+        public string Crete(NFControl NF)
+        {
+            string result;
+            try
+            {
+                if (NF==null)
+                {
+                    throw new RequiredFieldException("Required Entity");
+                }
+                else
+                {
+                    _context.NFControls.Add(NF);
+                    _context.SaveChanges();
+                   result= _context.NFControls
+                        .Where(n => n.NFNumber == NF.NFNumber)
+                        .FirstOrDefault()
+                        .ToString();
+                    return result;
+                }
+            }
+            catch (DbComcurrancyException ex)
+            {
+                throw new DbComcurrancyException(ex.Message);
+            }
+            catch(RequiredFieldException ex)
+            {
+                throw new RequiredFieldException(ex.Message);
+            }
+        }
         #endregion
 
     }
