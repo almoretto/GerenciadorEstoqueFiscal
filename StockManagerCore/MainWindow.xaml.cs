@@ -30,6 +30,7 @@ namespace StockManagerCore
         private readonly StockService _stockService;
         private readonly PersonService _personService;
         private readonly ControlNFService _controlNFService;
+        private readonly CityService _cityService;
 
         CultureInfo provider = CultureInfo.InvariantCulture;
         StringBuilder log = new StringBuilder();
@@ -46,6 +47,7 @@ namespace StockManagerCore
         int qty = 0;
         double amount = 0.0;
         double totAmount = 0.0;
+        int anyId = 0;
         #endregion
 
         #region --== Models instantitation and support Lists ==--
@@ -59,11 +61,13 @@ namespace StockManagerCore
         public IEnumerable<Product> ListOfProducts { get; set; }
         public IEnumerable<Person> ListPeople { get; set; }
         public IEnumerable<NFControl> Notes { get; set; }
+        public IEnumerable<City> Cities { get; set; }
         public NFControl NF { get; set; } = new NFControl();
         #endregion
 
         public MainWindow(InputService inputService, SaleService saleService, ProductService productService,
-            CompanyService companyService, StockService stockService, PersonService personService, ControlNFService controlNFService)
+            CompanyService companyService, StockService stockService, PersonService personService, 
+            ControlNFService controlNFService, CityService cityService)
         {
             _inputService = inputService;
             _saleService = saleService;
@@ -72,12 +76,14 @@ namespace StockManagerCore
             _stockService = stockService;
             _personService = personService;
             _controlNFService = controlNFService;
+            _cityService = cityService;
 
             InitializeComponent();
 
             ListCompanies = _companyService.GetCompanies();
             ListOfProducts = _productService.GetProducts();
             ListPeople = _personService.GetPeople();
+            Cities = _cityService.GetCities();
            
             foreach (Company c in ListCompanies)
             {
@@ -93,6 +99,11 @@ namespace StockManagerCore
             {
                 cmbDestinatary.Items.Add(person.Name);
             }
+            foreach (City c in Cities)
+            {
+                cmbCities.Items.Add(c.CityName);
+            }
+           
             InitializeComponent();
 
         }
@@ -626,6 +637,7 @@ namespace StockManagerCore
             {
                 case "NumNF":
                     NF = _controlNFService.FindByNumber(Convert.ToInt32(txtNumber.Text));
+                    anyId = NF.Id;
                     txtNumber.Text = NF.NFNumber.ToString();
                     txtValue.Text = NF.Value.ToString("C2");
                     dpkExpiration.DisplayDate = NF.Expiration.Date;
@@ -637,16 +649,16 @@ namespace StockManagerCore
                     break;
                 case "Empresa":
                     Notes = _controlNFService.FindByCompany(cmbNFCompany.SelectedItem.ToString());
-                    dtgNFData.AutoGenerateColumns = true;
-                    dtgNFData.ItemsSource = Notes.ToList();
-                    tbiNFData.IsSelected = true;
+                    dtgDataView.AutoGenerateColumns = true;
+                    dtgDataView.ItemsSource = Notes.ToList();
+                    tbiDataCrud.IsSelected = true;
                     InitializeComponent();
                     break;
                 case "Destinatario":
                     Notes = _controlNFService.FindByDestination(cmbDestinatary.SelectedItem.ToString());
-                    dtgNFData.AutoGenerateColumns = true;
-                    dtgNFData.ItemsSource = Notes.ToList();
-                    tbiNFData.IsSelected = true;
+                    dtgDataView.AutoGenerateColumns = true;
+                    dtgDataView.ItemsSource = Notes.ToList();
+                    tbiDataCrud.IsSelected = true;
                     InitializeComponent();
                     break;
                 case "Tipo":
@@ -663,12 +675,63 @@ namespace StockManagerCore
                     break;
             }
         }
-
+        private void cmbSearchNF_DropDownOpened(object sender, EventArgs e)
+        {
+            txtNumber.IsEnabled = true;
+            txtOperation.IsEnabled = true;
+            txtValue.IsEnabled = true;
+            dpkExpiration.IsEnabled = true;
+            cmbTypeNF.IsEnabled = true;
+            CmbCompany.IsEnabled = true;
+            cmbDestinatary.IsEnabled = true;
+        }
         private void btnSaveNFControl_Click(object sender, RoutedEventArgs e)
         {
 
+            NF.NFNumber = Convert.ToInt32(txtNumber.Text);
+            NF.Value= Convert.ToDouble(txtValue.Text);
+            NF.Expiration= (DateTime)dpkExpiration.SelectedDate;
+            NF.Operation = Convert.ToInt32(txtOperation.Text);
+            NF.OperationType = (NFType)cmbTypeNF.SelectedItem;
+            NF.Company= _companyService.FindByName(cmbNFCompany.SelectedItem.ToString());
+            NF.Destinatary=_personService.FindByName(cmbDestinatary.SelectedItem.ToString());
+            TxtBlkLogNF.Text=_controlNFService.Crete(NF);
+
+        }
+        private void btnCreateNewNF_Click(object sender, RoutedEventArgs e)
+        {
+            txtNumber.IsEnabled = true;
+            txtOperation.IsEnabled = true;
+            txtValue.IsEnabled = true;
+            dpkExpiration.IsEnabled = true;
+            cmbTypeNF.IsEnabled = true;
+            CmbCompany.IsEnabled = true;
+            cmbDestinatary.IsEnabled = true;
+
+        }
+        private void btnEditNF_Click(object sender, RoutedEventArgs e)
+        {
+            NFControl nfToUpdate = new NFControl();
+            nfToUpdate.Id = anyId;
+            nfToUpdate.NFNumber = Convert.ToInt32(txtNumber.Text);
+            nfToUpdate.Value = Convert.ToDouble(txtValue.Text);
+            nfToUpdate.Expiration = (DateTime)dpkExpiration.SelectedDate;
+            nfToUpdate.Operation = Convert.ToInt32(txtOperation.Text);
+            nfToUpdate.OperationType = (NFType)cmbTypeNF.SelectedItem;
+            nfToUpdate.Company = _companyService.FindByName(cmbNFCompany.SelectedItem.ToString());
+            nfToUpdate.Destinatary = _personService.FindByName(cmbDestinatary.SelectedItem.ToString());
+            TxtBlkLogNF.Text = _controlNFService.Update(nfToUpdate);
+        }
+        private void btnDeleteNF_Click(object sender, RoutedEventArgs e)
+        {
+            if (NF!=null)
+            {
+                _controlNFService.Delete(NF);
+            }
         }
 
         #endregion
+
+
     }
 }

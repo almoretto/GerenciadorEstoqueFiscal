@@ -28,6 +28,7 @@ namespace StockManagerCore
             services.AddScoped<StockService>();
             services.AddScoped<PersonService>();
             services.AddScoped<ControlNFService>();
+            services.AddScoped<CityService>();
             services.AddScoped<SeedDataService>();//Initiates the service in the injection dependecy of application
             services.AddSingleton<MainWindow>();
             serviceProvider = services.BuildServiceProvider();

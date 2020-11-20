@@ -19,6 +19,12 @@ namespace StockManagerCore.Services
             return _context.People.OrderBy(c => c.Name);
         }
 
+        public Person FindByName(string name)
+        {
+            Person p = new Person();
+            p = _context.People.Where(p => p.Name == name).FirstOrDefault();
+            return p;
+        }
         #endregion
     }
 }

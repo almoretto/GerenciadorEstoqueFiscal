@@ -41,7 +41,6 @@ namespace StockManagerCore.Services
                 .Where(n => n.Destinatary.Name == destinatary)
                 .OrderBy(n => n.Expiration);
         }
-
         public string Crete(NFControl NF)
         {
             string result;
@@ -59,7 +58,7 @@ namespace StockManagerCore.Services
                         .Where(n => n.NFNumber == NF.NFNumber)
                         .FirstOrDefault()
                         .ToString();
-                    return result;
+                    return result + ": Created!";
                 }
             }
             catch (DbComcurrancyException ex)
@@ -71,6 +70,67 @@ namespace StockManagerCore.Services
                 throw new RequiredFieldException(ex.Message);
             }
         }
+        public string Update(NFControl NF)
+        {
+            string result;
+            try
+            {
+                if (NF == null)
+                {
+                    throw new RequiredFieldException("Required Entity");
+                }
+                else
+                {
+                    _context.NFControls.Update(NF);
+                    _context.SaveChanges();
+                    result = _context.NFControls
+                         .Where(n => n.NFNumber == NF.NFNumber)
+                         .FirstOrDefault()
+                         .ToString()+": Updated!";
+                    return result;
+                }
+            }
+            catch (DbComcurrancyException ex)
+            {
+                throw new DbComcurrancyException(ex.Message);
+            }
+            catch (RequiredFieldException ex)
+            {
+                throw new RequiredFieldException(ex.Message);
+            }
+        }
+        public string Delete(NFControl NF)
+        {
+            string result;
+            try
+            {
+                if (NF == null)
+                {
+                    throw new RequiredFieldException("Required Entity");
+                }
+                else
+                {
+                    _context.NFControls.Remove(NF);
+                    _context.SaveChanges();
+                    result = _context.NFControls
+                         .Where(n => n.NFNumber == NF.NFNumber)
+                         .FirstOrDefault()
+                         .ToString() + ": Deleted!";
+                    return result;
+                }
+            }
+            catch (DbComcurrancyException ex)
+            {
+                throw new DbComcurrancyException(ex.Message);
+            }
+            catch (RequiredFieldException ex)
+            {
+                throw new RequiredFieldException(ex.Message);
+            }
+        }
+
+
+
         #endregion
 
     }

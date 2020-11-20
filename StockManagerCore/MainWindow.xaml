@@ -126,27 +126,32 @@
                     <GroupBox x:Name="grpNF" Header="Notas" Margin="32,22,45,294">
                         <Grid Margin="10,0,9,0" Height="160">
                             <Label x:Name="lblNumber" Content="NF Nº" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="45"/>
-                            <TextBox x:Name="txtNumber" HorizontalAlignment="Left" Margin="60,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85"/>
+                            <TextBox x:Name="txtNumber" HorizontalAlignment="Left" Margin="60,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" IsEnabled="False"/>
                             <Label x:Name="lblValue" Content="Valor" HorizontalAlignment="Left" Margin="150,37,0,0" VerticalAlignment="Top" Width="38"/>
-                            <TextBox x:Name="txtValue" HorizontalAlignment="Left" Margin="193,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-                            <DatePicker x:Name="dpkExpiration" HorizontalAlignment="Left" Margin="384,38,0,0" VerticalAlignment="Top"/>
+                            <TextBox x:Name="txtValue" HorizontalAlignment="Left" Margin="193,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsEnabled="False" InputScope="CurrencyAmount"/>
+                            <DatePicker x:Name="dpkExpiration" HorizontalAlignment="Left" Margin="384,38,0,0" VerticalAlignment="Top" IsEnabled="False"/>
                             <Label x:Name="lblExpiration" Content="Expiração" HorizontalAlignment="Left" Margin="318,37,0,0" VerticalAlignment="Top" Width="66"/>
-                            <ComboBox x:Name="cmbTypeNF" HorizontalAlignment="Left" Margin="60,70,0,0" VerticalAlignment="Top" Width="128" ItemsSource="{Binding Source={StaticResource enmNFType}}"></ComboBox>
+                            <ComboBox x:Name="cmbTypeNF" HorizontalAlignment="Left" Margin="60,70,0,0" VerticalAlignment="Top" Width="128" ItemsSource="{Binding Source={StaticResource enmNFType}}" IsEnabled="False"></ComboBox>
                             <Label x:Name="lblOperation" Content="CFOP" HorizontalAlignment="Left" Margin="527,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.509,-0.197" Width="46" Height="25"/>
-                            <TextBox x:Name="txtOperation" HorizontalAlignment="Left" Margin="578,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170"/>
+                            <TextBox x:Name="txtOperation" HorizontalAlignment="Left" Margin="578,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170" IsEnabled="False"/>
                             <Label x:Name="lblTypeNF" Content="Tipo" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" Width="45"/>
                             <Label x:Name="lblCompany" Content="Empresa" HorizontalAlignment="Left" Margin="194,68,0,0" VerticalAlignment="Top" Width="74"/>
-                            <ComboBox x:Name="cmbNFCompany" HorizontalAlignment="Left" Margin="255,70,0,0" VerticalAlignment="Top" Width="138" />
+                            <ComboBox x:Name="cmbNFCompany" HorizontalAlignment="Left" Margin="255,70,0,0" VerticalAlignment="Top" Width="138" IsEnabled="False" />
                             <Label x:Name="lblDestinatary" Content="Destinatário" HorizontalAlignment="Left" Margin="398,68,0,0" VerticalAlignment="Top"/>
-                            <ComboBox x:Name="cmbDestinatary" HorizontalAlignment="Left" Margin="481,70,0,0" VerticalAlignment="Top" Width="138"/>
+                            <ComboBox x:Name="cmbDestinatary" HorizontalAlignment="Left" Margin="481,70,0,0" VerticalAlignment="Top" Width="138" IsEnabled="False"/>
                             <Button x:Name="btnSaveNFControl" Content="Salvar" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Width="100" Click="btnSaveNFControl_Click"/>
                             <Button x:Name="btnSearchNF" Content="Busca" HorizontalAlignment="Left" Margin="184,10,0,0" VerticalAlignment="Top" Height="22" Width="84" Click="btnSearchNF_Click"/>
-                            <ComboBox x:Name="cmbSearchNF" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="159">
+                            <ComboBox x:Name="cmbSearchNF" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="159" DropDownOpened="cmbSearchNF_DropDownOpened">
                                 <ComboBoxItem Content="NumNF"/>
                                 <ComboBoxItem Content="Empresa"/>
                                 <ComboBoxItem Content="Destinatario"/>
                                 <ComboBoxItem Content="Tipo"/>
                             </ComboBox>
+                            <Button x:Name="btn_CreateNewNF" HorizontalAlignment="Left" Height="22" Margin="273,10,0,0" VerticalAlignment="Top" Width="25" Click="btnCreateNewNF_Click">
+                                <Image x:Name="btnCreateNewNF" Source="imgs\new_add_insert.png"/>
+                            </Button>
+                            <Button x:Name="btnEditNF" Content="Editar" HorizontalAlignment="Left" Height="20" Margin="115,110,0,0" VerticalAlignment="Top" Width="100" Click="btnEditNF_Click"/>
+                            <Button x:Name="btnDeleteNF" Content="Deletar" HorizontalAlignment="Left" Margin="220,110,0,0" VerticalAlignment="Top" Width="100" Click="btnDeleteNF_Click"/>
                         </Grid>
                     </GroupBox>
                     <TextBlock x:Name="TxtBlkLogNF" HorizontalAlignment="Left" Margin="28,458,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="39" FontWeight="Normal" Grid.Column="1"/>
@@ -172,8 +177,36 @@
                     </Custom:DataGrid>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="tbiNFData" Header="NF Dados">
-                <Grid x:Name="grdNFData" Background="#FFE5E5E5" Height="502"/>
+            <TabItem x:Name="tbiDataCrud" Header="Cadastros">
+                <Grid x:Name="grdNFDataCrud" Background="#FFE5E5E5" Height="502">
+                    <Rectangle HorizontalAlignment="Left" Height="241" Margin="195,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="363"/>
+
+
+                    <RadioButton x:Name="rbtPerson" Margin="42,58,717,428" Content="Iteração com Pessoa" GroupName="grpRadio" Height="16" />
+                    <RadioButton x:Name="rbtCity" Margin="42,37,717,449" Content="Iteração com Cidade" GroupName="grpRadio" Height="16" />
+                    <Label x:Name="lblRadio" Content="Seleção de Iteração" HorizontalAlignment="Left" Margin="42,10,0,0" VerticalAlignment="Top" Width="135"/>
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="42,128,0,0" VerticalAlignment="Top" Width="100"/>
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="42,153,0,0" VerticalAlignment="Top" Width="100"/>
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="42,178,0,0" VerticalAlignment="Top" Width="100"/>
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="42,203,0,0" VerticalAlignment="Top" Width="100"/>
+                    <TextBox HorizontalAlignment="Left" Margin="42,105,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="135"/>
+                    <Label x:Name="lblPersonName" Content="Nome" HorizontalAlignment="Left" Margin="224,19,0,0" VerticalAlignment="Top" Width="319"/>
+                    <TextBox x:Name="txtPersonName" HorizontalAlignment="Left" Margin="224,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="319"/>
+                    <Label x:Name="lblPersonDoc" Content="CPF/CNPJ" HorizontalAlignment="Left" Margin="224,68,0,0" VerticalAlignment="Top" Width="319"/>
+                    <TextBox x:Name="txtPersonDoc" HorizontalAlignment="Left" Margin="224,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="319"/>
+                    <ComboBox x:Name="cmbCities" HorizontalAlignment="Left" Margin="224,143,0,0" VerticalAlignment="Top" Width="319"/>
+                    <ComboBox x:Name="cmbState" HorizontalAlignment="Left" Margin="224,201,0,0" VerticalAlignment="Top" Width="63"/>
+                    <ComboBox x:Name="cmbPersonType" HorizontalAlignment="Left" Margin="292,201,0,0" VerticalAlignment="Top" Width="52" ItemsSource="{Binding Source={StaticResource enmPersonType}}"/>
+                    <ComboBox x:Name="cmbPersonCategory" HorizontalAlignment="Left" Margin="349,201,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding Source={StaticResource emnPersonCategory}}"/>
+                    <Label x:Name="lblCategory" Content="Categoria" HorizontalAlignment="Left" Margin="349,170,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="lblCity" Content="Cidade" HorizontalAlignment="Left" Margin="225,117,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.553,0.386" Width="318"/>
+                    <Label x:Name="lblState" Content="Estado" HorizontalAlignment="Left" Margin="224,170,0,0" VerticalAlignment="Top" Width="60"/>
+                    <Label x:Name="lblPersonType" Content="Tipo" HorizontalAlignment="Left" Margin="292,170,0,0" VerticalAlignment="Top" Width="52"/>
+                    <DataGrid x:Name="dtgDataView" HorizontalAlignment="Left" Height="223" Margin="42,269,0,0" VerticalAlignment="Top" Width="819"/>
+                    <RadioButton x:Name="rbtCompany" Margin="42,79,717,407" Content="Iteração com Empresa" GroupName="grpRadio" Height="16" />
+
+
+                </Grid>
             </TabItem>
         </TabControl>
 
