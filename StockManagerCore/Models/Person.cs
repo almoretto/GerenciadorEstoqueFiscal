@@ -26,7 +26,6 @@ namespace StockManagerCore.Models
 
         #region --== Constructors ==--
         public Person() { }
-
         public Person(string name, string doc, City city, State state, PersonType type, PersonCategory category)
         {
             Name = name;

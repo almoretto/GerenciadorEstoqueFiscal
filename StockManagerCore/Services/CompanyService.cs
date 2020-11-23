@@ -57,13 +57,26 @@ namespace StockManagerCore.Services
         #region --== CRUD ==--
         public string Create(string name)
         {
-            Company c = new Company(name);
-            _context.Companies.Add(c);
-            _context.SaveChanges();
-            var test = _context.Companies.Where(t => t.Name == c.Name).FirstOrDefault();
-            string response = "Id: " + test.Id.ToString() + " Nome: " + test.Name.ToUpper();
+            try
+            {
+                Company c = new Company(name);
+                _context.Companies.Add(c);
+                _context.SaveChanges();
+                var test = _context.Companies.Where(t => t.Name == c.Name).FirstOrDefault();
+                string response = "Id: " + test.Id.ToString() + " Nome: " + test.Name.ToUpper();
 
-            return response;
+                return response;
+            }
+            catch (DbComcurrancyException ex)
+            {
+                string msg = ex.Message;
+                if (ex.InnerException != null)
+                {
+                    msg += "\n" + ex.InnerException;
+                }
+                throw new DbComcurrancyException("Não foi possivel atualizar veja mensagem: \n" + msg);
+            }
+           
         }
         public Company FindToUdate(int id)
         {

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using StockManagerCore.Models;
-using StockManagerCore.Models.Enums;
 using StockManagerCore.Data;
 using StockManagerCore.Services.Exceptions;
 using System.Collections.ObjectModel;
@@ -41,6 +39,8 @@ namespace StockManagerCore.Services
                 .Where(n => n.Destinatary.Name == destinatary)
                 .OrderBy(n => n.Expiration);
         }
+
+        #region --== Crud ==--
         public string Crete(NFControl NF)
         {
             string result;
@@ -128,10 +128,7 @@ namespace StockManagerCore.Services
                 throw new RequiredFieldException(ex.Message);
             }
         }
-
-
-
         #endregion
-
+        #endregion
     }
 }

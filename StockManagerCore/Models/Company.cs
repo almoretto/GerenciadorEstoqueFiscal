@@ -20,7 +20,6 @@ namespace StockManagerCore.Models
 
         #region --== Constructors ==--
         public Company() { }
-
         public Company( string name)
         {
             Name = name;

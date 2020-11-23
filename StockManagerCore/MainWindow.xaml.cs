@@ -56,17 +56,20 @@ namespace StockManagerCore
         private Stock SelectedStock { get; set; } = new Stock();
         private InputProduct InputProduct { get; set; } = new InputProduct();
         private List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
-        public IEnumerable<Company> ListCompanies { get; set; }
-        public IEnumerable<object> ListOfStocks { get; set; }
-        public IEnumerable<Product> ListOfProducts { get; set; }
-        public IEnumerable<Person> ListPeople { get; set; }
-        public IEnumerable<NFControl> Notes { get; set; }
-        public IEnumerable<City> Cities { get; set; }
-        public NFControl NF { get; set; } = new NFControl();
+        private IEnumerable<Company> ListCompanies { get; set; }
+        private IEnumerable<object> ListOfStocks { get; set; }
+        private IEnumerable<Product> ListOfProducts { get; set; }
+        private IEnumerable<Person> ListPeople { get; set; }
+        private IEnumerable<NFControl> Notes { get; set; }
+        private IEnumerable<City> Cities { get; set; }
+        private NFControl NF { get; set; } = new NFControl();
+        private City City { get; set; } = new City();
+        private Person Person { get; set; } = new Person();
+
         #endregion
 
         public MainWindow(InputService inputService, SaleService saleService, ProductService productService,
-            CompanyService companyService, StockService stockService, PersonService personService, 
+            CompanyService companyService, StockService stockService, PersonService personService,
             ControlNFService controlNFService, CityService cityService)
         {
             _inputService = inputService;
@@ -84,7 +87,7 @@ namespace StockManagerCore
             ListOfProducts = _productService.GetProducts();
             ListPeople = _personService.GetPeople();
             Cities = _cityService.GetCities();
-           
+
             foreach (Company c in ListCompanies)
             {
                 CmbCompany.Items.Add(c.Name);
@@ -103,7 +106,7 @@ namespace StockManagerCore
             {
                 cmbCities.Items.Add(c.CityName);
             }
-           
+
             InitializeComponent();
 
         }
@@ -629,7 +632,6 @@ namespace StockManagerCore
         #endregion
 
         #region --== NF Control ==--
-
         private void btnSearchNF_Click(object sender, RoutedEventArgs e)
         {
             string selection = cmbSearchNF.SelectedItem.ToString();
@@ -689,13 +691,13 @@ namespace StockManagerCore
         {
 
             NF.NFNumber = Convert.ToInt32(txtNumber.Text);
-            NF.Value= Convert.ToDouble(txtValue.Text);
-            NF.Expiration= (DateTime)dpkExpiration.SelectedDate;
+            NF.Value = Convert.ToDouble(txtValue.Text);
+            NF.Expiration = (DateTime)dpkExpiration.SelectedDate;
             NF.Operation = Convert.ToInt32(txtOperation.Text);
             NF.OperationType = (NFType)cmbTypeNF.SelectedItem;
-            NF.Company= _companyService.FindByName(cmbNFCompany.SelectedItem.ToString());
-            NF.Destinatary=_personService.FindByName(cmbDestinatary.SelectedItem.ToString());
-            TxtBlkLogNF.Text=_controlNFService.Crete(NF);
+            NF.Company = _companyService.FindByName(cmbNFCompany.SelectedItem.ToString());
+            NF.Destinatary = _personService.FindByName(cmbDestinatary.SelectedItem.ToString());
+            TxtBlkLogNF.Text = _controlNFService.Crete(NF);
 
         }
         private void btnCreateNewNF_Click(object sender, RoutedEventArgs e)
@@ -724,10 +726,216 @@ namespace StockManagerCore
         }
         private void btnDeleteNF_Click(object sender, RoutedEventArgs e)
         {
-            if (NF!=null)
+            if (NF != null)
             {
                 _controlNFService.Delete(NF);
             }
+        }
+        #endregion
+
+        #region --== CRUD Auxiliary dor NF Control ==--
+        private void rbtCity_Click(object sender, RoutedEventArgs e)
+        {
+            if (rbtCity.IsChecked == true)
+            {
+                btnCreate.Content = "Criar Cidade";
+                btnEdit.Content = "Editar Cidade";
+                btnDelete.Content = "Deletar Cidade";
+                btnSearch.Content = "Busca Cidade";
+            }
+        }
+        private void rbtPerson_Click(object sender, RoutedEventArgs e)
+        {
+            if (rbtPerson.IsChecked == true)
+            {
+                btnCreate.Content = "Criar Pessoa";
+                btnEdit.Content = "Editar Pessoa";
+                btnDelete.Content = "Deletar Pessa";
+                btnSearch.Content = "Busca Pessoa";
+            }
+        }
+        private void rbtCompany_Click(object sender, RoutedEventArgs e)
+        {
+            if (rbtCompany.IsChecked == true)
+            {
+                btnCreate.Content = "Criar Empresa";
+                btnEdit.Content = "Editar Empresa";
+                btnDelete.Content = "Deletar Empresa";
+                btnSearch.Content = "Busca Empresa";
+            }
+        }
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            if (rbtCity.IsChecked == true)
+            {
+                if (txtIteration.Text.Trim() == string.Empty)
+                {
+                    dtgDataView.AutoGenerateColumns = true;
+                    dtgDataView.ItemsSource = _cityService.GetCities().ToList();
+                }
+                else
+                {
+
+                    City = _cityService.FindByName(txtIteration.Text.Trim());
+                    lblCityId.Content = City.Id;
+                    txtCity.Text = City.CityName;
+                    cmbCityState.SelectedItem = City.State;
+                }
+            }
+            else if (rbtPerson.IsChecked == true)
+            {
+                if (txtIteration.Text.Trim() == string.Empty)
+                {
+                    dtgDataView.AutoGenerateColumns = true;
+                    dtgDataView.ItemsSource = _personService.GetPeople().ToList();
+                }
+                else
+                {
+                    Person = _personService.FindByName(txtIteration.Text.Trim());
+                    lblPersonId.Content = Person.Id;
+                    txtPersonName.Text = Person.Name;
+                    txtPersonDoc.Text = Person.Doc;
+                    cmbCities.SelectedItem = Person.City;
+                    cmbCityState.SelectedItem = Person.State;
+                    cmbPersonType.SelectedItem = Person.Type;
+                    cmbPersonCategory.SelectedItem = Person.Category;
+                }
+            }
+            else if (rbtCompany.IsChecked == true)
+            {
+                if (txtIteration.Text.Trim() == string.Empty)
+                {
+                    dtgDataView.AutoGenerateColumns = true;
+                    dtgDataView.ItemsSource = _companyService.GetCompanies().ToList();
+                }
+                else
+                {
+                    SelectedCompany = null;
+                    SelectedCompany = _companyService.FindByName(txtIteration.Text.Trim());
+                    lblCompanyID.Content = SelectedCompany.Id;
+                    txtCompanyNF.Text = SelectedCompany.Name;
+
+                }
+            }
+            return;
+        }
+        private void btnCreate_Click(object sender, RoutedEventArgs e)
+        {
+            if (rbtCity.IsChecked == true)
+            {
+                City c = new City(txtCity.Text, (State)cmbCityState.SelectedItem);
+                MessageBox.Show(_cityService.Create(c));
+            }
+            else if (rbtPerson.IsChecked == true)
+            {
+                City city = _cityService.FindByName(cmbCities.SelectedItem.ToString());
+                Person person = new Person(
+                    txtPersonName.Text,
+                    txtPersonDoc.Text,
+                    city,
+                    (State)cmbState.SelectedItem,
+                    (PersonType)cmbPersonType.SelectedItem,
+                    (PersonCategory)cmbPersonCategory.SelectedItem);
+                MessageBox.Show(_personService.Create(person));
+            }
+            else if (rbtCompany.IsChecked == true)
+            {
+                MessageBox.Show(_companyService.Create(txtCompanyNF.Text.Trim()));
+            }
+            return;
+        }
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (rbtCity.IsChecked == true)
+            {
+                if (lblCityId.Content == null)
+                {
+                    MessageBox.Show("Antes de editar precisa localizar");
+                    return;
+                }
+                City.CityName = txtCity.Text;
+                City.State = (State)cmbCityState.SelectedItem;
+                MessageBox.Show(_cityService.Update(City));
+            }
+            else if (rbtPerson.IsChecked == true)
+            {
+                if (lblPersonId.Content == null)
+                {
+                    MessageBox.Show("Antes de editar precisa localizar");
+                    return;
+                }
+                Person.Name = txtPersonName.Text;
+                Person.Doc = txtPersonDoc.Text;
+                Person.Category = (PersonCategory)cmbPersonCategory.SelectedItem;
+                Person.Type = (PersonType)cmbPersonType.SelectedItem;
+                Person.City = _cityService.FindByName(cmbCities.SelectedItem.ToString());
+                Person.State = (State)cmbState.SelectedItem;
+                MessageBox.Show(_personService.Update(Person));
+            }
+            else if (rbtCompany.IsChecked == true)
+            {
+                if (lblCompanyID.Content == null)
+                {
+                    MessageBox.Show("Antes de editar precisa localizar");
+                    return;
+                }
+                SelectedCompany.Name = txtCompanyNF.Text;
+                MessageBox.Show(_companyService.Update(SelectedCompany));
+            }
+            return;
+        }
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (rbtCity.IsChecked == true)
+            {
+                if (lblCityId.Content == null)
+                {
+                    MessageBox.Show("Antes de Deletar precisa localizar");
+                    return;
+                }
+                MessageBoxResult result = MessageBox.Show("Realmente deseja excluir? " 
+                    + City.CityName, 
+                    "Confirmation", 
+                    MessageBoxButton.YesNoCancel);
+                if (result==MessageBoxResult.Yes)
+                {
+                    MessageBox.Show(_cityService.Delete(City));
+
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else if (rbtPerson.IsChecked == true)
+            {
+
+                if (lblPersonId.Content == null)
+                {
+                    MessageBox.Show("Antes de Deletar precisa localizar");
+                    return;
+                }
+                MessageBoxResult result = MessageBox.Show("Realmente deseja excluir? "
+                   + Person.Name,
+                   "Confirmation",
+                   MessageBoxButton.YesNoCancel);
+                if (result == MessageBoxResult.Yes)
+                {
+                    MessageBox.Show(_personService.Delete(Person));
+
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else if (rbtCompany.IsChecked == true)
+            {
+                MessageBox.Show("Empresas não podem ser apagadas");
+                return;
+            }
+            return;
         }
 
         #endregion
