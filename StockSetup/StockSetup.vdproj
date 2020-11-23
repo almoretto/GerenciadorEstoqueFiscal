@@ -106,6 +106,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -234,15 +242,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:StockSetup"
-        "ProductCode" = "8:{B2F3027C-2A46-4C60-B3EC-34D3A67AE12C}"
-        "PackageCode" = "8:{63E1D38D-C518-41A3-955B-2B9FDB8ADA75}"
+        "ProductCode" = "8:{C01704C5-BB09-4D9A-B5EC-B6736E3AF3AE}"
+        "PackageCode" = "8:{C92D94BF-E03A-4648-A719-8070E27EDABD}"
         "UpgradeCode" = "8:{28620905-42E0-475E-BA83-3239AE09CABC}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:2.0.0"
         "Manufacturer" = "8:Moretto Studio"
         "ARPHELPTELEPHONE" = "8:+5517981221660"
         "ARPHELPLINK" = "8:https://github.com/almoretto/GerenciadorEstoqueFiscal/issues"
