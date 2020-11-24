@@ -135,19 +135,23 @@
                             <ComboBox x:Name="cmbNFCompany" HorizontalAlignment="Left" Margin="255,70,0,0" VerticalAlignment="Top" Width="138" IsEnabled="False" />
                             <Label x:Name="lblDestinatary" Content="Destinatário" HorizontalAlignment="Left" Margin="398,68,0,0" VerticalAlignment="Top"/>
                             <ComboBox x:Name="cmbDestinatary" HorizontalAlignment="Left" Margin="481,70,0,0" VerticalAlignment="Top" Width="138" IsEnabled="False"/>
-                            <Button x:Name="btnSaveNFControl" Content="Salvar" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" Width="100" Click="btnSaveNFControl_Click"/>
+                            <Button x:Name="btnSaveNFControl" Content="Salvar" HorizontalAlignment="Left" Margin="3,130,0,0" VerticalAlignment="Top" Width="100" Click="btnSaveNFControl_Click"/>
                             <Button x:Name="btnSearchNF" Content="Busca" HorizontalAlignment="Left" Margin="184,10,0,0" VerticalAlignment="Top" Height="22" Width="84" Click="btnSearchNF_Click"/>
                             <ComboBox x:Name="cmbSearchNF" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="159" DropDownOpened="cmbSearchNF_DropDownOpened">
                                 <ComboBoxItem Content="NumNF"/>
                                 <ComboBoxItem Content="Empresa"/>
                                 <ComboBoxItem Content="Destinatario"/>
                                 <ComboBoxItem Content="Tipo"/>
+                                <ComboBoxItem Content="Experiam Hoje"/>
+                                <ComboBoxItem Content="Expiram Semana"/>
                             </ComboBox>
                             <Button x:Name="btn_CreateNewNF" HorizontalAlignment="Left" Height="22" Margin="273,10,0,0" VerticalAlignment="Top" Width="25" Click="btnCreateNewNF_Click">
                                 <Image x:Name="btnCreateNewNF" Source="imgs\new_add_insert.png"/>
                             </Button>
-                            <Button x:Name="btnEditNF" Content="Editar" HorizontalAlignment="Left" Height="20" Margin="115,110,0,0" VerticalAlignment="Top" Width="100" Click="btnEditNF_Click"/>
-                            <Button x:Name="btnDeleteNF" Content="Deletar" HorizontalAlignment="Left" Margin="220,110,0,0" VerticalAlignment="Top" Width="100" Click="btnDeleteNF_Click"/>
+                            <Button x:Name="btnEditNF" Content="Editar" HorizontalAlignment="Left" Height="20" Margin="108,130,0,0" VerticalAlignment="Top" Width="100" Click="btnEditNF_Click"/>
+                            <Button x:Name="btnDeleteNF" Content="Deletar" HorizontalAlignment="Left" Margin="213,130,0,0" VerticalAlignment="Top" Width="100" Click="btnDeleteNF_Click"/>
+                            <Label x:Name="lblOriginProp" Content="Propostas Originais" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top" Width="114"/>
+                            <TextBox x:Name="txtOriginProps" HorizontalAlignment="Left" Margin="133,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="339"/>
                         </Grid>
                     </GroupBox>
                     <TextBlock x:Name="TxtBlkLogNF" HorizontalAlignment="Left" Margin="28,458,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="39" FontWeight="Normal" Grid.Column="1"/>
@@ -198,7 +202,7 @@
                     <Label x:Name="lblCity" Content="Cidade" HorizontalAlignment="Left" Margin="225,145,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.553,0.386" Width="318"/>
                     <Label x:Name="lblState" Content="Estado" HorizontalAlignment="Left" Margin="224,198,0,0" VerticalAlignment="Top" Width="60"/>
                     <Label x:Name="lblPersonType" Content="Tipo" HorizontalAlignment="Left" Margin="292,198,0,0" VerticalAlignment="Top" Width="52"/>
-                    <DataGrid x:Name="dtgDataView" HorizontalAlignment="Left" Height="199" Margin="42,293,0,0" VerticalAlignment="Top" Width="813"/>
+                    <DataGrid x:Name="dtgDataView" HorizontalAlignment="Left" Height="178" Margin="42,293,0,0" VerticalAlignment="Top" Width="813"/>
                     <RadioButton x:Name="rbtCompany" Margin="42,79,717,407" Content="Iterar Empresa" GroupName="grpRadio" Height="16" Click="rbtCompany_Click" />
                     <Label x:Name="lblPersonGroup" Content="Cadastro de Pessoas" HorizontalAlignment="Left" Margin="195,10,0,0" VerticalAlignment="Top"/>
                     <Rectangle HorizontalAlignment="Left" Height="121" Margin="563,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="319"/>

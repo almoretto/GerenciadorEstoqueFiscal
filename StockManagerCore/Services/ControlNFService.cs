@@ -4,6 +4,7 @@ using StockManagerCore.Models;
 using StockManagerCore.Data;
 using StockManagerCore.Services.Exceptions;
 using System.Collections.ObjectModel;
+using System;
 
 namespace StockManagerCore.Services
 {
@@ -39,7 +40,16 @@ namespace StockManagerCore.Services
                 .Where(n => n.Destinatary.Name == destinatary)
                 .OrderBy(n => n.Expiration);
         }
-
+        public IEnumerable<NFControl> GetByDate()
+        {
+            return _context.NFControls.Where(d => d.Expiration.Date == DateTime.Now.Date);
+        }
+        public IEnumerable<NFControl> GetByWeek()
+        {
+            return _context.NFControls
+                .Where(d => d.Expiration.Date >= DateTime.Now.Date 
+                && d.Expiration.Date <= DateTime.Now.AddDays(7).Date);
+        }
         #region --== Crud ==--
         public string Crete(NFControl NF)
         {

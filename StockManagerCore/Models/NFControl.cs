@@ -24,7 +24,8 @@ namespace StockManagerCore.Models
         [Required]
         public Company Company { get; set; }
         [Required]
-        public Person Destinatary { get; set; } 
+        public Person Destinatary { get; set; }
+        public string GeneratorProposals { get; set; }
         #endregion
 
         #region --== Constructors ==--

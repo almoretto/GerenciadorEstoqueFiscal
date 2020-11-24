@@ -671,7 +671,20 @@ namespace StockManagerCore
                     ListCollectionView collection = new ListCollectionView(group);
                     collection.GroupDescriptions.Add(new PropertyGroupDescription("OperationType"));
                     dtgNFData.ItemsSource = collection;
-
+                    break;
+                case "Experiam Hoje":
+                    Notes = _controlNFService.GetByDate();
+                    dtgDataView.AutoGenerateColumns = true;
+                    dtgDataView.ItemsSource = Notes.ToList();
+                    tbiDataCrud.IsSelected = true;
+                    InitializeComponent();
+                    break;
+                case "Expiram Semana":
+                    Notes = _controlNFService.GetByWeek();
+                    dtgDataView.AutoGenerateColumns = true;
+                    dtgDataView.ItemsSource = Notes.ToList();
+                    tbiDataCrud.IsSelected = true;
+                    InitializeComponent();
                     break;
                 default:
                     break;
@@ -684,7 +697,7 @@ namespace StockManagerCore
             txtValue.IsEnabled = true;
             dpkExpiration.IsEnabled = true;
             cmbTypeNF.IsEnabled = true;
-            CmbCompany.IsEnabled = true;
+            cmbNFCompany.IsEnabled = true;
             cmbDestinatary.IsEnabled = true;
         }
         private void btnSaveNFControl_Click(object sender, RoutedEventArgs e)
@@ -697,6 +710,7 @@ namespace StockManagerCore
             NF.OperationType = (NFType)cmbTypeNF.SelectedItem;
             NF.Company = _companyService.FindByName(cmbNFCompany.SelectedItem.ToString());
             NF.Destinatary = _personService.FindByName(cmbDestinatary.SelectedItem.ToString());
+            NF.GeneratorProposals = txtOriginProps.Text;
             TxtBlkLogNF.Text = _controlNFService.Crete(NF);
 
         }
@@ -722,6 +736,7 @@ namespace StockManagerCore
             nfToUpdate.OperationType = (NFType)cmbTypeNF.SelectedItem;
             nfToUpdate.Company = _companyService.FindByName(cmbNFCompany.SelectedItem.ToString());
             nfToUpdate.Destinatary = _personService.FindByName(cmbDestinatary.SelectedItem.ToString());
+            nfToUpdate.GeneratorProposals = txtOriginProps.Text;
             TxtBlkLogNF.Text = _controlNFService.Update(nfToUpdate);
         }
         private void btnDeleteNF_Click(object sender, RoutedEventArgs e)
@@ -938,8 +953,9 @@ namespace StockManagerCore
             return;
         }
 
+
         #endregion
 
-
+        
     }
 }
