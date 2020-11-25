@@ -41,17 +41,21 @@ namespace StockManagerCore.Services
         }
         public Company FindByName(string name)
         {
-            Company company = new Company();
-            if (name == "" || name == null)
+            try
             {
-                throw new RequiredFieldException("Campo necessario para busca");
+                Company company = new Company();
+                if (name == "" || name == null)
+                {
+                    throw new RequiredFieldException("Campo necessario para busca");
+                }
+                company = _context.Companies.Where(c => c.Name == name).SingleOrDefault();
+                return company;
             }
-            company = _context.Companies.Where(c => c.Name == name).SingleOrDefault();
-            if (company == null)
+            catch (NotFoundException ex)
             {
-                throw new NotFoundException("Entidade não encontrada");
+                throw new NotFoundException("Empresa Não encontrada" + ex.Message);
             }
-            return company;
+
         }
 
         #region --== CRUD ==--
@@ -76,13 +80,13 @@ namespace StockManagerCore.Services
                 }
                 throw new DbComcurrancyException("Não foi possivel atualizar veja mensagem: \n" + msg);
             }
-           
+
         }
         public Company FindToUdate(int id)
         {
             Company co = new Company();
 
-            if (id!=0)
+            if (id != 0)
             {
                 co = _context.Companies.Find(id);
                 if (co == null)
@@ -115,7 +119,7 @@ namespace StockManagerCore.Services
             }
             return "Update realizado com sucesso!";
         }
-       
+
         #endregion
         #endregion
     }

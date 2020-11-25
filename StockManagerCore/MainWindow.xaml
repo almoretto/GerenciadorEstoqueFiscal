@@ -105,7 +105,8 @@
                             <Button x:Name="BtnReadStock" Content="Visualizar" HorizontalAlignment="Left" Margin="379,130,0,0" VerticalAlignment="Top" Width="60" Click="Btn_ReadStock_Click"/>
                         </Grid>
                     </GroupBox>
-                    <TextBlock x:Name="TxtBlkLogCRUD" HorizontalAlignment="Left" Margin="28,458,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="39" FontWeight="Normal" Grid.Column="1"/>
+                    <TextBlock x:Name="TxtBlkLogCRUD" HorizontalAlignment="Left" Margin="28,458,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="39" FontWeight="Normal" Grid.Column="1">
+                    </TextBlock>
                     <TextBlock x:Name="TxtBlkInstructStock" Grid.Column="1" HorizontalAlignment="Left" Margin="673,248,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Height="175"><Run Text="Para Visualizar selecione a empresa"/><Run Text=". "/><Run/><LineBreak/><Run Text="Lembre-se que ao cadastrar um produto novo, o mesmo deverá ser cadastrado no estoque de cada uma das empresas separadamente."/><Run Text=" "/></TextBlock>
                     <ComboBox x:Name="CmbSwitch" Grid.Column="1" HorizontalAlignment="Left" Margin="32,20,0,0" VerticalAlignment="Top" Width="166">
                         <ComboBoxItem Content="Empresa"/>

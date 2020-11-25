@@ -19,7 +19,7 @@ namespace StockManagerCore.Services
         #endregion
 
         #region --== Methods ==--
-        public IQueryable<Stock> GetStocksByCompany(Company company)
+        public IEnumerable<Stock> GetStocksByCompany(Company company)
         {
             if (company==null)
             {
