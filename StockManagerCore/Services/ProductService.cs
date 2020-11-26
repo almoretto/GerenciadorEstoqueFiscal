@@ -12,15 +12,21 @@ namespace StockManagerCore.Services
     public class ProductService
     {
         #region --== Constructor for dependency injection ==--
+        
+        //Constructor and dependency Injection to DbContext
         private readonly StockDBContext _context;
         public ProductService(StockDBContext context) { _context = context; }
         #endregion
 
         #region --== Methods ==--
+        
+        //Querry to fetch all products from database 
         public IEnumerable<Product> GetProducts()
         {
             return _context.Products;
         }
+        
+        //Querry to Find a producta By Entity
         public Product Find(Product p)
         {
             Product product = new Product();
@@ -37,6 +43,8 @@ namespace StockManagerCore.Services
             }
             return product;
         }
+        
+        //Querry to find product by Name
         public Product FindByGroup(string gr)
         {
             Product product = new Product();
@@ -53,6 +61,8 @@ namespace StockManagerCore.Services
         }
        
         #region --== CRUD ==--
+        
+        //Method to create a new product on database
         public string Create(string name)
         {
             Product p = new Product(name);
@@ -63,6 +73,8 @@ namespace StockManagerCore.Services
 
             return response;
         }
+        
+        //Querry to find a specific product to edit
         public Product FindToUdate(string name, int? id)
         {
             Product prd = new Product();
@@ -87,6 +99,8 @@ namespace StockManagerCore.Services
             }
             throw new NotFoundException("Insuficient Data to find entity!");
         }
+        
+        //Method to update an edited product
         public string Update(Product p)
         {
             try

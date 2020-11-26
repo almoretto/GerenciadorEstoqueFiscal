@@ -15,17 +15,24 @@ namespace StockManagerCore.Services
         #endregion
 
         #region --== Methods==--
+        
+        //Querry to fetch all Person records from Db
         public IEnumerable<Person> GetPeople()
         {
             return _context.People.OrderBy(c => c.Name);
         }
+        
+        //Querry to find a Person by Name
         public Person FindByName(string name)
         {
             Person p = new Person();
             p = _context.People.Where(p => p.Name == name).FirstOrDefault();
             return p;
         }
+        
         #region --== Crud ==--
+        
+        //Method to Create new Person on Database
         public string Create(Person p)
         {
             try
@@ -44,6 +51,8 @@ namespace StockManagerCore.Services
                 throw new DbComcurrancyException(ex.Message);
             }
         }
+        
+        //Method to update an edited person
         public string Update(Person p)
         {
             try
@@ -58,6 +67,8 @@ namespace StockManagerCore.Services
                 throw new DbComcurrancyException("Não pode atualizar \n" + ex.Message);
             }
         }
+        
+        //Method to Delete a person
         public string Delete(Person p)
         {
             try

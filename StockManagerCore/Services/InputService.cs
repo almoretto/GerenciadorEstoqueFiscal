@@ -17,6 +17,8 @@ namespace StockManagerCore.Services
         #endregion
 
         #region --== Methods ==--
+        
+        //Querry to fetch all inputs from Db
         public IEnumerable<InputProduct> GetInputs()
         {
             return _context.InputProducts
@@ -24,6 +26,8 @@ namespace StockManagerCore.Services
                 .Include(i => i.Company);
 
         }
+        
+        //Querry to fetch inputs by date
         public IEnumerable<InputProduct> GetInputsByDate(DateTime date)
         {
             return _context.InputProducts
@@ -34,6 +38,8 @@ namespace StockManagerCore.Services
                        .Include(i => i.Company)
                        .ToList();
         }
+       
+        //Querry to fetch inputs by date and Company
         public IEnumerable<InputProduct> GetInputsByDateAndCompany(DateTime date, Company co)
         {
             return _context.InputProducts
@@ -44,6 +50,8 @@ namespace StockManagerCore.Services
                        .Include(i => i.Product)
                        .Include(i => i.Company);
         }
+        
+        //Querry to InsertNew  Inputs
         public void InsertInputs(InputProduct input)
         {
             try

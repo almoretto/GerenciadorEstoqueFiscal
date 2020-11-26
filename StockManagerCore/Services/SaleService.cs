@@ -12,11 +12,15 @@ namespace StockManagerCore.Services
     public class SaleService
     {
         #region --== Constructor for dependency injections ==--
+        
+        //Constructor and dependency injection to DBContext
         private readonly StockDBContext _context;
         public SaleService(StockDBContext context) { _context = context; }
         #endregion
 
         #region --== Methods ==--
+       
+        //Method to insert multiple sales on database
         public void InsertMultiSales(List<SoldProduct> sales)
         {
             try
@@ -29,12 +33,16 @@ namespace StockManagerCore.Services
                 throw new DbUpdateConcurrencyException(ex.Message);
             }
         }
+        
+        //Querry to retrieve all sales from database
         public IEnumerable<SoldProduct> GetSales()
         {
             return _context.SoldProducts
                 .Include(s => s.Company)
                 .Include(s => s.Product).OrderBy(s => s.Company);
         }
+        
+        //Querry to find sales filtering by date and company
         public IEnumerable<SoldProduct> GetSalesByDateAndCompany(DateTime di, DateTime df, Company co)
         {
             return _context.SoldProducts
@@ -48,6 +56,8 @@ namespace StockManagerCore.Services
                 && s.DhEmi.Month <= df.Month
                 && s.DhEmi.Day <= df.Day);
         }
+        
+        //Querry to find sales filtering by date.
         public IEnumerable<SoldProduct> GetSalesByDate(DateTime di, DateTime df)
         {
             return _context.SoldProducts

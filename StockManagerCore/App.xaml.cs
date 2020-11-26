@@ -16,6 +16,9 @@ namespace StockManagerCore
         private readonly ServiceProvider serviceProvider;
         public App()
         {
+            /*Application inicialization and injection of dependency of services, DBContext and Seed Data service.
+             * Any Service is from each kind of Model.
+             */
             ServiceCollection services = new ServiceCollection();
             services.AddDbContext<StockDBContext>(options =>
             {

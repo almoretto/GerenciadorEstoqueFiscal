@@ -4,7 +4,7 @@
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:enm="clr-namespace:StockManagerCore.Models.Enums"
              Startup="OnStartup">
-            
+    <!--Declaration of resouces to use enumerators in the combobox each necessary enum has an Object provider declared-->            
     <Application.Resources>
         <ObjectDataProvider x:Key="enmNFType" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>

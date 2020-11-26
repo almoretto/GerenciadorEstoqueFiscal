@@ -4,20 +4,22 @@ namespace StockManagerCore.Services
 {
     public class InputNFe
     {
+        //Auxiliary Class to avoid interact directly to the model.
+        // Used to temporary store the inputs and treat the names of the products.
         #region --== Field properties ==--
         public DateTime DhEmi { get; set; }
         public string NItem { get; set; }
         public string XProd { get; set; }
         public int QCom { get; set; }
-        public double VUnCom  { get; set; }
+        public double VUnCom { get; set; }
         public string UCom { get; set; }
-        public double  Vtotal { get; set; }
+        public double Vtotal { get; set; }
         public double VUnTrib { get; set; }
         public double VTotTrib { get; set; }
         public string Group { get; set; }
         #endregion
-       
-        //Methods
+
+        //Method to Alternat the name of the product as groups name
         public void AlternateNames()
         {
             //get names of the groups from name of product
@@ -37,7 +39,8 @@ namespace StockManagerCore.Services
             {
                 XProd = "BRINCO";
             }
-            else if (XProd.Contains("CHOKER") || XProd.Contains("GARGANTILHA") || XProd.Contains("GARGANTILHAS"))
+            else if (XProd.Contains("CHOKER") || XProd.Contains("GARGANTILHA") 
+                || XProd.Contains("GARGANTILHAS"))
             {
                 XProd = "CHOKER";
             }
@@ -76,6 +79,11 @@ namespace StockManagerCore.Services
             else if (XProd.Contains("CONJUNTO") || XProd.Contains("KIT"))
             {
                 XProd = "CONJUNTO";
+            }
+            else if (XProd.Contains("ACESSÓRIOS") || XProd.Contains("ACESSORIOS") 
+                || XProd.Contains("acessorios") || XProd.Contains("acessórios"))
+            {
+                XProd = "ACESSORIO";
             }
             else
             {

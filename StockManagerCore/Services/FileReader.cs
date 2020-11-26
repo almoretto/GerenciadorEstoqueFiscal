@@ -9,6 +9,12 @@ namespace StockManagerCore.Services
 {
     class FileReader
     {
+        /// <summary>
+        /// Class destinated to process the files for import data to system model and Database.
+        /// This class has two ways import input records or sale records.
+        /// in both the treatment occurrs on the same method but in separate decisions because of the layout
+        /// the input file is close received, and the sales is created by the client.
+        /// </summary>
         #region --== Local variables declarations ==--
         CultureInfo provider = CultureInfo.InvariantCulture;
         DateTime dhEmi;
@@ -42,49 +48,60 @@ namespace StockManagerCore.Services
         #endregion
 
         #region --== Functional methods ==--
+
+        //Method to read the file and get the data to inside.
         public string GetInputItens()
         {
+
             FileNfe = new List<string[]>();
             int count = 0;
-            using (StreamReader sr = File.OpenText(Path)) //forma reduzida
+            //Using method to open file and read content on the provided path
+            using (StreamReader sr = File.OpenText(Path)) //reduced form
             {
+                //Loop until not the end
                 while (!sr.EndOfStream)
                 {
-                    if (!Sales) //Incomings
+                    if (!Sales) //If the boolean Sales seted as False - we treat Incomes.
                     {
+                        //Here the method split the line by the tabulator character | in an string vector and store in an list of vectors.
                         string[] line = sr.ReadLine().Split("|");
-                        if (count != 0)
+                        if (count != 0) //the method disregards the header line.
                         {
-                            //save only lines with these initial collumns
+                            //the method will save only lines with these initial collumns to cleam the final matrix.
                             if (line[0] == "B" || line[0] == "H" || line[0] == "I" || line[0] == "N10h" || line[0] == "O07" || line[0] == "W02")
                             {
-                                FileNfe.Add(line);
+                                FileNfe.Add(line); //Matrix Created
                             }
                         }
                         count++;
                     }
-                    else //Sales
+                    else //If the Boolean was true then it is Sales so treated here.
                     {
+                        //the method splits each line by the tabulator ; ins an string vector 
+                        //and add each line to an list creating a matrix
                         string[] line = sr.ReadLine().Split(";");
-                        if (count != 0)
+                        if (count != 0) //the method disregards the header line.
                         {
-                            FileNfe.Add(line);
+                            FileNfe.Add(line);//Matrix Created
                         }
                         count++;
                     }
                 }
-                if (!Sales)
+                //Ate the end of the matrix creation the process continues.
+                if (!Sales) //Method for inputs bool = false
                 {
-                    ProcessInputFile();
+                    ProcessInputFile(); //calling input file process method
                 }
-                else
+                else //method for sales bool = true
                 {
-                    ProcessOutputFile();
+                    ProcessOutputFile(); //calling output file process method.
                 }
             }
 
-            return "Inputs Added : " + Inputs.Count;
+            return "Inputs Added : " + Inputs.Count; // returns the processed inputs at the end.
         }
+
+        //Method to generate the name of the product as groupnames, getting in the description name of each product
         private void GenerateGroups()
         {
             //get names of the groups from name of product
@@ -146,29 +163,34 @@ namespace StockManagerCore.Services
                 {
                     Inputs[i].Group = "CONJUNTO";
                 }
+                else if (Inputs[i].XProd.Contains("ACESSÓRIOS") || Inputs[i].XProd.Contains("ACESSORIOS")
+               || Inputs[i].XProd.Contains("acessorios") || Inputs[i].XProd.Contains("acessórios"))
+                {
+                    Inputs[i].Group = "ACESSORIO";
+                }
                 else
                 {
                     Inputs[i].Group = "VARIADOS";
                 }
             }
         }
-        //Incomings, treat each line collumn 0
+        
+        //Process the lines of the Incomings, treat each line on collumn 0 to identificate each field data 
+        //on the tabulated string.
         private void ProcessLines(string[] line)
         {
-
-
-            if (line[0] == "B")
+            if (line[0] == "B") //Lines that begins with B have the date on position 7 of the tabulated vector
             {
                 DateTime date = new DateTime();
                 date = DateTime.Parse(line[7], provider, DateTimeStyles.None);
                 dhEmi = date.Date;
 
             }
-            else if (line[0] == "H")
+            else if (line[0] == "H")//Lines that begins with H have the item number on position 1 of the tabulated vector
             {
                 nItem = line[1];
             }
-            else if (line[0] == "I")
+            else if (line[0] == "I")//Lines that begins with I have the Products xpecs on position 3, 7, 8 and 9  of the tabulated vector
             {
                 qCom = 0;
                 vUnCom = 0.0;
@@ -180,46 +202,48 @@ namespace StockManagerCore.Services
                 uCom = line[7];
                 vTotal = qCom * vUnCom;
             }
-            else if (line[0] == "N10h")
+            else if (line[0] == "N10h")//Lines that begins with N10h have the ICMS Taxes on position 7 of the tabulated vector
             {
                 //ICMS
                 vTotTrib = 0.0;
                 vTotTrib = double.Parse(line[7], CultureInfo.InvariantCulture);
 
             }
-            else if (line[0] == "O07")
+            else if (line[0] == "O07")//Lines that begins with O07 have the IPI Tax on position 2 of the tabulated vector
             {
                 //IPI
                 vTotTrib += double.Parse(line[2], CultureInfo.InvariantCulture);
                 vUnTrib = vTotTrib / qCom;
             }
-            else if (line[0] == "W02")
+            else if (line[0] == "W02") //Lines that begins with W02 have the Total amount on position 19 of the tabulated vector
             {
                 totalNFe = double.Parse(line[19], CultureInfo.InvariantCulture);
             }
         }
-        //Sales
+        
+        //Process the file of Inputs
         private void ProcessInputFile()
         {
+            Inputs.Clear();
             int count = 0;
 
             for (int i = 0; i < FileNfe.Count; i++)
             {
                 if (i == 0)
                 {
-                    ProcessLines(FileNfe[i]);
+                    ProcessLines(FileNfe[i]); //Call the Method to process the lines of the file
                 }
                 else
                 {
-                    string[] test = FileNfe[i];
-                    if (test[0] == "H")
+                    string[] test = FileNfe[i]; 
+                    if (test[0] == "H")// Verifys if the line is An item inicialization.
                     {
                         count++;
                         for (int j = 0; j < 4; j++)
                         {
-                            ProcessLines(FileNfe[i + j]);
+                            ProcessLines(FileNfe[i + j]);//Process the products expecs of each item
                         }
-                        InputNFe p = new InputNFe();
+                        InputNFe p = new InputNFe(); //Create a new temporary instance of the mirror model.
                         p.DhEmi = dhEmi;
                         p.NItem = nItem;
                         p.XProd = xProd;
@@ -230,9 +254,9 @@ namespace StockManagerCore.Services
                         p.Vtotal = vTotal + vTotTrib;
                         p.VTotTrib = vTotTrib;
                         p.VUnTrib = vUnTrib + vUnCom;
-                        Inputs.Add(p);
+                        Inputs.Add(p); //Add the temporary to a list
                     }
-                    else if (test[0] == "W02")
+                    else if (test[0] == "W02") // if this came to true the the file came to end and the method will get the total amount
                     {
                         ProcessLines(FileNfe[i]);
                     }
@@ -241,27 +265,37 @@ namespace StockManagerCore.Services
             }
             foreach (InputNFe item in Inputs)
             {
+                //Creates an total of Products purchased and total qty
                 somaNFe += item.Vtotal;
                 qteTotal += item.QCom;
             }
-            if (totalNFe > somaNFe)
+            if (totalNFe > somaNFe) //tests if the amount of the file is greater than the sum got above.
             {
+                //Calculates the difference beetween total and the sum of products total.
                 dif = totalNFe - somaNFe;
+                //Divides the difference by the totoal qty
                 difUn = dif / qteTotal;
                 foreach (InputNFe item in Inputs)
                 {
+                    //Adds the unitary difference multiplied by qty purchased and sum to total of that product.
                     item.Vtotal += (difUn * item.QCom);
+                    //Sum the unitary difference to the unitary value
                     item.VUnCom += difUn;
                 }
             }
 
-            GenerateGroups();
+            GenerateGroups(); //Call the method to generate the name as groups.
         }
+        
+        //Process the file of sales
         private void ProcessOutputFile()
         {
+            Inputs.Clear();
             foreach (string[] line in FileNfe)
             {
+                //Instances the temporary mirror model
                 InputNFe sl = new InputNFe();
+                //attributes all values from the matrix line to the model
                 sl.NItem = line[0];
                 sl.XProd = line[1].ToUpper();
                 sl.QCom = int.Parse(line[2]);
@@ -272,7 +306,7 @@ namespace StockManagerCore.Services
                 sl.UCom = "";
                 sl.VTotTrib = 0.0;
                 sl.VUnTrib = 0.0;
-
+                //add the instance to the list.
                 Inputs.Add(sl);
             }
 

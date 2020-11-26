@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using StockManagerCore.Data;
 using StockManagerCore.Models;
@@ -14,11 +13,13 @@ namespace StockManagerCore.Services
     public class StockService
     {
         #region --== Constructor for dependency injection ==--
+        //Constructor of the service class and dbcontext dependency injection
         private readonly StockDBContext _context;
         public StockService(StockDBContext context) { _context = context; }
         #endregion
 
         #region --== Methods ==--
+        //Querry all stocks selecting by an specific company
         public IEnumerable<Stock> GetStocksByCompany(Company company)
         {
             if (company==null)
@@ -27,6 +28,7 @@ namespace StockManagerCore.Services
             }
             try
             {
+                //Entity Framework Querry including related product and company entities.
                 return _context.Stocks
                     .Include(s => s.Product)
                     .Include(s => s.Company)
@@ -37,6 +39,8 @@ namespace StockManagerCore.Services
                 throw new NotFoundException(ex.Message);
             }
         }
+        
+        //Querry Stock filtering by company and product
         public Stock GetStockByCompanyAndGroup(Company co, string grp)
         {
             Stock stock = new Stock();
@@ -44,6 +48,7 @@ namespace StockManagerCore.Services
             {
                 throw new RequiredFieldException("Empresa e Produto são obrigatórios para localizar um estoque");
             }
+            //EF query filtering company and product and including related company and product entities.
             stock = (_context.Stocks
                 .Where(s => s.Company.Id == co.Id))
                 .Where(s => s.Product.GroupP == grp)
@@ -56,6 +61,8 @@ namespace StockManagerCore.Services
             }
             return stock;
         }
+       
+        //Querry all Stocks from database
         public IEnumerable<Stock> GetStocks()
         {
             return _context.Stocks
@@ -63,6 +70,8 @@ namespace StockManagerCore.Services
                 .Include(s => s.Company)
                 .OrderBy(s => s.Product.GroupP);
         }
+        
+        //Querry all stocks and returns a formated list. Includin product name and company name.
         public IEnumerable<object> GetStocksFormated(Company company)
         {
             var query = from s in _context.Stocks
@@ -83,19 +92,10 @@ namespace StockManagerCore.Services
                         };
             return query.ToList();
         }
-        public void Update(Stock stk)
-        {
-            try
-            {
-                _context.Stocks.Update(stk);
-                _context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                throw new DbUpdateConcurrencyException(ex.Message);
-            }
-        }
+
         #region --== Crud ==--
+        
+        //Method to Create new Stock
         public string Create(Product product, int? qtyPurchased, int? qtySold, double? amountPurchased,
             double? amountSold, DateTime lstImput, DateTime? lstSale, Company company)
         {
@@ -135,6 +135,8 @@ namespace StockManagerCore.Services
             }
             return "Criado com sucesso estoque id: " + result;
         }
+        
+        //Method to Find a Strock of a specific product to edit.
         public Stock FindToUpdate(Company co, Product prod)
         {
             Stock stk = new Stock();
@@ -155,7 +157,20 @@ namespace StockManagerCore.Services
             }
             throw new NotFoundException("Insuficient Data to find entity!");
         }
-        
+     
+        //Method to Update/edit a stock on database
+        public void Update(Stock stk)
+        {
+            try
+            {
+                _context.Stocks.Update(stk);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw new DbUpdateConcurrencyException(ex.Message);
+            }
+        }
         #endregion
         #endregion
     }
