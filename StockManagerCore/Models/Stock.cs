@@ -53,7 +53,7 @@ namespace StockManagerCore.Models
             Company = company;
         }
         public Stock(Product product, int qtyPurchased, int qtySold, double amountPurchased,
-           double amountSold, DateTime lstImput, DateTime lstSale , Company company)
+           double amountSold, DateTime lstImput, DateTime lstSale, Company company)
         {
             Product = product;
             QtyPurchased = qtyPurchased;
@@ -67,12 +67,16 @@ namespace StockManagerCore.Models
         #endregion
 
         #region --== Methods ==--
+        
+        //Method to make a moviment of purchase and add itens to stock
         public void MovimentInput(int qty, double amount, DateTime lstD)
         {
             QtyPurchased += qty;
             AmountPurchased += amount;
             LastInput = lstD.Date;
         }
+
+        //Method to make moviment of sale and subtract itens of the stock
         public void MovimentSale(int qty, double amount, DateTime lstD)
         {
             QtySold += qty;

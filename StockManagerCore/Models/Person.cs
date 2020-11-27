@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿#region --Declaration of Dependencies ==--
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using StockManagerCore.Models.Enums;
+#endregion
 
 namespace StockManagerCore.Models
 {

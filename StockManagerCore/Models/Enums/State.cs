@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StockManagerCore.Models.Enums
+﻿namespace StockManagerCore.Models.Enums
 {
     public enum State : int
     {

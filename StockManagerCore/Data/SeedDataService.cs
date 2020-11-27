@@ -25,6 +25,7 @@ namespace StockManagerCore.Data
 
         #endregion
 
+        //Seeding data region
         public void Seed()
         {
             #region --== Seeding Products groups ==--

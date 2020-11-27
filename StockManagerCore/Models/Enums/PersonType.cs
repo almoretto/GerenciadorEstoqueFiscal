@@ -1,6 +1,4 @@
-﻿
-
-namespace StockManagerCore.Models.Enums
+﻿namespace StockManagerCore.Models.Enums
 {
     public enum PersonType : int
     {

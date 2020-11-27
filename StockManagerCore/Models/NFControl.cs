@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region --== Declaration of Dependencies ==--
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using StockManagerCore.Models.Enums;
+#endregion
 
 namespace StockManagerCore.Models
 {

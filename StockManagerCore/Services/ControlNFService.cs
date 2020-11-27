@@ -16,34 +16,48 @@ namespace StockManagerCore.Services
         #endregion
 
         #region --== Methods==--
+        
+        //Querry to fetch all Records on NFControls
         public IEnumerable<NFControl> GetControls()
         {
             return _context.NFControls.OrderBy(c => c.Expiration);
         }
+        
+        //Querry returning an Observable Collection to Create a Grouped GridView 
         public ObservableCollection<NFControl> GetObservableNFs()
         {
              return (ObservableCollection<NFControl>)_context.NFControls.OrderBy(c => c.Expiration);
         }
+        
+        //Querry to Find NfControl record by Number
         public NFControl FindByNumber(int number)
         {
             return _context.NFControls.Where(n => n.NFNumber == number).FirstOrDefault();
         }
+
+        //Querry to Find all NfControl record by company
         public IEnumerable<NFControl>FindByCompany(string name)
         {
             return _context.NFControls
                 .Where(n => n.Company.Name == name)
                 .OrderBy(n => n.Expiration);
         }
+
+        //Querry to Find all NfControl record by destination
         public IEnumerable<NFControl> FindByDestination(string destinatary)
         {
             return _context.NFControls
                 .Where(n => n.Destinatary.Name == destinatary)
                 .OrderBy(n => n.Expiration);
         }
+
+        //Querry to Find all NfControl record by Date Now
         public IEnumerable<NFControl> GetByDate()
         {
             return _context.NFControls.Where(d => d.Expiration.Date == DateTime.Now.Date);
         }
+
+        //Querry to Find all NfControl record by date now + 7 days
         public IEnumerable<NFControl> GetByWeek()
         {
             return _context.NFControls
@@ -51,6 +65,8 @@ namespace StockManagerCore.Services
                 && d.Expiration.Date <= DateTime.Now.AddDays(7).Date);
         }
         #region --== Crud ==--
+       
+        //Methods to Create new, Edit and Delete a NFControl Record
         public string Crete(NFControl NF)
         {
             string result;

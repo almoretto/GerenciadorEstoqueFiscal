@@ -18,10 +18,14 @@ namespace StockManagerCore.Services
         #endregion
 
         #region --== Methods ==--
+
+        //Querry to fetch all Companies Records
         public IEnumerable<Company> GetCompanies()
         {
             return _context.Companies.OrderBy(c => c.Name);
         }
+
+        //Querry to find a specific company
         public Company Find(Company c)
         {
             Company company = new Company();
@@ -39,6 +43,8 @@ namespace StockManagerCore.Services
             return company;
 
         }
+
+        //Querry to find a company by name
         public Company FindByName(string name)
         {
             try
@@ -58,7 +64,26 @@ namespace StockManagerCore.Services
 
         }
 
+        //Querry to Find a specific company by Id to update.
+        public Company FindToUdate(int id)
+        {
+            Company co = new Company();
+
+            if (id != 0)
+            {
+                co = _context.Companies.Find(id);
+                if (co == null)
+                {
+                    throw new NotFoundException("Id :" + id.ToString() + "Não encontrado");
+                }
+                return co;
+            }
+            throw new NotFoundException("Insuficient Data to find entity!");
+        }
+
         #region --== CRUD ==--
+
+        //Methods to Create New and Update records of companies.
         public string Create(string name)
         {
             try
@@ -81,21 +106,6 @@ namespace StockManagerCore.Services
                 throw new DbComcurrancyException("Não foi possivel atualizar veja mensagem: \n" + msg);
             }
 
-        }
-        public Company FindToUdate(int id)
-        {
-            Company co = new Company();
-
-            if (id != 0)
-            {
-                co = _context.Companies.Find(id);
-                if (co == null)
-                {
-                    throw new NotFoundException("Id :" + id.ToString() + "Não encontrado");
-                }
-                return co;
-            }
-            throw new NotFoundException("Insuficient Data to find entity!");
         }
         public string Update(Company co)
         {

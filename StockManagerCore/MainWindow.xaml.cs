@@ -765,9 +765,12 @@ namespace StockManagerCore
                 case "Tipo":
                     //Grouping by type and put it on grid pré formated.
                     InitializeComponent();
+                    //Observable type is for use in GridView as Grouping See Style on Window XAML
                     ObservableCollection<NFControl> group = new ObservableCollection<NFControl>();
+                    //Grouped Query
                     group = _controlNFService.GetObservableNFs();
                     dtgNFData.AutoGenerateColumns = false;
+                    //Instance of a collection View
                     ListCollectionView collection = new ListCollectionView(group);
                     collection.GroupDescriptions.Add(new PropertyGroupDescription("OperationType"));
                     dtgNFData.ItemsSource = collection;
