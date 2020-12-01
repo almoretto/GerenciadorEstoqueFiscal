@@ -727,6 +727,62 @@ namespace StockManagerCore
             }
         }
 
+        //Method to create an manual stock entry
+        private void btnEntryStock_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedProduct = _productService.FindByGroup(CmbStkProduct.SelectedItem.ToString());
+            SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedItem.ToString());
+            SelectedStock = _stockService.GetStockByCompanyAndGroup(SelectedCompany, SelectedProduct.GroupP);
+            SelectedStock.MovimentInput(
+                Convert.ToInt32(TxtStkQtyPurchased.Text),
+                Convert.ToDouble(TxtStkAmountPurchased.Text),
+                DateTime.Now.Date);
+            try
+            {
+                _stockService.Update(SelectedStock);
+                TxtBlkLogCRUD.Text = "Atualizado com sucesso";
+                CmbStkCompany.SelectedIndex = -1;
+                CmbStkProduct.SelectedIndex = -1;
+                TxtStkAmountPurchased.Text = string.Empty;
+                TxtStkAmountSold.Text = string.Empty;
+                TxtStkQtyPurchased.Text = string.Empty;
+                TxtStkQtySold.Text = string.Empty;
+            }
+            catch (ApplicationException ex)
+            {
+                TxtBlkLogCRUD.Text = "Erro ao Atualizar" + ex.Message;
+                throw new ApplicationException("Erro na Atualização" + ex.Message);
+            }
+        }
+        //Method to create an manual stock sale
+        private void btnSaleStock_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedProduct = _productService.FindByGroup(CmbStkProduct.SelectedItem.ToString());
+            SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedItem.ToString());
+            SelectedStock = _stockService.GetStockByCompanyAndGroup(SelectedCompany, SelectedProduct.GroupP);
+            SelectedStock.MovimentSale(
+                Convert.ToInt32(TxtStkQtySold.Text),
+                Convert.ToDouble(TxtStkAmountSold.Text),
+                DateTime.Now.Date);
+            try
+            {
+                _stockService.Update(SelectedStock);
+                TxtBlkLogCRUD.Text = "Atualizado com sucesso";
+                CmbStkCompany.SelectedIndex = -1;
+                CmbStkProduct.SelectedIndex = -1;
+                TxtStkAmountPurchased.Text = string.Empty;
+                TxtStkAmountSold.Text = string.Empty;
+                TxtStkQtyPurchased.Text = string.Empty;
+                TxtStkQtySold.Text = string.Empty;
+            }
+            catch (ApplicationException ex)
+            {
+                TxtBlkLogCRUD.Text = "Erro ao Atualizar" + ex.Message;
+                throw new ApplicationException("Erro na Atualização" + ex.Message);
+            }
+
+
+        }
         #endregion
 
         #region --== NF Control ==--
@@ -1078,8 +1134,10 @@ namespace StockManagerCore
         }
 
 
+
+
         #endregion
 
-        
+      
     }
 }

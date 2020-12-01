@@ -7,7 +7,7 @@
         xmlns:Models="clr-namespace:StockManagerCore.Models" xmlns:DependencyInjection="clr-namespace:Microsoft.Extensions.DependencyInjection;assembly=Microsoft.Extensions.DependencyInjection" xmlns:Custom="http://schemas.microsoft.com/netfx/2009/xaml/presentation" x:Class="StockManagerCore.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900">
-   <!--Declaretion of resources for creating a style for grouping on Grid View on NFControl Tab-->
+    <!--Declaretion of resources for creating a style for grouping on Grid View on NFControl Tab-->
     <Window.Resources>
         <Style x:Key="GroupHeaderStyle" TargetType="{x:Type GroupItem}">
             <Setter Property="Template">
@@ -104,10 +104,12 @@
                             <DatePicker x:Name="DPkrStkLastInput" HorizontalAlignment="Left" Margin="4,130,0,0" VerticalAlignment="Top"/>
                             <DatePicker x:Name="DPkrStkLastSale" HorizontalAlignment="Left" Margin="148,130,0,0" VerticalAlignment="Top"/>
                             <Button x:Name="BtnCreateStock" Content="Criar" HorizontalAlignment="Left" Margin="304,130,0,0" VerticalAlignment="Top" Width="60" Click="Btn_CreateStock_Click"/>
-                            <Button x:Name="BtnReadStock" Content="Visualizar" HorizontalAlignment="Left" Margin="379,130,0,0" VerticalAlignment="Top" Width="60" Click="Btn_ReadStock_Click"/>
+                            <Button x:Name="BtnReadStock" Content="Visualizar" HorizontalAlignment="Left" Margin="369,130,0,0" VerticalAlignment="Top" Width="60" Click="Btn_ReadStock_Click"/>
+                            <Button x:Name="btnEntryStock" Content="Efetuar Entrada" HorizontalAlignment="Left" Margin="434,130,0,0" VerticalAlignment="Top" Width="94" Click="btnEntryStock_Click"/>
+                            <Button x:Name="btnSaleStock" Content="Efetuar Saída" HorizontalAlignment="Left" Margin="533,130,0,0" VerticalAlignment="Top" Click="btnSaleStock_Click"/>
                         </Grid>
                     </GroupBox>
-                    <TextBlock x:Name="TxtBlkLogCRUD" HorizontalAlignment="Left" Margin="28,458,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="39" FontWeight="Normal" Grid.Column="1">
+                    <TextBlock x:Name="TxtBlkLogCRUD" HorizontalAlignment="Left" Margin="28,439,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="58" FontWeight="Normal" Grid.Column="1">
                     </TextBlock>
                     <TextBlock x:Name="TxtBlkInstructStock" Grid.Column="1" HorizontalAlignment="Left" Margin="673,248,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Height="175"><Run Text="Para Visualizar selecione a empresa"/><Run Text=". "/><Run/><LineBreak/><Run Text="Lembre-se que ao cadastrar um produto novo, o mesmo deverá ser cadastrado no estoque de cada uma das empresas separadamente."/><Run Text=" "/></TextBlock>
                     <ComboBox x:Name="CmbSwitch" Grid.Column="1" HorizontalAlignment="Left" Margin="32,20,0,0" VerticalAlignment="Top" Width="166">
