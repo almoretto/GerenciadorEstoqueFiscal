@@ -12,6 +12,8 @@ namespace StockManagerCore.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        public double MaxRevenues { get; set; }
+        public double Balance { get; private set; }
         public ICollection<InputProduct> InputProducts { get; set; }
         public ICollection<SoldProduct> SoldProducts { get; set; }
         public ICollection<Stock> Stocks { get; set; }
@@ -20,10 +22,19 @@ namespace StockManagerCore.Models
 
         #region --== Constructors ==--
         public Company() { }
-        public Company( string name)
+        public Company( string name, double maxRev)
         {
             Name = name;
+            MaxRevenues = maxRev;
         }
+        #endregion
+
+        #region --== Methods ==--
+        public void SetBalance(double billed)
+        {
+            Balance = MaxRevenues - billed;
+        }
+
         #endregion
     }
 }

@@ -464,22 +464,14 @@ namespace StockManagerCore
             {
                 //Get Selected company in combo
                 SelectedCompany = _companyService.FindByName((string)CmbCompany.SelectedItem);
-
                 if (SelectedCompany == null)
                 {
                     //Company must not be null
                     throw new ApplicationException("Selecione uma empresa!");
-                }
-                //Changes view to the tab of dataview
-                tbiDataView.IsSelected = true;
-                //Activates the auto generate columns for the grid manages himself
-                GrdView.AutoGenerateColumns = true;
-                //attributes the data to grid
-                TxtBCompany.Text = CmbCompany.SelectedItem.ToString(); //Label on top
+                }             
                 ListOfStocks = _stockService.GetStocksFormated(SelectedCompany); //list Resulkt
-                //attach list to grid for result
-                GrdView.ItemsSource = ListOfStocks.ToList();
-                InitializeComponent();
+                //Method to generate GridView
+                GenerateGrid(ListOfStocks, SelectedCompany);
             }
             catch (ApplicationException ex)
             {
@@ -491,6 +483,31 @@ namespace StockManagerCore
                 }
 
                 LogTextBlock.Text = log.ToString();
+            }
+        }
+        private void btnBalanceAll_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<Stock> stocksToCalc;
+            stocksToCalc = _stockService.GetStocks();
+
+            foreach (Stock item in stocksToCalc)
+            {
+                try
+                {
+                    item.SetBalance();
+                    _stockService.Update(item);
+                }
+                catch (Exception ex)
+                {
+                    LogTextBlock.Text = "Erro ao Tentar atualizar item"
+                        + item.Product.GroupP
+                        + ",  "
+                        + item.Company.Name
+                        + "."
+                        + "\n"
+                        + ex.Message;
+                    throw new Exception(ex.Message);
+                }
             }
         }
         #endregion
@@ -506,6 +523,8 @@ namespace StockManagerCore
                     SelectedCompany = _companyService.FindByName(TxtSelection.Text.ToUpper());
                     TxtCoId.Text = SelectedCompany.Id.ToString();
                     TxtCoName.Text = SelectedCompany.Name;
+                    txtCompanyMaxRevenues.Text = SelectedCompany.MaxRevenues.ToString("C2");
+                    txtCompanyBalance.Text = SelectedCompany.Balance.ToString("C2");
                     InitializeComponent();
                     break;
                 case "Produto":
@@ -546,7 +565,7 @@ namespace StockManagerCore
                     throw new RequiredFieldException("Favor preencher o nome da empresa para cadastrar");
                 }
                 //Calling Method Create from service layer and Returning to the log 
-                log.AppendLine(_companyService.Create(TxtCoName.Text));
+                log.AppendLine(_companyService.Create(TxtCoName.Text, Convert.ToDouble(txtCompanyMaxRevenues.Text)));
 
                 TxtBlkLogCRUD.Text = log.ToString();
             }
@@ -599,6 +618,8 @@ namespace StockManagerCore
             //Updating temporary model for further update in db context
             toUpdate.Name = TxtCoName.Text;
             toUpdate.Id = Convert.ToInt32(TxtCoId.Text);
+            toUpdate.MaxRevenues = Convert.ToDouble(txtCompanyMaxRevenues.Text);
+            toUpdate.SetBalance(CalculateCompanyBalance(_stockService.GetStocksByCompany(toUpdate), toUpdate));
             //Calling update method in service layer and returning result to log
             log.AppendLine(_companyService.Update(toUpdate));
             TxtBlkLogCRUD.Text = log.ToString();
@@ -726,7 +747,17 @@ namespace StockManagerCore
                 throw new RequiredFieldException("Informa a empresa para filtrar os estoques");
             }
         }
-
+        private void btnBalanceCalc_Click(object sender, RoutedEventArgs e)
+        {
+            SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedItem.ToString());
+            if (SelectedCompany == null)
+            {
+                //Company must not be null
+                throw new ApplicationException("Selecione uma empresa!");
+            }
+            ListOfStocks = _stockService.CalculateBalance(SelectedCompany);
+            GenerateGrid(ListOfStocks, SelectedCompany);   
+        }
         //Method to create an manual stock entry
         private void btnEntryStock_Click(object sender, RoutedEventArgs e)
         {
@@ -998,6 +1029,8 @@ namespace StockManagerCore
                     SelectedCompany = _companyService.FindByName(txtIteration.Text.Trim());
                     lblCompanyID.Content = SelectedCompany.Id;
                     txtCompanyNF.Text = SelectedCompany.Name;
+                    txtMaxRevenuesNF.Text = SelectedCompany.MaxRevenues.ToString("C2");
+                    txtCompanyBalanceNF.Text = SelectedCompany.Balance.ToString("C2");
 
                 }
             }
@@ -1028,7 +1061,12 @@ namespace StockManagerCore
             else if (rbtCompany.IsChecked == true)
             {
                 //Create Company
-                MessageBox.Show(_companyService.Create(txtCompanyNF.Text.Trim()));
+                Company newCompany = new Company();
+                newCompany.Name = txtCompanyNF.Text;
+                newCompany.MaxRevenues = Convert.ToDouble(txtMaxRevenuesNF.Text);
+                newCompany.SetBalance(0.0d);
+                
+                MessageBox.Show(_companyService.Create(newCompany));
             }
             return;
         }
@@ -1072,6 +1110,11 @@ namespace StockManagerCore
                     return;
                 }
                 SelectedCompany.Name = txtCompanyNF.Text;
+                SelectedCompany.MaxRevenues = Convert.ToDouble(txtMaxRevenuesNF.Text);
+                SelectedCompany.SetBalance(
+                    CalculateCompanyBalance(
+                        _stockService.GetStocksByCompany(SelectedCompany),
+                        SelectedCompany));
                 MessageBox.Show(_companyService.Update(SelectedCompany));
             }
             return;
@@ -1134,10 +1177,35 @@ namespace StockManagerCore
         }
 
 
-
-
         #endregion
 
-      
+        #region --== Local Methods ==--
+        private void GenerateGrid(IEnumerable<Object> gridContent, Company c)
+        {
+            //Changes view to the tab of dataview
+            tbiDataView.IsSelected = true;
+            //Activates the auto generate columns for the grid manages himself
+            GrdView.AutoGenerateColumns = true;
+            //attributes the data to grid
+            TxtBCompany.Text = c.Name; //Label on top
+            //attach list to grid for result
+            GrdView.ItemsSource = gridContent.ToList();
+            InitializeComponent();
+        }
+        private double CalculateCompanyBalance(IEnumerable<Stock> list, Company c)
+        {
+            double sum=0.0d;
+            foreach (Stock item in list)
+            {
+                sum += item.AmountSold;
+            }
+           
+            MessageBox.Show(_companyService.Update(c), 
+                "Resultado", 
+                MessageBoxButton.OK, 
+                MessageBoxImage.Information);
+            return sum;
+        }
+        #endregion
     }
 }

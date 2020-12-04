@@ -30,6 +30,12 @@ namespace StockManagerCore.Models
         [Required]
         [Display(Name ="Empresa")]
         public Company Company { get; set; }
+        
+        [Display(Name = "Saldo de Estoque")]
+        public int ProductBalance { get; private set; }
+
+        [Display(Name = "Data do Saldo")]
+        public DateTime BalanceDate { get; private set; }
         #endregion
 
         #region --== Class Properties Not Mapped ==--
@@ -82,6 +88,13 @@ namespace StockManagerCore.Models
             QtySold += qty;
             AmountSold += amount;
             LastSales = lstD.Date;
+        }
+        
+        public void SetBalance()
+        {
+            BalanceDate = DateTime.Now.Date;
+            ProductBalance = QtyPurchased - QtySold;
+
         }
         #endregion
     }

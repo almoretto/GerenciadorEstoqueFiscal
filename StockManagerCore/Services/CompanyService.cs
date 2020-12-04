@@ -84,11 +84,11 @@ namespace StockManagerCore.Services
         #region --== CRUD ==--
 
         //Methods to Create New and Update records of companies.
-        public string Create(string name)
+        public string Create(string name, double maxR)
         {
             try
             {
-                Company c = new Company(name);
+                Company c = new Company(name, maxR);
                 _context.Companies.Add(c);
                 _context.SaveChanges();
                 var test = _context.Companies.Where(t => t.Name == c.Name).FirstOrDefault();
@@ -106,6 +106,24 @@ namespace StockManagerCore.Services
                 throw new DbComcurrancyException("Não foi possivel atualizar veja mensagem: \n" + msg);
             }
 
+        }
+        public string Create(Company c)
+        {
+            try
+            {
+                _context.Companies.Add(c);
+                _context.SaveChanges();
+            }
+            catch (DbComcurrancyException ex)
+            {
+                string msg = ex.Message;
+                if (ex.InnerException != null)
+                {
+                    msg += "\n" + ex.InnerException;
+                }
+                throw new DbComcurrancyException("Não foi possivel atualizar veja mensagem: \n" + msg);
+            }
+            return "Adicionado com sucesso";
         }
         public string Update(Company co)
         {

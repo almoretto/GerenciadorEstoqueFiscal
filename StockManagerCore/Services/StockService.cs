@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using StockManagerCore.Data;
 using StockManagerCore.Models;
@@ -22,7 +23,7 @@ namespace StockManagerCore.Services
         //Querry all stocks selecting by an specific company
         public IEnumerable<Stock> GetStocksByCompany(Company company)
         {
-            if (company==null)
+            if (company == null)
             {
                 throw new RequiredFieldException("Empresa é obrigatoria para retornar lista de estoques");
             }
@@ -34,12 +35,12 @@ namespace StockManagerCore.Services
                     .Include(s => s.Company)
                     .Where(s => s.Company.Id == company.Id);
             }
-            catch(NotFoundException ex)
+            catch (NotFoundException ex)
             {
                 throw new NotFoundException(ex.Message);
             }
         }
-        
+
         //Querry Stock filtering by company and product
         public Stock GetStockByCompanyAndGroup(Company co, string grp)
         {
@@ -55,13 +56,13 @@ namespace StockManagerCore.Services
                 .Include(s => s.Product)
                 .Include(s => s.Company)
                 .FirstOrDefault();
-            if (stock==null)
+            if (stock == null)
             {
                 throw new NotFoundException("Estoque não encontrado com os parâmetros");
             }
             return stock;
         }
-       
+
         //Querry all Stocks from database
         public IEnumerable<Stock> GetStocks()
         {
@@ -70,7 +71,7 @@ namespace StockManagerCore.Services
                 .Include(s => s.Company)
                 .OrderBy(s => s.Product.GroupP);
         }
-        
+
         //Querry all stocks and returns a formated list. Includin product name and company name.
         public IEnumerable<object> GetStocksFormated(Company company)
         {
@@ -83,18 +84,39 @@ namespace StockManagerCore.Services
                             Produto = s.Product.GroupP,
                             QteComprada = s.QtyPurchased,
                             QteVendida = s.QtySold,
-                            QteSaldo = (s.QtyPurchased - s.QtySold),
+                            QteSaldo = s.ProductBalance,
+                            DataSaldo = s.BalanceDate.ToString("dd/MM/yyyy"),
                             ValorCompra = s.AmountPurchased.ToString("C2"),
                             ValorVenda = s.AmountSold.ToString("C2"),
-                            ValorSaldo = (s.AmountPurchased - s.AmountSold).ToString("C2"),
                             UltimaSaída = s.LastSales.ToString("dd/MM/yyyy"),
                             UltimaEntrada = s.LastInput.ToString("dd/MM/yyyy")
                         };
             return query.ToList();
         }
+        public IEnumerable<object> CalculateBalance(Company company)
+        {
+            try
+            {
+                IEnumerable<Stock> stocks;
+                stocks = GetStocksByCompany(company);
+                foreach (Stock item in stocks)
+                {
+                    item.SetBalance();
+                }
+                _context.UpdateRange(stocks);
+                _context.SaveChanges();
+            }
+            catch (DbComcurrancyException ex)
+            {
+                MessageBox.Show("Erro ao tentar fazer update!\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new DbUpdateConcurrencyException(ex.Message);
+            }
+            return GetStocksFormated(company).ToList();
+        }
+
 
         #region --== Crud ==--
-        
+
         //Method to Create new Stock
         public string Create(Product product, int? qtyPurchased, int? qtySold, double? amountPurchased,
             double? amountSold, DateTime lstImput, DateTime? lstSale, Company company)
@@ -130,12 +152,12 @@ namespace StockManagerCore.Services
             }
             catch (DbUpdateException ex)
             {
-
+                MessageBox.Show("Erro ao tetar criar novo!\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new DbUpdateException(ex.Message);
             }
             return "Criado com sucesso estoque id: " + result;
         }
-        
+
         //Method to Find a Strock of a specific product to edit.
         public Stock FindToUpdate(Company co, Product prod)
         {
@@ -157,7 +179,7 @@ namespace StockManagerCore.Services
             }
             throw new NotFoundException("Insuficient Data to find entity!");
         }
-     
+
         //Method to Update/edit a stock on database
         public void Update(Stock stk)
         {
@@ -168,6 +190,7 @@ namespace StockManagerCore.Services
             }
             catch (DbUpdateConcurrencyException ex)
             {
+                MessageBox.Show("Erro ao tentar fazer update!\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new DbUpdateConcurrencyException(ex.Message);
             }
         }

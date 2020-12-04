@@ -41,7 +41,7 @@ namespace StockManagerCore.Data
                 Ps.Add(new Product("PINGENTE"));
                 Ps.Add(new Product("PULSEIRA"));
                 Ps.Add(new Product("TORNOZELEIRA"));
-                Ps.Add(new Product("PEAÇAS"));
+                Ps.Add(new Product("PEÇAS"));
                 Ps.Add(new Product("VARIADOS"));
                 Ps.Add(new Product("BROCHE"));
                 Ps.Add(new Product("CONJUNTO"));
@@ -55,10 +55,10 @@ namespace StockManagerCore.Data
             #region --== Seeding Companies ==--
             if (!_Context.Companies.Any())
             {
-                Cs.Add(new Company("ATACADAO"));
-                Cs.Add(new Company("JR"));
-                Cs.Add(new Company("FABRICACAO"));
-                Cs.Add(new Company("ATACADAO MCP"));
+                Cs.Add(new Company("ATACADAO", 0.00));
+                Cs.Add(new Company("JR", 0.00));
+                Cs.Add(new Company("FABRICACAO", 0.00));
+                Cs.Add(new Company("ATACADAO MCP", 0.00));
                 _Context.Companies.AddRange(Cs); //Add to dbset
                 _Context.SaveChanges(); //Persist
             }
@@ -67,76 +67,76 @@ namespace StockManagerCore.Data
             #region --== Seeding Stocks ==--
             if (!_Context.Stocks.Any())
             {
-                #region --== Seeding Stocks Company Id=1 ==--
-                var prd = _Context.Products.Where(p => p.Id == 1).FirstOrDefault();
-                var com = _Context.Companies.Where(c => c.Id == 1).FirstOrDefault();
-                Stock s1 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 2).FirstOrDefault();
-                Stock s2 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 3).FirstOrDefault();
-                Stock s3 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 4).FirstOrDefault();
-                Stock s4 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 5).FirstOrDefault();
+                #region --== Seeding Stocks Company Atacadao ==--
+                var com = _Context.Companies.Where(c => c.Name == "ATACADAO").FirstOrDefault();
+                var prd = _Context.Products.Where(p => p.GroupP == "ANEL").FirstOrDefault();
+                Stock s1 = new Stock(prd, 142019, 106319, 76819.44, 406753.01, new DateTime(2019, 12, 31), new DateTime(2019,12,31), com);
+                prd = _Context.Products.Where(p => p.GroupP == "ARGOLA").FirstOrDefault();
+                Stock s2 = new Stock(prd, 34773, 28596, 26462.60, 107119.72, new DateTime(2019, 12, 31), new DateTime(2019, 12, 31), com);
+                prd = _Context.Products.Where(p => p.GroupP == "BRACELETE").FirstOrDefault();
+                Stock s3 = new Stock(prd, 21239, 10263, 33939.80, 74116.11, new DateTime(2019, 12, 31), new DateTime(2019, 12, 31), com);
+                prd = _Context.Products.Where(p => p.GroupP == "BRINCO").FirstOrDefault();
+                Stock s4 = new Stock(prd, 208071, 156291, 149007.39, 495604.81, new DateTime(2019, 12, 31), new DateTime(2019, 12, 31), com);
+                prd = _Context.Products.Where(p => p.GroupP == "CHOKER").FirstOrDefault();
                 Stock s5 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 6).FirstOrDefault();
-                Stock s6 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 7).FirstOrDefault();
-                Stock s7 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 8).FirstOrDefault();
-                Stock s8 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 9).FirstOrDefault();
-                Stock s9 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 10).FirstOrDefault();
-                Stock s10 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 11).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "COLAR").FirstOrDefault();
+                Stock s6 = new Stock(prd, 66801, 50189, 75709.71, 321378.54, new DateTime(2019, 12, 31), new DateTime(2019, 12, 31), com);
+                prd = _Context.Products.Where(p => p.GroupP == "CORRENTE").FirstOrDefault();
+                Stock s7 = new Stock(prd, 27218, 26379, 29582.35, 92188.25, new DateTime(2019, 12, 31), new DateTime(2019, 12, 31), com);
+                prd = _Context.Products.Where(p => p.GroupP == "PINGENTE").FirstOrDefault();
+                Stock s8 = new Stock(prd, 30177, 21240, 11661.92, 38930.58, new DateTime(2019, 12, 31), new DateTime(2019, 12, 31), com);
+                prd = _Context.Products.Where(p => p.GroupP == "PULSEIRA").FirstOrDefault();
+                Stock s9 = new Stock(prd, 83160, 37040, 76877.02, 180068.76, new DateTime(2019, 12, 31), new DateTime(2019, 12, 31), com);
+                prd = _Context.Products.Where(p => p.GroupP == "TORNOZELEIRA").FirstOrDefault();
+                Stock s10 = new Stock(prd, 4115, 2221, 9490.42, 7638.90, new DateTime(2019, 12, 31), new DateTime(2019, 12, 31), com);
+                prd = _Context.Products.Where(p => p.GroupP== "PEÇAS").FirstOrDefault();
                 Stock s11 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 12).FirstOrDefault();
-                Stock s12 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 13).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP== "VARIADOS").FirstOrDefault();
+                Stock s12 = new Stock(prd, 7399, 6838, 3278.92, 11014.06, new DateTime(2019, 12, 31), new DateTime(2019, 12, 31), com);
+                prd = _Context.Products.Where(p => p.GroupP== "BROCHE").FirstOrDefault();
                 Stock s13 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 14).FirstOrDefault();
-                Stock s27 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 15).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP== "CONJUNTO").FirstOrDefault();
+                Stock s27 = new Stock(prd, 2771, 1945, 6694.93, 9741.07, new DateTime(2019, 12, 31), new DateTime(2019, 12, 31), com);
+                prd = _Context.Products.Where(p => p.GroupP== "ACESSORIO").FirstOrDefault();
                 Stock s57 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
                 #endregion
-                #region --== Dbset and commit Company 1 ==--
+                #region --== Dbset and commit Company Atacadao ==--
                 _Context.Stocks.AddRange(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s27);
 
                 _Context.SaveChanges();
                 #endregion
 
-                #region --== Seeding Stocks Company id=2 ==--
-                prd = _Context.Products.Where(p => p.Id == 1).FirstOrDefault();
-                com = _Context.Companies.Where(c => c.Id == 2).FirstOrDefault();
+                #region --== Seeding Stocks Company JR ==--
+                com = _Context.Companies.Where(c => c.Name == "JR").FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "ANEL").FirstOrDefault();
                 Stock s14 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 2).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "ARGOLA").FirstOrDefault();
                 Stock s15 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 3).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "BRACELETE").FirstOrDefault();
                 Stock s16 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 4).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "BRINCO").FirstOrDefault();
                 Stock s17 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 5).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "CHOKER").FirstOrDefault();
                 Stock s18 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 6).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "COLAR").FirstOrDefault();
                 Stock s19 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 7).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "CORRENTE").FirstOrDefault();
                 Stock s20 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 8).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "PINGENTE").FirstOrDefault();
                 Stock s21 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 9).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "PULSEIRA").FirstOrDefault();
                 Stock s22 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 10).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "TORNOZELEIRA").FirstOrDefault();
                 Stock s23 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 11).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "PEÇAS").FirstOrDefault();
                 Stock s24 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 12).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "VARIADOS").FirstOrDefault();
                 Stock s25 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 13).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "BROCHE").FirstOrDefault();
                 Stock s26 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 14).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "CONJUNTO").FirstOrDefault();
                 Stock s28 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 15).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "ACESSORIO").FirstOrDefault();
                 Stock s58 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
                 #endregion
                 #region --== Dbset and commit Company 2 ==--
@@ -145,37 +145,37 @@ namespace StockManagerCore.Data
                 _Context.SaveChanges();
                 #endregion
 
-                #region --== Seeding Stocks Company id=3 ==--
-                prd = _Context.Products.Where(p => p.Id == 1).FirstOrDefault();
-                com = _Context.Companies.Where(c => c.Id == 3).FirstOrDefault();
+                #region --== Seeding Stocks Company FABRICACAO ==--
+                com = _Context.Companies.Where(c => c.Name == "FABRICACAO").FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "ANEL").FirstOrDefault();
                 Stock s29 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 2).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "ARGOLA").FirstOrDefault();
                 Stock s30 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 3).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "BRACELETE").FirstOrDefault();
                 Stock s31 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 4).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "BRINCO").FirstOrDefault();
                 Stock s32 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 5).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "CHOKER").FirstOrDefault();
                 Stock s33 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 6).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "COLAR").FirstOrDefault();
                 Stock s34 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 7).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "CORRENTE").FirstOrDefault();
                 Stock s35 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 8).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "PINGENTE").FirstOrDefault();
                 Stock s36 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 9).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "PULSEIRA").FirstOrDefault();
                 Stock s37 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 10).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "TORNOZELEIRA").FirstOrDefault();
                 Stock s38 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 11).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "PEÇAS").FirstOrDefault();
                 Stock s39 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 12).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "VARIADOS").FirstOrDefault();
                 Stock s40 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 13).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "BROCHE").FirstOrDefault();
                 Stock s41 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 14).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "CONJUNTO").FirstOrDefault();
                 Stock s42 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 15).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "ACESSORIO").FirstOrDefault();
                 Stock s59 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
                 #endregion
                 #region --== Dbset and commit Company 3 ==--
@@ -184,37 +184,37 @@ namespace StockManagerCore.Data
                 _Context.SaveChanges();
                 #endregion
 
-                #region --== Seeding Stocks Company id = 4 ==--
-                prd = _Context.Products.Where(p => p.Id == 1).FirstOrDefault();
-                com = _Context.Companies.Where(c => c.Id == 4).FirstOrDefault();
+                #region --== Seeding Stocks Company ATACADAO MCP ==--
+                com = _Context.Companies.Where(c => c.Name == "ATACADAO MCP").FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "ANEL").FirstOrDefault();
                 Stock s43 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 2).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "ARGOLA").FirstOrDefault();
                 Stock s44 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 3).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "BRACELETE").FirstOrDefault();
                 Stock s45 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 4).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "BRINCO").FirstOrDefault();
                 Stock s46 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 5).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "CHOKER").FirstOrDefault();
                 Stock s47 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 6).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "COLAR").FirstOrDefault();
                 Stock s48 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 7).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "CORRENTE").FirstOrDefault();
                 Stock s49 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 8).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "PINGENTE").FirstOrDefault();
                 Stock s50 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 9).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "PULSEIRA").FirstOrDefault();
                 Stock s51 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 10).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "TORNOZELEIRA").FirstOrDefault();
                 Stock s52 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 11).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "PEÇAS").FirstOrDefault();
                 Stock s53 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 12).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "VARIADOS").FirstOrDefault();
                 Stock s54 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 13).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "BROCHE").FirstOrDefault();
                 Stock s55 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 14).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "CONJUNTO").FirstOrDefault();
                 Stock s56 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
-                prd = _Context.Products.Where(p => p.Id == 15).FirstOrDefault();
+                prd = _Context.Products.Where(p => p.GroupP == "ACESSORIO").FirstOrDefault();
                 Stock s60 = new Stock(prd, 0, 0, 0.0, 0.0, new DateTime(2020, 01, 01), com);
                 #endregion
                 #region --== Dbset and commit Company 4 ==--
