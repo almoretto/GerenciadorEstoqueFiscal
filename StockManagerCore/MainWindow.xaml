@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:StockManagerCore"
         xmlns:Models="clr-namespace:StockManagerCore.Models" xmlns:DependencyInjection="clr-namespace:Microsoft.Extensions.DependencyInjection;assembly=Microsoft.Extensions.DependencyInjection" xmlns:Custom="http://schemas.microsoft.com/netfx/2009/xaml/presentation" x:Class="StockManagerCore.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="900">
+        Title="MainWindow" Height="700" Width="1000">
     <!--Declaretion of resources for creating a style for grouping on Grid View on NFControl Tab-->
     <Window.Resources>
         <Style x:Key="GroupHeaderStyle" TargetType="{x:Type GroupItem}">
@@ -28,22 +28,29 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <TextBlock HorizontalAlignment="Center" Margin="30,10,0,0" Text="Sistema de Controle" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-2.313,-0.875" Background="{DynamicResource {x:Static SystemColors.AppWorkspaceBrushKey}}" FontSize="20" FontWeight="Bold"/>
-        <TabControl x:Name="tbcMain" Margin="0,42,0,0">
+        <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" Text="Sistema de Controle" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-2.313,-0.875" FontSize="24" FontWeight="Bold" FontFamily="Rockwell" Width="448" TextAlignment="Center" Height="36" FontStretch="UltraExpanded">
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="0.45"/>
+                    <GradientStop Color="#FFB2B4B3" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+        <TabControl x:Name="tbcMain" Margin="25,63,25,10" Width="950">
             <TabItem x:Name="tbiFunctions" Header="Funções" Height="20" IsSelected="True">
-                <Grid Background="#FFE5E5E5" Height="507">
+                <Grid Background="#FFF3F2F2" Height="528">
                     <TextBox x:Name="FileNameTextBox" HorizontalAlignment="Left" Margin="53,23,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="399" Height="18"/>
                     <Button x:Name="BtnFileOpen" Content="Selecionar" HorizontalAlignment="Left" Margin="485,23,0,0" VerticalAlignment="Top" Click="BtnFileOpen_Click" Height="18" Width="70"/>
                     <Button x:Name="ProcessFile" Content="Processar Entradas" HorizontalAlignment="Left" Margin="53,73,0,0" VerticalAlignment="Top" Click="ProcessInputs_Click" Height="20" Width="120"/>
                     <Button x:Name="ProcessSales" Content="Processar Saídas" HorizontalAlignment="Left" Margin="193,73,0,0" VerticalAlignment="Top" Width="120" Click="ProcessSales_Click" Height="20"/>
-                    <TextBlock x:Name="LogTextBlock" HorizontalAlignment="Center" Margin="0,397,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="100" FontWeight="Normal" FontSize="14"/>
+                    <TextBlock x:Name="LogTextBlock" HorizontalAlignment="Left" Margin="53,394,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="798" Height="100" FontWeight="Normal" FontSize="14"/>
                     <ComboBox x:Name="CmbCompany" HorizontalAlignment="Left" Margin="53,46,0,0" VerticalAlignment="Top" Width="399" Height="22"/>
                     <TextBox x:Name="TxtDateInitial" HorizontalAlignment="Left" Margin="53,110,0,0" Text="Data Inicial" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date" Height="18"/>
                     <Button x:Name="BtnCalculate" Content="Calcular" HorizontalAlignment="Left" Margin="53,156,0,0" VerticalAlignment="Top" Click="Btn_Calculate_Click" Height="20" Width="204"/>
                     <RadioButton x:Name="RdnIn" HorizontalAlignment="Left" Margin="193,113,0,0" VerticalAlignment="Top" GroupName="E/S" Content="Entradas" IsChecked="True" Height="15" Width="64"/>
                     <RadioButton x:Name="RdnOut" Content="Saídas" HorizontalAlignment="Left" Margin="193,133,0,0" VerticalAlignment="Top" RenderTransformOrigin="0,0.34" GroupName="E/S" Height="15" Width="64"/>
                     <TextBox x:Name="TxtDateFinal" HorizontalAlignment="Left" Margin="53,133,0,0" Text="Data Final" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date" Height="18"/>
-                    <TextBox x:Name="TxtConsole" HorizontalAlignment="Left" Margin="53,182,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="798" Height="173" AllowDrop="False" IsReadOnlyCaretVisible="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox x:Name="TxtConsole" HorizontalAlignment="Left" Margin="53,182,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="798" Height="192" AllowDrop="False" IsReadOnlyCaretVisible="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
                     <Button x:Name="BtnShowStock" Content="Mostrar Estoque" HorizontalAlignment="Left" Margin="333,73,0,0" VerticalAlignment="Top" Width="120" Click="Btn_ShowStock_Click" Height="20"/>
                     <Button x:Name="btnBalanceAll" Content="Recalcular Estoque" HorizontalAlignment="Left" Margin="333,98,0,0" VerticalAlignment="Top" Width="119" Click="btnBalanceAll_Click"/>
                 </Grid>
@@ -119,9 +126,9 @@
                             <TextBox x:Name="txtBalance" HorizontalAlignment="Left" Margin="151,90,0,0" Text="Saldo Atual" TextWrapping="Wrap" VerticalAlignment="Top" Width="138" AllowDrop="False" IsReadOnly="True" IsTabStop="False" IsUndoEnabled="False" InputScope="CurrencyAmountAndSymbol" Height="23"/>
                         </Grid>
                     </GroupBox>
-                    <TextBlock x:Name="TxtBlkLogCRUD" HorizontalAlignment="Left" Margin="28,439,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="58" FontWeight="Normal" Grid.Column="1">
+                    <TextBlock x:Name="TxtBlkLogCRUD" HorizontalAlignment="Left" Margin="28,439,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="841" Height="58" FontWeight="Normal" Grid.Column="1">
                     </TextBlock>
-                    <TextBlock x:Name="TxtBlkInstructStock" Grid.Column="1" HorizontalAlignment="Left" Margin="673,248,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Height="175"><Run Text="Para Visualizar selecione a empresa"/><Run Text=". "/><Run/><LineBreak/><Run Text="Lembre-se que ao cadastrar um produto novo, o mesmo deverá ser cadastrado no estoque de cada uma das empresas separadamente."/><Run Text=" "/></TextBlock>
+                    <TextBlock x:Name="TxtBlkInstructStock" Grid.Column="1" HorizontalAlignment="Left" Margin="730,251,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="162" Height="175"><Run Text="Para Visualizar selecione a empresa"/><Run Text=". "/><Run/><LineBreak/><Run Text="Lembre-se que ao cadastrar um produto novo, o mesmo deverá ser cadastrado no estoque de cada uma das empresas separadamente."/><Run Text=" "/></TextBlock>
                     <ComboBox x:Name="CmbSwitch" Grid.Column="1" HorizontalAlignment="Left" Margin="32,20,0,0" VerticalAlignment="Top" Width="166">
                         <ComboBoxItem Content="Empresa"/>
                         <ComboBoxItem Content="Produto"/>

@@ -80,7 +80,7 @@ namespace StockManagerCore
             ControlNFService controlNFService, CityService cityService)
         {
             //Constructor of the form MainWindow here we call the dependency injection
-
+            
             _inputService = inputService;
             _saleService = saleService;
             _productService = productService;
