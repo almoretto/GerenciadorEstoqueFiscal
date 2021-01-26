@@ -356,6 +356,7 @@ namespace StockManagerCore
                     ClearFile();
                     importCount = 0;
                     ProcessSales.IsEnabled = true;
+                   
                 }
                 else
                 {
@@ -509,6 +510,7 @@ namespace StockManagerCore
                     ClearFile();
                     importCount = 0;
                     BtnCalculate.IsEnabled = true;
+                    TxtConsole.Text = string.Empty;
                 }
                 else
                 {
