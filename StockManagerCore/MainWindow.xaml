@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StockManagerCore"
-        xmlns:Models="clr-namespace:StockManagerCore.Models" xmlns:DependencyInjection="clr-namespace:Microsoft.Extensions.DependencyInjection;assembly=Microsoft.Extensions.DependencyInjection" xmlns:Custom="http://schemas.microsoft.com/netfx/2009/xaml/presentation" x:Class="StockManagerCore.MainWindow"
+        xmlns:Models="clr-namespace:StockManagerCore.Models" xmlns:DependencyInjection="clr-namespace:Microsoft.Extensions.DependencyInjection;assembly=Microsoft.Extensions.DependencyInjection" xmlns:Custom="http://schemas.microsoft.com/netfx/2009/xaml/presentation" x:Name="FRMMain" x:Class="StockManagerCore.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1000">
+        Title="MainWindow" Height="700" Width="1000" HorizontalAlignment="Left" VerticalAlignment="Top" Left="50" Top="57">
     <!--Declaretion of resources for creating a style for grouping on Grid View on NFControl Tab-->
     <Window.Resources>
         <Style x:Key="GroupHeaderStyle" TargetType="{x:Type GroupItem}">

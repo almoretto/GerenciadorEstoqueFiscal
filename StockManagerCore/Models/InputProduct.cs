@@ -19,6 +19,7 @@ namespace StockManagerCore.Models
         public double VUnTrib { get; set; }
         public double VTotTrib { get; set; }
         public DateTime DhEmi { get; set; }
+       // public string Filename { get; set; }
 
         [Required]
         public Company Company { get; set; }

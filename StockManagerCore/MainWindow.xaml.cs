@@ -44,6 +44,8 @@ namespace StockManagerCore
         #endregion
 
         #region --== Local Variables ==--
+        int importCount = 0;
+        string lastfile;
         string filename;
         FileReader nfeReader;
         bool sales;
@@ -80,7 +82,7 @@ namespace StockManagerCore
             ControlNFService controlNFService, CityService cityService)
         {
             //Constructor of the form MainWindow here we call the dependency injection
-            
+
             _inputService = inputService;
             _saleService = saleService;
             _productService = productService;
@@ -156,6 +158,7 @@ namespace StockManagerCore
         }
         private void ProcessInputs_Click(object sender, RoutedEventArgs e)
         {
+            importCount++;
             //This Method is responsible to care of process the import files in input records.
             try
             {
@@ -175,6 +178,10 @@ namespace StockManagerCore
                     //Any company must be selected to create a link between products and company, so if its null, throw exception.
                     throw new ApplicationException("Selecione uma empresa!");
                 }
+                if (lastfile == filename)
+                {
+                    throw new ApplicationException("Nota já Inserida");
+                }
                 //Here just inform that imports is occurring
                 LogTextBlock.Text = "Importando: " + filename;
                 //Sets the bool variable to False to indicate to the service class where to process this file, 
@@ -183,6 +190,7 @@ namespace StockManagerCore
                 log.Clear();
                 if (!sales) //If Sales = False
                 {
+                    ProcessFile.IsEnabled = false;
                     //Instance the service that process the file. 
                     //Calling the constructor passing the File and the Bool variable to indicate where to process
                     nfeReader = new FileReader(filename, sales);
@@ -196,7 +204,7 @@ namespace StockManagerCore
                         Product p = new Product();
                         //Getting the entity product by his group name in the service class.
                         p = _productService.FindByGroup(item.Group);
-                        
+
                         item.AlternateNames(); //callcing an method to padronize the names of the products as groups.
 
                         //Instancing model class and calling constructor for each item record in service class to place data.
@@ -216,6 +224,7 @@ namespace StockManagerCore
                         //calling the method to insert the data in model on db context
                         _inputService.InsertInputs(InputProduct);
                     }
+
                 }
                 else //Exception
                 {
@@ -226,6 +235,24 @@ namespace StockManagerCore
                     throw new ApplicationException("Não pode processar venda como Compra!");
                 }
 
+                MessageBoxResult result = MessageBox.Show("Upload Terminado, Inserir nova? " +
+                                                        "\n Ao pressionar não o sistema irá limpar tudo!" +
+                                                        "\n Inseridos: " + LogTextBlock.Text + " registros",
+                                                            "Controle de Estoque",
+                                                            MessageBoxButton.YesNo,
+                                                            MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    LogTextBlock.Text = String.Empty;
+                    lastfile = filename;
+                    ClearFile();
+                    importCount = 0;
+                    ProcessFile.IsEnabled = true;
+                }
+                else
+                {
+                    ClearForm();
+                }
             }
             catch (Exception ex)
             {
@@ -261,6 +288,10 @@ namespace StockManagerCore
                     //Any company must be selected to create a link between products and company, so if its null, throw exception.
                     throw new ApplicationException("Selecione uma empresa!");
                 }
+                if (lastfile == filename)
+                {
+                    throw new ApplicationException("Nota já Inserida");
+                }
                 //Here just inform that imports is occurring
                 LogTextBlock.Text = "Importando: " + filename;
                 //Sets the bool variable to TRUE to indicate to the service class where to process this file, 
@@ -270,6 +301,7 @@ namespace StockManagerCore
 
                 if (sales)
                 {
+                    ProcessSales.IsEnabled = false;
                     //Instance the service
                     nfeReader = new FileReader(filename, sales);
                     //Reading inputs and returning Log
@@ -311,6 +343,25 @@ namespace StockManagerCore
                     throw new ApplicationException("Não pode processar entrada como venda!");
                 }
 
+                MessageBoxResult result = MessageBox.Show("Upload Terminado, Inserir nova? " +
+                                                        "\n Ao pressionar não o sistema irá limpar tudo!" +
+                                                        "\n Inseridos: " + LogTextBlock.Text + " registros",
+                                                            "Controle de Estoque",
+                                                            MessageBoxButton.YesNo,
+                                                            MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    LogTextBlock.Text = String.Empty;
+                    lastfile = filename;
+                    ClearFile();
+                    importCount = 0;
+                    ProcessSales.IsEnabled = true;
+                }
+                else
+                {
+                    ClearForm();
+                }
+
             }
             catch (Exception ex)
             {
@@ -341,8 +392,9 @@ namespace StockManagerCore
 
                 if (RdnIn.IsChecked == true)
                 {
+                    BtnCalculate.IsEnabled = false;
                     //Here is the separation for calcularion of inputs 
-                   //Get the inicial date typed on textBox
+                    //Get the inicial date typed on textBox
                     dateInitial = DateTime.ParseExact(TxtDateInitial.Text, "dd/MM/yyyy", provider);
                     //Get a List of purchased products filtered by date and company
                     IEnumerable<InputProduct> listInputProduct = _inputService.GetInputsByDateAndCompany(dateInitial, SelectedCompany);
@@ -381,7 +433,7 @@ namespace StockManagerCore
                         TxtConsole.Text = log.ToString();
                         qteTot += qty;
                         totAmount += amount;
-                       //Zero fill the temporary variable.
+                        //Zero fill the temporary variable.
                         qty = 0;
                         amount = 0.0;
                     }
@@ -394,7 +446,7 @@ namespace StockManagerCore
                 {
                     //Here is the separation for calcularion of Sales 
                     //Get the inicial  and final date typed on textBox
-
+                    BtnCalculate.IsEnabled = false;
                     dateInitial = DateTime.ParseExact(TxtDateInitial.Text, "dd/MM/yyyy", provider);
                     dateFinal = DateTime.ParseExact(TxtDateFinal.Text, "dd/MM/yyyy", provider);
                     // list of sales by date and company
@@ -445,6 +497,23 @@ namespace StockManagerCore
                 //Counting the two lists
                 log.AppendLine("Lista Entradas: " + count.ToString());
                 log.AppendLine("Lista Saídas: " + ListOfSales.Count);
+                MessageBoxResult result = MessageBox.Show("Processamento Terminado, efetuar novo? " +
+                                                                "\n Ao pressionar não o sistema irá limpar tudo!",
+                                                                    "Controle de Estoque",
+                                                                    MessageBoxButton.YesNo,
+                                                                    MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    LogTextBlock.Text = String.Empty;
+                    lastfile = filename;
+                    ClearFile();
+                    importCount = 0;
+                    BtnCalculate.IsEnabled = true;
+                }
+                else
+                {
+                    ClearForm();
+                }
             }
             catch (ApplicationException ex)
             {
@@ -468,7 +537,7 @@ namespace StockManagerCore
                 {
                     //Company must not be null
                     throw new ApplicationException("Selecione uma empresa!");
-                }             
+                }
                 ListOfStocks = _stockService.GetStocksFormated(SelectedCompany); //list Resulkt
                 //Method to generate GridView
                 GenerateGrid(ListOfStocks, SelectedCompany);
@@ -730,7 +799,7 @@ namespace StockManagerCore
             if (CmbStkCompany != null)
             {
                 SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedItem.ToString());
-                if (SelectedCompany==null)
+                if (SelectedCompany == null)
                 {
                     throw new NotFoundException("Empresa não localizada");
                 }
@@ -756,7 +825,7 @@ namespace StockManagerCore
                 throw new ApplicationException("Selecione uma empresa!");
             }
             ListOfStocks = _stockService.CalculateBalance(SelectedCompany);
-            GenerateGrid(ListOfStocks, SelectedCompany);   
+            GenerateGrid(ListOfStocks, SelectedCompany);
         }
         //Method to create an manual stock entry
         private void btnEntryStock_Click(object sender, RoutedEventArgs e)
@@ -1065,7 +1134,7 @@ namespace StockManagerCore
                 newCompany.Name = txtCompanyNF.Text;
                 newCompany.MaxRevenues = Convert.ToDouble(txtMaxRevenuesNF.Text);
                 newCompany.SetBalance(0.0d);
-                
+
                 MessageBox.Show(_companyService.Create(newCompany));
             }
             return;
@@ -1130,11 +1199,11 @@ namespace StockManagerCore
                     MessageBox.Show("Antes de Deletar precisa localizar");
                     return;
                 }
-                MessageBoxResult result = MessageBox.Show("Realmente deseja excluir? " 
-                    + City.CityName, 
-                    "Confirmation", 
+                MessageBoxResult result = MessageBox.Show("Realmente deseja excluir? "
+                    + City.CityName,
+                    "Confirmation",
                     MessageBoxButton.YesNoCancel);
-                if (result==MessageBoxResult.Yes)
+                if (result == MessageBoxResult.Yes)
                 {
                     MessageBox.Show(_cityService.Delete(City));
 
@@ -1194,17 +1263,36 @@ namespace StockManagerCore
         }
         private double CalculateCompanyBalance(IEnumerable<Stock> list, Company c)
         {
-            double sum=0.0d;
+            double sum = 0.0d;
             foreach (Stock item in list)
             {
                 sum += item.AmountSold;
             }
-           
-            MessageBox.Show(_companyService.Update(c), 
-                "Resultado", 
-                MessageBoxButton.OK, 
+
+            MessageBox.Show(_companyService.Update(c),
+                "Resultado",
+                MessageBoxButton.OK,
                 MessageBoxImage.Information);
             return sum;
+        }
+
+        private void ClearFile()
+        {
+            filename = string.Empty;
+            FileNameTextBox.Text = string.Empty;
+        }
+
+        private void ClearForm()
+        {
+            LogTextBlock.Text = String.Empty;
+            TxtConsole.Text = String.Empty;
+            lastfile = filename;
+            ClearFile();
+            importCount = 0;
+            BtnCalculate.IsEnabled = true;
+            ProcessSales.IsEnabled = true;
+            ProcessFile.IsEnabled = true;
+
         }
         #endregion
     }
