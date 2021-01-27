@@ -7,13 +7,17 @@
     <StartupObject>StockManagerCore.App</StartupObject>
     <ApplicationIcon>stock.ico</ApplicationIcon>
     <Nullable>warnings</Nullable>
-    <Version>4.0.0</Version>
+    <Version>4.1.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>5</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>
