@@ -64,7 +64,7 @@ namespace StockManagerCore.Services
             {
                 XProd = "TORNOZELEIRA";
             }
-            else if (XProd.Contains("VARIADOS"))
+            else if (XProd.Contains("VARIADOS")|| XProd.Contains("VARIADAS")|| XProd.Contains("VARIADO") || XProd.Contains("VARIADA"))
             {
                 XProd = "VARIADOS";
             }

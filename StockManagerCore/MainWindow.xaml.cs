@@ -566,7 +566,7 @@ namespace StockManagerCore
                 try
                 {
                     item.SetBalance();
-                    _stockService.Update(item);
+                    
                 }
                 catch (Exception ex)
                 {
@@ -580,6 +580,11 @@ namespace StockManagerCore
                     throw new Exception(ex.Message);
                 }
             }
+            _stockService.UpdateRange(stocksToCalc);
+            MessageBox.Show("Calculo Efetuado em:" + DateTime.Now.ToString("dd/MMM/yyyy"),
+                "Atualização de Saldo", 
+                MessageBoxButton.OK, 
+                MessageBoxImage.Information);
         }
         #endregion
 
@@ -772,8 +777,10 @@ namespace StockManagerCore
                 {
                     throw new NotFoundException("Empresa não encontrada!");
                 }
+#pragma warning disable CS8629 // O tipo de valor de nulidade pode ser nulo.
                 DateTime lstin = (DateTime)DPkrStkLastInput.SelectedDate;
                 DateTime lstout = (DateTime)DPkrStkLastSale.SelectedDate;
+#pragma warning restore CS8629 // O tipo de valor de nulidade pode ser nulo.
                 log.AppendLine(_stockService.Create(SelectedProduct,
                     Convert.ToInt32(TxtStkQtyPurchased.Text),
                     Convert.ToInt32(TxtStkQtySold.Text),
@@ -967,7 +974,9 @@ namespace StockManagerCore
             //Method to Save the new NF on control
             NF.NFNumber = Convert.ToInt32(txtNumber.Text);
             NF.Value = Convert.ToDouble(txtValue.Text);
+#pragma warning disable CS8629 // O tipo de valor de nulidade pode ser nulo.
             NF.Expiration = (DateTime)dpkExpiration.SelectedDate;
+#pragma warning restore CS8629 // O tipo de valor de nulidade pode ser nulo.
             NF.Operation = Convert.ToInt32(txtOperation.Text);
             NF.OperationType = (NFType)cmbTypeNF.SelectedItem;
             NF.Company = _companyService.FindByName(cmbNFCompany.SelectedItem.ToString());
@@ -995,7 +1004,9 @@ namespace StockManagerCore
             nfToUpdate.Id = anyId;
             nfToUpdate.NFNumber = Convert.ToInt32(txtNumber.Text);
             nfToUpdate.Value = Convert.ToDouble(txtValue.Text);
+#pragma warning disable CS8629 // O tipo de valor de nulidade pode ser nulo.
             nfToUpdate.Expiration = (DateTime)dpkExpiration.SelectedDate;
+#pragma warning restore CS8629 // O tipo de valor de nulidade pode ser nulo.
             nfToUpdate.Operation = Convert.ToInt32(txtOperation.Text);
             nfToUpdate.OperationType = (NFType)cmbTypeNF.SelectedItem;
             nfToUpdate.Company = _companyService.FindByName(cmbNFCompany.SelectedItem.ToString());

@@ -64,7 +64,9 @@ namespace StockManagerCore.Services
                     if (!Sales) //If the boolean Sales seted as False - we treat Incomes.
                     {
                         //Here the method split the line by the tabulator character | in an string vector and store in an list of vectors.
-                        string[] line = sr.ReadLine().Split("|");
+#pragma warning disable CS8602 // Desreferência de uma referência possivelmente nula.
+                        string[] line = sr.ReadLine().ToUpper().Split("|");
+#pragma warning restore CS8602 // Desreferência de uma referência possivelmente nula.
                         if (count != 0) //the method disregards the header line.
                         {
                             //the method will save only lines with these initial collumns to cleam the final matrix.
@@ -79,7 +81,9 @@ namespace StockManagerCore.Services
                     {
                         //the method splits each line by the tabulator ; ins an string vector 
                         //and add each line to an list creating a matrix
-                        string[] line = sr.ReadLine().Split(";");
+#pragma warning disable CS8602 // Desreferência de uma referência possivelmente nula.
+                        string[] line = sr.ReadLine().ToUpper().Split(";");
+#pragma warning restore CS8602 // Desreferência de uma referência possivelmente nula.
                         if (count != 0) //the method disregards the header line.
                         {
                             FileNfe.Add(line);//Matrix Created
@@ -107,19 +111,19 @@ namespace StockManagerCore.Services
             //get names of the groups from name of product
             for (int i = 0; i < Inputs.Count; i++)
             {
-                if (Inputs[i].XProd.Contains("ANEL"))
+                if (Inputs[i].XProd.Contains("ANEL") || Inputs[i].XProd.Contains("ANEIS") || Inputs[i].XProd.Contains("ANÉIS"))
                 {
                     Inputs[i].Group = "ANEL";
                 }
-                else if (Inputs[i].XProd.Contains("ARGOLA") || Inputs[i].XProd.Contains("Trio de Argolas"))
+                else if (Inputs[i].XProd.Contains("ARGOLA") || Inputs[i].XProd.Contains("Trio de Argolas") || Inputs[i].XProd.Contains("ARGOLAS"))
                 {
                     Inputs[i].Group = "ARGOLA";
                 }
-                else if (Inputs[i].XProd.Contains("BRACELETE"))
+                else if (Inputs[i].XProd.Contains("BRACELETE") || Inputs[i].XProd.Contains("BRACELETES"))
                 {
                     Inputs[i].Group = "BRACELETE";
                 }
-                else if (Inputs[i].XProd.Contains("BRINCO"))
+                else if (Inputs[i].XProd.Contains("BRINCO") || Inputs[i].XProd.Contains("BRINCOS"))
                 {
                     Inputs[i].Group = "BRINCO";
                 }
@@ -127,35 +131,40 @@ namespace StockManagerCore.Services
                 {
                     Inputs[i].Group = "CHOKER";
                 }
-                else if (Inputs[i].XProd.Contains("COLAR") || Inputs[i].XProd.Contains("CORDAO"))
+                else if (Inputs[i].XProd.Contains("COLAR") || Inputs[i].XProd.Contains("CORDAO")
+                    || Inputs[i].XProd.Contains("CORDÃO") || Inputs[i].XProd.Contains("ESCAPULARIO")
+                    || Inputs[i].XProd.Contains("ESCAPULÁRIO") || Inputs[i].XProd.Contains("COLARES")
+                    || Inputs[i].XProd.Contains("CORDÕES") || Inputs[i].XProd.Contains("CORDOES")
+                    || Inputs[i].XProd.Contains("ESCAPULARIOS") || Inputs[i].XProd.Contains("ESCAPULÁRIOS"))
                 {
                     Inputs[i].Group = "COLAR";
                 }
-                else if (Inputs[i].XProd.Contains("CORRENTE"))
+                else if (Inputs[i].XProd.Contains("CORRENTE") || Inputs[i].XProd.Contains("CORRENTES"))
                 {
                     Inputs[i].Group = "CORRENTE";
                 }
-                else if (Inputs[i].XProd.Contains("PINGENTE"))
+                else if (Inputs[i].XProd.Contains("PINGENTE") || Inputs[i].XProd.Contains("PINGENTES"))
                 {
                     Inputs[i].Group = "PINGENTE";
                 }
-                else if (Inputs[i].XProd.Contains("PULSEIRA"))
+                else if (Inputs[i].XProd.Contains("PULSEIRA") || Inputs[i].XProd.Contains("PULSEIRAS"))
                 {
                     Inputs[i].Group = "PULSEIRA";
                 }
-                else if (Inputs[i].XProd.Contains("TORNOZELEIRA"))
+                else if (Inputs[i].XProd.Contains("TORNOZELEIRA") || Inputs[i].XProd.Contains("TORNOZELEIRAS"))
                 {
                     Inputs[i].Group = "TORNOZELEIRA";
                 }
-                else if (Inputs[i].XProd.Contains("VARIADOS") || Inputs[i].XProd.Contains("VARIADO"))
+                else if (Inputs[i].XProd.Contains("VARIADOS") || Inputs[i].XProd.Contains("VARIADO")
+                    || Inputs[i].XProd.Contains("VARIADA") || Inputs[i].XProd.Contains("VARIADAS"))
                 {
                     Inputs[i].Group = "VARIADOS";
                 }
-                else if (Inputs[i].XProd.Contains("BROCHE"))
+                else if (Inputs[i].XProd.Contains("BROCHE") || Inputs[i].XProd.Contains("BROCHES"))
                 {
                     Inputs[i].Group = "BROCHE";
                 }
-                else if (Inputs[i].XProd.Contains("PARTES E"))
+                else if (Inputs[i].XProd.Contains("PARTES E") || Inputs[i].XProd.Contains("PECAS") || Inputs[i].XProd.Contains("PEÇAS"))
                 {
                     Inputs[i].Group = "PEÇAS";
                 }
@@ -174,7 +183,7 @@ namespace StockManagerCore.Services
                 }
             }
         }
-        
+
         //Process the lines of the Incomings, treat each line on collumn 0 to identificate each field data 
         //on the tabulated string.
         private void ProcessLines(string[] line)
@@ -220,7 +229,7 @@ namespace StockManagerCore.Services
                 totalNFe = double.Parse(line[19], CultureInfo.InvariantCulture);
             }
         }
-        
+
         //Process the file of Inputs
         private void ProcessInputFile()
         {
@@ -235,7 +244,7 @@ namespace StockManagerCore.Services
                 }
                 else
                 {
-                    string[] test = FileNfe[i]; 
+                    string[] test = FileNfe[i];
                     if (test[0] == "H")// Verifys if the line is An item inicialization.
                     {
                         count++;
@@ -286,7 +295,7 @@ namespace StockManagerCore.Services
 
             GenerateGroups(); //Call the method to generate the name as groups.
         }
-        
+
         //Process the file of sales
         private void ProcessOutputFile()
         {

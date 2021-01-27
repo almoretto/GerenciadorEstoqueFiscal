@@ -66,10 +66,15 @@ namespace StockManagerCore.Services
         //Querry all Stocks from database
         public IEnumerable<Stock> GetStocks()
         {
-            return _context.Stocks
+            IEnumerable<Stock>stocks = _context.Stocks
                 .Include(s => s.Product)
                 .Include(s => s.Company)
                 .OrderBy(s => s.Product.GroupP);
+
+            _context.Database.CloseConnection();
+
+            return stocks;
+           
         }
 
         //Querry all stocks and returns a formated list. Includin product name and company name.
@@ -84,7 +89,7 @@ namespace StockManagerCore.Services
                             Produto = s.Product.GroupP,
                             QteComprada = s.QtyPurchased,
                             QteVendida = s.QtySold,
-                            QteSaldo = s.ProductBalance,
+                            QteSaldo = s.ProdQtyBalance,
                             DataSaldo = s.BalanceDate.ToString("dd/MM/yyyy"),
                             ValorCompra = s.AmountPurchased.ToString("C2"),
                             ValorVenda = s.AmountSold.ToString("C2"),
@@ -187,12 +192,28 @@ namespace StockManagerCore.Services
             {
                 _context.Stocks.Update(stk);
                 _context.SaveChanges();
+                _context.Database.CloseConnection();
             }
             catch (DbUpdateConcurrencyException ex)
             {
                 MessageBox.Show("Erro ao tentar fazer update!\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new DbUpdateConcurrencyException(ex.Message);
             }
+        }
+        public void UpdateRange(IEnumerable<Stock>stks)
+        {
+            try
+            {
+                _context.Stocks.UpdateRange(stks);
+                _context.SaveChanges();
+                _context.Database.CloseConnection();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                MessageBox.Show("Erro ao tentar fazer update!\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new DbUpdateConcurrencyException(ex.Message);
+            }
+            
         }
         #endregion
         #endregion

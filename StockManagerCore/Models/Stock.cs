@@ -31,8 +31,9 @@ namespace StockManagerCore.Models
         [Display(Name ="Empresa")]
         public Company Company { get; set; }
         
-        [Display(Name = "Saldo de Estoque")]
-        public int ProductBalance { get; private set; }
+        [Display(Name = "Saldo Qte Estoque")]
+        public int ProdQtyBalance { get; private set; }
+
 
         [Display(Name = "Data do Saldo")]
         public DateTime BalanceDate { get; private set; }
@@ -93,8 +94,7 @@ namespace StockManagerCore.Models
         public void SetBalance()
         {
             BalanceDate = DateTime.Now.Date;
-            ProductBalance = QtyPurchased - QtySold;
-
+            ProdQtyBalance = QtyPurchased - QtySold;
         }
         #endregion
     }

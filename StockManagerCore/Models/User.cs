@@ -18,11 +18,12 @@ namespace StockManagerCore.Models
         public User(string userName)
         {
             UserName = userName;
+            Keychange = "";
         }
 
         public void SetPass(string password)
         {
-
+            Password = Keychange;
         }
     }
 }
