@@ -52,7 +52,7 @@
                     <TextBox x:Name="TxtDateFinal" HorizontalAlignment="Left" Margin="53,133,0,0" Text="Data Final" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date" Height="18"/>
                     <TextBox x:Name="TxtConsole" HorizontalAlignment="Left" Margin="53,182,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="798" Height="192" AllowDrop="False" IsReadOnlyCaretVisible="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
                     <Button x:Name="BtnShowStock" Content="Mostrar Estoque" HorizontalAlignment="Left" Margin="333,73,0,0" VerticalAlignment="Top" Width="120" Click="Btn_ShowStock_Click" Height="20"/>
-                    <Button x:Name="btnBalanceAll" Content="Recalcular Estoque" HorizontalAlignment="Left" Margin="333,98,0,0" VerticalAlignment="Top" Width="119" Click="btnBalanceAll_Click"/>
+                    <Button x:Name="btnBalanceAll" Content="Recalcular Estoque" HorizontalAlignment="Left" Margin="333,98,0,0" VerticalAlignment="Top" Width="119" Click="BtnBalanceAll_Click"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="tbiDataView" Header="Dados Estoque" HorizontalAlignment="Left" Width="103" Margin="2,0,0,0">
@@ -60,7 +60,6 @@
                     <TextBlock x:Name="TxtBCompany" HorizontalAlignment="Left" Margin="92,24,0,0" Text="Empresa: " TextWrapping="Wrap" VerticalAlignment="Top" Width="225" Height="21" FontSize="16" FontWeight="Bold"/>
                     <DataGrid x:Name="GrdView" Margin="27,57,33,57" GridLinesVisibility="Horizontal" IsTextSearchEnabled="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" EnableRowVirtualization="False" AlternationCount="2" RowBackground="Beige" AlternatingRowBackground="LightBlue" ItemsSource="{Binding DataGridTable}"/>
                     <TextBlock x:Name="TxtBlkLogData" HorizontalAlignment="Center" Margin="0,450,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="42" FontWeight="Normal"/>
-
                 </Grid>
             </TabItem>
             <TabItem x:Name="tbiCRUD" Header="CVED">
@@ -117,9 +116,9 @@
                             <DatePicker x:Name="DPkrStkLastSale" HorizontalAlignment="Left" Margin="469,142,0,0" VerticalAlignment="Top"/>
                             <Button x:Name="BtnCreateStock" Content="Criar" HorizontalAlignment="Left" Margin="16,144,0,0" VerticalAlignment="Top" Width="60" Click="Btn_CreateStock_Click"/>
                             <Button x:Name="BtnReadStock" Content="Visualizar" HorizontalAlignment="Left" Margin="81,144,0,0" VerticalAlignment="Top" Width="60" Click="Btn_ReadStock_Click"/>
-                            <Button x:Name="btnEntryStock" Content="Efetuar Entrada" HorizontalAlignment="Left" Margin="146,144,0,0" VerticalAlignment="Top" Width="94" Click="btnEntryStock_Click"/>
-                            <Button x:Name="btnSaleStock" Content="Efetuar Saída" HorizontalAlignment="Left" Margin="246,144,0,0" VerticalAlignment="Top" Click="btnSaleStock_Click" Height="20"/>
-                            <Button x:Name="btnBalanceCalc" Content="Calcula Saldo" HorizontalAlignment="Left" Margin="16,116,0,0" VerticalAlignment="Top" Width="172" Click="btnBalanceCalc_Click"/>
+                            <Button x:Name="btnEntryStock" Content="Efetuar Entrada" HorizontalAlignment="Left" Margin="146,144,0,0" VerticalAlignment="Top" Width="94" Click="BtnEntryStock_Click"/>
+                            <Button x:Name="btnSaleStock" Content="Efetuar Saída" HorizontalAlignment="Left" Margin="246,144,0,0" VerticalAlignment="Top" Click="BtnSaleStock_Click" Height="20"/>
+                            <Button x:Name="btnBalanceCalc" Content="Calcula Saldo" HorizontalAlignment="Left" Margin="16,116,0,0" VerticalAlignment="Top" Width="172" Click="BtnBalanceCalc_Click"/>
                             <Label x:Name="lblBalanceDate" Content="Data de Cálculo" HorizontalAlignment="Left" Margin="16,63,0,0" VerticalAlignment="Top"/>
                             <DatePicker x:Name="dpkBalanceDate" HorizontalAlignment="Left" Margin="14,89,0,0" VerticalAlignment="Top" Width="132"/>
                             <Label x:Name="lblBalance" Content="Saldo" HorizontalAlignment="Left" Margin="149,63,0,0" VerticalAlignment="Top"/>
@@ -157,9 +156,9 @@
                             <ComboBox x:Name="cmbNFCompany" HorizontalAlignment="Left" Margin="255,70,0,0" VerticalAlignment="Top" Width="138" IsEnabled="False" />
                             <Label x:Name="lblDestinatary" Content="Destinatário" HorizontalAlignment="Left" Margin="398,68,0,0" VerticalAlignment="Top"/>
                             <ComboBox x:Name="cmbDestinatary" HorizontalAlignment="Left" Margin="481,70,0,0" VerticalAlignment="Top" Width="138" IsEnabled="False"/>
-                            <Button x:Name="btnSaveNFControl" Content="Salvar" HorizontalAlignment="Left" Margin="3,130,0,0" VerticalAlignment="Top" Width="100" Click="btnSaveNFControl_Click"/>
-                            <Button x:Name="btnSearchNF" Content="Busca" HorizontalAlignment="Left" Margin="184,10,0,0" VerticalAlignment="Top" Height="22" Width="84" Click="btnSearchNF_Click"/>
-                            <ComboBox x:Name="cmbSearchNF" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="159" DropDownOpened="cmbSearchNF_DropDownOpened">
+                            <Button x:Name="btnSaveNFControl" Content="Salvar" HorizontalAlignment="Left" Margin="3,130,0,0" VerticalAlignment="Top" Width="100" Click="BtnSaveNFControl_Click"/>
+                            <Button x:Name="btnSearchNF" Content="Busca" HorizontalAlignment="Left" Margin="184,10,0,0" VerticalAlignment="Top" Height="22" Width="84" Click="BtnSearchNF_Click"/>
+                            <ComboBox x:Name="cmbSearchNF" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="159" DropDownOpened="CmbSearchNF_DropDownOpened">
                                 <ComboBoxItem Content="NumNF"/>
                                 <ComboBoxItem Content="Empresa"/>
                                 <ComboBoxItem Content="Destinatario"/>
@@ -167,11 +166,11 @@
                                 <ComboBoxItem Content="Experiam Hoje"/>
                                 <ComboBoxItem Content="Expiram Semana"/>
                             </ComboBox>
-                            <Button x:Name="btn_CreateNewNF" HorizontalAlignment="Left" Height="22" Margin="273,10,0,0" VerticalAlignment="Top" Width="25" Click="btnCreateNewNF_Click">
+                            <Button x:Name="btn_CreateNewNF" HorizontalAlignment="Left" Height="22" Margin="273,10,0,0" VerticalAlignment="Top" Width="25" Click="BtnCreateNewNF_Click">
                                 <Image x:Name="btnCreateNewNF" Source="imgs\new_add_insert.png"/>
                             </Button>
-                            <Button x:Name="btnEditNF" Content="Editar" HorizontalAlignment="Left" Height="20" Margin="108,130,0,0" VerticalAlignment="Top" Width="100" Click="btnEditNF_Click"/>
-                            <Button x:Name="btnDeleteNF" Content="Deletar" HorizontalAlignment="Left" Margin="213,130,0,0" VerticalAlignment="Top" Width="100" Click="btnDeleteNF_Click"/>
+                            <Button x:Name="btnEditNF" Content="Editar" HorizontalAlignment="Left" Height="20" Margin="108,130,0,0" VerticalAlignment="Top" Width="100" Click="BtnEditNF_Click"/>
+                            <Button x:Name="btnDeleteNF" Content="Deletar" HorizontalAlignment="Left" Margin="213,130,0,0" VerticalAlignment="Top" Width="100" Click="BtnDeleteNF_Click"/>
                             <Label x:Name="lblOriginProp" Content="Propostas Originais" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top" Width="114"/>
                             <TextBox x:Name="txtOriginProps" HorizontalAlignment="Left" Margin="133,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="339"/>
                         </Grid>
@@ -203,8 +202,6 @@
             <TabItem x:Name="tbiDataCrud" Header="Cadastros">
                 <Grid x:Name="grdNFDataCrud" Background="#FFE5E5E5" Height="502">
                     <Rectangle HorizontalAlignment="Left" Height="254" Margin="195,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="363"/>
-
-
                     <RadioButton x:Name="rbtPerson" Margin="42,58,717,428" Content="Iterar Pessoa" GroupName="grpRadio" Height="16" Click="rbtPerson_Click" />
                     <RadioButton x:Name="rbtCity" Margin="42,37,717,449" Content="Iterar Cidade" GroupName="grpRadio" Height="16" Click="rbtCity_Click" />
                     <Label x:Name="lblRadio" Content="Seleção de Iteração" HorizontalAlignment="Left" Margin="42,10,0,0" VerticalAlignment="Top" Width="135"/>
@@ -245,11 +242,8 @@
                     <TextBox x:Name="txtMaxRevenuesNF" HorizontalAlignment="Left" Margin="639,210,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="237"/>
                     <Label x:Name="lblCompanyBalanceNF" Content="Saldo" HorizontalAlignment="Left" Margin="574,233,0,0" VerticalAlignment="Top" Width="60"/>
                     <TextBox x:Name="txtCompanyBalanceNF" HorizontalAlignment="Left" Margin="639,237,0,0" Text="R$" TextWrapping="Wrap" VerticalAlignment="Top" Width="237" InputScope="CurrencyAmountAndSymbol" IsReadOnly="True"/>
-
-
                 </Grid>
             </TabItem>
         </TabControl>
-
     </Grid>
 </Window>

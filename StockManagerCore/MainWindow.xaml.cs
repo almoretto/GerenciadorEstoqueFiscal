@@ -556,7 +556,7 @@ namespace StockManagerCore
                 LogTextBlock.Text = log.ToString();
             }
         }
-        private void btnBalanceAll_Click(object sender, RoutedEventArgs e)
+        private void BtnBalanceAll_Click(object sender, RoutedEventArgs e)
         {
             IEnumerable<Stock> stocksToCalc;
             stocksToCalc = _stockService.GetStocks();
@@ -825,7 +825,7 @@ namespace StockManagerCore
                 throw new RequiredFieldException("Informa a empresa para filtrar os estoques");
             }
         }
-        private void btnBalanceCalc_Click(object sender, RoutedEventArgs e)
+        private void BtnBalanceCalc_Click(object sender, RoutedEventArgs e)
         {
             SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedItem.ToString());
             if (SelectedCompany == null)
@@ -837,7 +837,7 @@ namespace StockManagerCore
             GenerateGrid(ListOfStocks, SelectedCompany);
         }
         //Method to create an manual stock entry
-        private void btnEntryStock_Click(object sender, RoutedEventArgs e)
+        private void BtnEntryStock_Click(object sender, RoutedEventArgs e)
         {
             SelectedProduct = _productService.FindByGroup(CmbStkProduct.SelectedItem.ToString());
             SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedItem.ToString());
@@ -864,7 +864,7 @@ namespace StockManagerCore
             }
         }
         //Method to create an manual stock sale
-        private void btnSaleStock_Click(object sender, RoutedEventArgs e)
+        private void BtnSaleStock_Click(object sender, RoutedEventArgs e)
         {
             SelectedProduct = _productService.FindByGroup(CmbStkProduct.SelectedItem.ToString());
             SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedItem.ToString());
@@ -895,7 +895,7 @@ namespace StockManagerCore
         #endregion
 
         #region --== NF Control ==--
-        private void btnSearchNF_Click(object sender, RoutedEventArgs e)
+        private void BtnSearchNF_Click(object sender, RoutedEventArgs e)
         {
             //Method for types of querries switching by a combo
             string selection = cmbSearchNF.SelectedItem.ToString();
@@ -958,7 +958,7 @@ namespace StockManagerCore
                     break;
             }
         }
-        private void cmbSearchNF_DropDownOpened(object sender, EventArgs e)
+        private void CmbSearchNF_DropDownOpened(object sender, EventArgs e)
         {
             //Method to reactivate controls when dropdown opens
             txtNumber.IsEnabled = true;
@@ -969,7 +969,7 @@ namespace StockManagerCore
             cmbNFCompany.IsEnabled = true;
             cmbDestinatary.IsEnabled = true;
         }
-        private void btnSaveNFControl_Click(object sender, RoutedEventArgs e)
+        private void BtnSaveNFControl_Click(object sender, RoutedEventArgs e)
         {
             //Method to Save the new NF on control
             NF.NFNumber = Convert.ToInt32(txtNumber.Text);
@@ -985,7 +985,7 @@ namespace StockManagerCore
             TxtBlkLogNF.Text = _controlNFService.Crete(NF);
 
         }
-        private void btnCreateNewNF_Click(object sender, RoutedEventArgs e)
+        private void BtnCreateNewNF_Click(object sender, RoutedEventArgs e)
         {
             //Method to activate controls when click on create new.
             txtNumber.IsEnabled = true;
@@ -997,7 +997,7 @@ namespace StockManagerCore
             cmbDestinatary.IsEnabled = true;
 
         }
-        private void btnEditNF_Click(object sender, RoutedEventArgs e)
+        private void BtnEditNF_Click(object sender, RoutedEventArgs e)
         {
             //method to update/edit nf record
             NFControl nfToUpdate = new NFControl();
@@ -1014,7 +1014,7 @@ namespace StockManagerCore
             nfToUpdate.GeneratorProposals = txtOriginProps.Text;
             TxtBlkLogNF.Text = _controlNFService.Update(nfToUpdate);
         }
-        private void btnDeleteNF_Click(object sender, RoutedEventArgs e)
+        private void BtnDeleteNF_Click(object sender, RoutedEventArgs e)
         {
             //method to delete nf
             if (NF != null)
@@ -1274,6 +1274,7 @@ namespace StockManagerCore
             GrdView.ItemsSource = gridContent.ToList();
             InitializeComponent();
         }
+        
         private double CalculateCompanyBalance(IEnumerable<Stock> list, Company c)
         {
             double sum = 0.0d;
