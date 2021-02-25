@@ -9,18 +9,19 @@ using StockManagerCore.Services;
 namespace StockManagerCore
 {
     /// <summary>
-    /// This aplication if for control stock of purchased and sold products with invoice.
-    /// The primary objective of this is to load the data of the invoices
-    /// from txt files of the Imported products and csv file from soles invoices.
+    /// This aplication is for control stock of purchased and sold products with Nfe invoice.
+    /// The primary objective of this is to load the data of the Nfe invoices
+    /// from txt files of the Imported products sended from Import/Export Company 
+    /// and csv file from solds order.
     /// After that the system carry on of process all data and calculate que total itens purchased and amount of them.
-    /// and the total item sold and so the amount of them. Separeted by group of product.
+    /// and the total item sold and so the amount of them. Separated by group of product.
     /// Them user can see on a grid.
     /// The system has a sencond separated function that is to control shipping invoices and return invoices
-    /// for each seller representative or client that cold be necessary use this kind of invoice.
+    /// for each seller representative or client that could be necessary use this kind of invoice.
     /// its only a log and do not have any control of emmited or returned invoices if not informed.
     /// Other functios is to inputs manualy data that don´t have file to load.
-    /// The system doesn´t have rports for printing pourpose.
-    /// The system mus calculate the total invoices of sales emited and register 
+    /// The system doesn´t have reports for printing pourpose.
+    /// The system must calculate the total invoices of sales emited and register 
     /// a balance of the Max renenues less the total sales per company
     /// </summary>
     public partial class App : Application
