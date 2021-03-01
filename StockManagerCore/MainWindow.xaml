@@ -57,11 +57,9 @@
             </TabItem>
             <TabItem x:Name="tbiDataView" Header="Dados Estoque" HorizontalAlignment="Left" Width="103" Margin="2,0,0,0">
                 <Grid Background="#FFE5E5E5" Height="502">
-                    <TextBlock x:Name="TxtBCompany" HorizontalAlignment="Left" Margin="92,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" Height="21" FontSize="16" FontWeight="Bold"><Run Text="Empresa: "/><Run Language="pt-br" Text=" "/></TextBlock>
+                    <TextBlock x:Name="TxtBCompany" HorizontalAlignment="Left" Margin="92,24,0,0" Text="Empresa: " TextWrapping="Wrap" VerticalAlignment="Top" Width="225" Height="21" FontSize="16" FontWeight="Bold"/>
                     <DataGrid x:Name="GrdView" Margin="27,57,33,57" GridLinesVisibility="Horizontal" IsTextSearchEnabled="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" EnableRowVirtualization="False" AlternationCount="2" RowBackground="Beige" AlternatingRowBackground="LightBlue" ItemsSource="{Binding DataGridTable}"/>
                     <TextBlock x:Name="TxtBlkLogData" HorizontalAlignment="Center" Margin="0,450,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="792" Height="42" FontWeight="Normal"/>
-                    <TextBlock x:Name="txtTotalQtyInStock" HorizontalAlignment="Left" Margin="373,27,0,0" Text="Quantidade total em Estoque: " TextWrapping="Wrap" VerticalAlignment="Top" FontStretch="Medium" FontWeight="ExtraBold" FontSize="12" Width="298"/>
-                    <TextBlock x:Name="txtTotalAmountInStock" HorizontalAlignment="Left" Margin="671,27,0,0" Text="Valor do Estoque:" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" FontWeight="ExtraBold"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="tbiCRUD" Header="CVED">

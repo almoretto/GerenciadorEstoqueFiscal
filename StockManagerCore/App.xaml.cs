@@ -35,7 +35,7 @@ namespace StockManagerCore
             ServiceCollection services = new ServiceCollection();
             services.AddDbContext<StockDBContext>(options =>
             {
-                options.UseSqlServer("server=tcp:192.168.100.2,1433;Initial Catalog =StockKManagerDB_TST;User Id=sa;Password=$3nh@2018;");
+                options.UseSqlServer("server=tcp:192.168.100.2,1433;Initial Catalog =StockKManagerDB;User Id=sa;Password=$3nh@2018;");
             });
             services.AddScoped<InputService>();
             services.AddScoped<SaleService>();

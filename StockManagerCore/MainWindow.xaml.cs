@@ -56,8 +56,6 @@ namespace StockManagerCore
         double amount = 0.0;
         double totAmount = 0.0;
         int anyId = 0;
-        int qtyTotalInStock = 0;
-        double amountTotalInStock = 0.0;
         #endregion
 
         #region --== Models instantitation and support Lists ==--
@@ -206,13 +204,13 @@ namespace StockManagerCore
                     {
                         //Instances a new Product
                         Product p = new Product();
-
+                        
                         //Getting the entity product by his group name in the service class.
                         p = _productService.FindByGroup(item.Group);
-
+                        
                         //callcing an method to padronize the names of the products as groups.
-                        item.AlternateNames();
-
+                        item.AlternateNames(); 
+                        
                         //Instancing model class and calling constructor for each item record in service class to place data.
                         //Working in a private unique local instance of the model
                         InputProduct = new InputProduct
@@ -229,9 +227,9 @@ namespace StockManagerCore
                             SelectedCompany);
                         //calling the method to insert the data in model on db context
                         _inputService.InsertInputs(InputProduct);
-
+                        
                     }
-
+                    
                 }
                 else //Exception
                 {
@@ -363,7 +361,7 @@ namespace StockManagerCore
                     ClearFile();
                     importCount = 0;
                     btnProcessSales.IsEnabled = true;
-
+                   
                 }
                 else
                 {
@@ -547,13 +545,7 @@ namespace StockManagerCore
                     //Company must not be null
                     throw new ApplicationException("Selecione uma empresa!");
                 }
-                //gets the formated list of stocks for gridview
-                ListOfStocks = _stockService.GetStocksFormated(SelectedCompany); //list Result
-                //gets allstocks in model basis for calculation
-                IEnumerable<Stock> stkList = _stockService.GetStocksByCompany(SelectedCompany);
-
-                TotalizeGrid(stkList);
-               
+                ListOfStocks = _stockService.GetStocksFormated(SelectedCompany); //list Resulkt
                 //Method to generate GridView
                 GenerateGrid(ListOfStocks, SelectedCompany);
             }
@@ -579,7 +571,7 @@ namespace StockManagerCore
                 try
                 {
                     item.SetBalance();
-
+                    
                 }
                 catch (Exception ex)
                 {
@@ -595,8 +587,8 @@ namespace StockManagerCore
             }
             _stockService.UpdateRange(stocksToCalc);
             MessageBox.Show("Calculo Efetuado em:" + DateTime.Now.ToString("dd/MMM/yyyy"),
-                "Atualização de Saldo",
-                MessageBoxButton.OK,
+                "Atualização de Saldo", 
+                MessageBoxButton.OK, 
                 MessageBoxImage.Information);
         }
         #endregion
@@ -790,10 +782,10 @@ namespace StockManagerCore
                 {
                     throw new NotFoundException("Empresa não encontrada!");
                 }
-
+#pragma warning disable CS8629 // O tipo de valor de nulidade pode ser nulo.
                 DateTime lstin = (DateTime)DPkrStkLastInput.SelectedDate;
                 DateTime lstout = (DateTime)DPkrStkLastSale.SelectedDate;
-
+#pragma warning restore CS8629 // O tipo de valor de nulidade pode ser nulo.
                 log.AppendLine(_stockService.Create(SelectedProduct,
                     Convert.ToInt32(TxtStkQtyPurchased.Text),
                     Convert.ToInt32(TxtStkQtySold.Text),
@@ -847,10 +839,6 @@ namespace StockManagerCore
                 throw new ApplicationException("Selecione uma empresa!");
             }
             ListOfStocks = _stockService.CalculateBalance(SelectedCompany);
-            IEnumerable<Stock> stkList = _stockService.GetStocksByCompany(SelectedCompany);
-            
-            TotalizeGrid(stkList);
-
             GenerateGrid(ListOfStocks, SelectedCompany);
         }
         //Method to create an manual stock entry
@@ -1285,17 +1273,13 @@ namespace StockManagerCore
             tbiDataView.IsSelected = true;
             //Activates the auto generate columns for the grid manages himself
             GrdView.AutoGenerateColumns = true;
-            GrdView.IsEnabled = true;
             //attributes the data to grid
-            TxtBCompany.Text += c.Name; //Label on top
+            TxtBCompany.Text = c.Name; //Label on top
             //attach list to grid for result
             GrdView.ItemsSource = gridContent.ToList();
-            txtTotalQtyInStock.Text += " " + qtyTotalInStock.ToString();
-            txtTotalAmountInStock.Text += " " + amountTotalInStock.ToString("C2");
-
             InitializeComponent();
         }
-
+        
         private double CalculateCompanyBalance(IEnumerable<Stock> list, Company c)
         {
             double sum = 0.0d;
@@ -1329,21 +1313,6 @@ namespace StockManagerCore
             btnProcessFile.IsEnabled = true;
 
         }
-       
-        private void TotalizeGrid(IEnumerable<Stock> stkList)
-        {
-            foreach (var item in stkList)
-            {
-                //calculation of totals
-                qty += item.ProdQtyBalance;
-                if (item.QtyPurchased!=0)
-                {
-                    amount += (item.AmountPurchased / item.QtyPurchased) * item.ProdQtyBalance;
-                }
-               
-            }
-        }
-        
         #endregion
     }
 }
