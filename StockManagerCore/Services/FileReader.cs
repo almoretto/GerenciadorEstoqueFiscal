@@ -36,14 +36,14 @@ namespace StockManagerCore.Services
         public List<InputNFe> Inputs { get; set; } = new List<InputNFe>();
         public List<string[]> FileNfe { get; set; }
         public string Path { get; set; }
-        public bool Sales { get; set; }
+        public bool IsSales { get; set; }
         #endregion
 
         #region --== Constructors ==--
-        public FileReader(string path, bool sales)
+        public FileReader(string path, bool isSales)
         {
             Path = path;
-            Sales = sales;
+            IsSales = isSales;
         }
         #endregion
 
@@ -61,15 +61,15 @@ namespace StockManagerCore.Services
                 //Loop until not the end
                 while (!sr.EndOfStream)
                 {
-                    if (!Sales) //If the boolean Sales seted as False - we treat Incomes.
+                    if (!IsSales) //If the boolean Sales seted as False - we treat Incomes.
                     {
                         //Here the method split the line by the tabulator character | in an string vector and store in an list of vectors.
-#pragma warning disable CS8602 // Desreferência de uma referência possivelmente nula.
+
                         string[] line = sr.ReadLine().ToUpper().Split("|");
-#pragma warning restore CS8602 // Desreferência de uma referência possivelmente nula.
+
                         if (count != 0) //the method disregards the header line.
                         {
-                            //the method will save only lines with these initial collumns to cleam the final matrix.
+                            //the decision will save only lines with these initial collumns to cleam the final matrix.
                             if (line[0] == "B" || line[0] == "H" || line[0] == "I" || line[0] == "N10h" || line[0] == "O07" || line[0] == "W02")
                             {
                                 FileNfe.Add(line); //Matrix Created
@@ -79,11 +79,11 @@ namespace StockManagerCore.Services
                     }
                     else //If the Boolean was true then it is Sales so treated here.
                     {
-                        //the method splits each line by the tabulator ; ins an string vector 
+                        //the decision splits each line by the tabulator ; in a string vector 
                         //and add each line to an list creating a matrix
-#pragma warning disable CS8602 // Desreferência de uma referência possivelmente nula.
+
                         string[] line = sr.ReadLine().ToUpper().Split(";");
-#pragma warning restore CS8602 // Desreferência de uma referência possivelmente nula.
+
                         if (count != 0) //the method disregards the header line.
                         {
                             FileNfe.Add(line);//Matrix Created
@@ -91,8 +91,8 @@ namespace StockManagerCore.Services
                         count++;
                     }
                 }
-                //Ate the end of the matrix creation the process continues.
-                if (!Sales) //Method for inputs bool = false
+                //On the end of the matrix creation the process continues.
+                if (!IsSales) //Method for inputs bool = false
                 {
                     ProcessInputFile(); //calling input file process method
                 }
