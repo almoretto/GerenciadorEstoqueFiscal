@@ -41,8 +41,8 @@
                 <Grid Background="#FFF3F2F2" Height="528">
                     <TextBox x:Name="FileNameTextBox" HorizontalAlignment="Left" Margin="53,23,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="399" Height="18"/>
                     <Button x:Name="BtnFileOpen" Content="Selecionar" HorizontalAlignment="Left" Margin="485,23,0,0" VerticalAlignment="Top" Click="BtnFileOpen_Click" Height="18" Width="70"/>
-                    <Button x:Name="btnProcessFile" Content="Processar Entradas" HorizontalAlignment="Left" Margin="53,73,0,0" VerticalAlignment="Top" Click="ProcessInputs_Click" Height="20" Width="120"/>
-                    <Button x:Name="btnProcessSales" Content="Processar Saídas" HorizontalAlignment="Left" Margin="193,73,0,0" VerticalAlignment="Top" Width="120" Click="ProcessSales_Click" Height="20"/>
+                    <Button x:Name="ProcessFile" Content="Processar Entradas" HorizontalAlignment="Left" Margin="53,73,0,0" VerticalAlignment="Top" Click="ProcessInputs_Click" Height="20" Width="120"/>
+                    <Button x:Name="ProcessSales" Content="Processar Saídas" HorizontalAlignment="Left" Margin="193,73,0,0" VerticalAlignment="Top" Width="120" Click="ProcessSales_Click" Height="20"/>
                     <TextBlock x:Name="LogTextBlock" HorizontalAlignment="Left" Margin="53,394,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="798" Height="100" FontWeight="Normal" FontSize="14"/>
                     <ComboBox x:Name="CmbCompany" HorizontalAlignment="Left" Margin="53,46,0,0" VerticalAlignment="Top" Width="399" Height="22"/>
                     <TextBox x:Name="TxtDateInitial" HorizontalAlignment="Left" Margin="53,110,0,0" Text="Data Inicial" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date" Height="18"/>

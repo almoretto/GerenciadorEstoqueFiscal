@@ -48,7 +48,7 @@ namespace StockManagerCore
         string lastfile;
         string filename;
         FileReader nfeReader;
-        bool isSales;
+        bool sales;
         DateTime dateInitial = new DateTime();
         DateTime dateFinal = new DateTime();
         int qteTot = 0;
@@ -166,7 +166,6 @@ namespace StockManagerCore
             {
                 //Clean log
                 LogTextBlock.Text = string.Empty;
-                LogTextBlock.Text = "Iniciando importação em: " + importCount.ToString();
                 //Geting the Entity Company by mane selected in combo
                 SelectedCompany = _companyService.FindByName((string)CmbCompany.SelectedItem);
 
@@ -186,18 +185,17 @@ namespace StockManagerCore
                     throw new ApplicationException("Nota já Inserida");
                 }
                 //Here just inform that imports is occurring
-                LogTextBlock.Text = "\nImportando: " + filename;
+                LogTextBlock.Text = "Importando: " + filename;
                 //Sets the bool variable to False to indicate to the service class where to process this file, 
                 //because this file is input record.
-                isSales = false;
+                sales = false;
                 log.Clear();
-                if (!isSales) //If Sales = False or !(not) True
+                if (!sales) //If Sales = False
                 {
-                    btnProcessFile.IsEnabled = false; //Disable the ProcessFile Button
+                    ProcessFile.IsEnabled = false;
                     //Instance the service that process the file. 
-                    //Calling the constructor for reading the file passing the File Path and 
-                    //the Bool variable to indicate where to process
-                    nfeReader = new FileReader(filename, isSales);
+                    //Calling the constructor passing the File and the Bool variable to indicate where to process
+                    nfeReader = new FileReader(filename, sales);
                     //Reading inputs and returning Log
                     log.AppendLine(nfeReader.GetInputItens()); //Call the Method GetInputItens that returns an string as result.
                     LogTextBlock.Text = log.ToString(); // Showing the result.
@@ -206,12 +204,19 @@ namespace StockManagerCore
                     {
                         //Instances a new Product
                         Product p = new Product();
+<<<<<<< HEAD
 
                         //Getting the entity product by his group name in the service class.
                         p = _productService.FindByGroup(item.Group);
 
                         //callcing an method to padronize the names of the products as groups.
                         item.AlternateNames();
+=======
+                        //Getting the entity product by his group name in the service class.
+                        p = _productService.FindByGroup(item.Group);
+
+                        item.AlternateNames(); //callcing an method to padronize the names of the products as groups.
+>>>>>>> parent of 315d486 (correction refactoring)
 
                         //Instancing model class and calling constructor for each item record in service class to place data.
                         //Working in a private unique local instance of the model
@@ -229,7 +234,10 @@ namespace StockManagerCore
                             SelectedCompany);
                         //calling the method to insert the data in model on db context
                         _inputService.InsertInputs(InputProduct);
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 315d486 (correction refactoring)
                     }
 
                 }
@@ -254,7 +262,7 @@ namespace StockManagerCore
                     lastfile = filename;
                     ClearFile();
                     importCount = 0;
-                    btnProcessFile.IsEnabled = true;
+                    ProcessFile.IsEnabled = true;
                 }
                 else
                 {
@@ -303,14 +311,14 @@ namespace StockManagerCore
                 LogTextBlock.Text = "Importando: " + filename;
                 //Sets the bool variable to TRUE to indicate to the service class where to process this file, 
                 //because this file is Sales record.
-                isSales = true;
+                sales = true;
                 log.Clear();
 
-                if (isSales)
+                if (sales)
                 {
-                    btnProcessSales.IsEnabled = false;
+                    ProcessSales.IsEnabled = false;
                     //Instance the service
-                    nfeReader = new FileReader(filename, isSales);
+                    nfeReader = new FileReader(filename, sales);
                     //Reading inputs and returning Log
                     log.AppendLine(nfeReader.GetInputItens());
                     LogTextBlock.Text = log.ToString();
@@ -362,8 +370,13 @@ namespace StockManagerCore
                     lastfile = filename;
                     ClearFile();
                     importCount = 0;
+<<<<<<< HEAD
                     btnProcessSales.IsEnabled = true;
 
+=======
+                    ProcessSales.IsEnabled = true;
+                   
+>>>>>>> parent of 315d486 (correction refactoring)
                 }
                 else
                 {
@@ -1325,8 +1338,8 @@ namespace StockManagerCore
             ClearFile();
             importCount = 0;
             BtnCalculate.IsEnabled = true;
-            btnProcessSales.IsEnabled = true;
-            btnProcessFile.IsEnabled = true;
+            ProcessSales.IsEnabled = true;
+            ProcessFile.IsEnabled = true;
 
         }
        

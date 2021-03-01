@@ -48,17 +48,17 @@ namespace StockManagerCore.Data
                 Ps.Add(new Product("ACESSORIO"));
 
                 _Context.Products.AddRange(Ps); //Adding to DBSet
-                _Context.SaveChanges(); //Saving changes persisting;
+                _Context.SaveChanges();
             }
             #endregion
 
             #region --== Seeding Companies ==--
             if (!_Context.Companies.Any())
             {
-                Cs.Add(new Company("ATACADAO", 1600000.00));
-                Cs.Add(new Company("JR", 1600000.00));
-                Cs.Add(new Company("FABRICACAO", 1600000.00));
-                Cs.Add(new Company("ATACADAO MCP", 1600000.00));
+                Cs.Add(new Company("ATACADAO", 0.00));
+                Cs.Add(new Company("JR", 0.00));
+                Cs.Add(new Company("FABRICACAO", 0.00));
+                Cs.Add(new Company("ATACADAO MCP", 0.00));
                 _Context.Companies.AddRange(Cs); //Add to dbset
                 _Context.SaveChanges(); //Persist
             }

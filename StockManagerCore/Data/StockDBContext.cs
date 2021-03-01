@@ -15,8 +15,6 @@ namespace StockManagerCore.Data
         }
 
         #region --== DB Sets table links ==--
-
-        //Tables conections declaration dor codeFirst approuch on EFcore
         public DbSet<InputProduct> InputProducts { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<SoldProduct> SoldProducts { get; set; }
