@@ -15,8 +15,8 @@ namespace StockManagerCore.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("StockManagerCore.Models.City", b =>
@@ -265,7 +265,7 @@ namespace StockManagerCore.Migrations
                     b.Property<int>("ProdQtyBalance")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("QtyPurchased")
@@ -296,10 +296,6 @@ namespace StockManagerCore.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Company");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("StockManagerCore.Models.NFControl", b =>
@@ -315,10 +311,6 @@ namespace StockManagerCore.Migrations
                         .HasForeignKey("DestinataryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Company");
-
-                    b.Navigation("Destinatary");
                 });
 
             modelBuilder.Entity("StockManagerCore.Models.Person", b =>
@@ -326,8 +318,6 @@ namespace StockManagerCore.Migrations
                     b.HasOne("StockManagerCore.Models.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId");
-
-                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("StockManagerCore.Models.SoldProduct", b =>
@@ -343,10 +333,6 @@ namespace StockManagerCore.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Company");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("StockManagerCore.Models.Stock", b =>
@@ -359,34 +345,9 @@ namespace StockManagerCore.Migrations
 
                     b.HasOne("StockManagerCore.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.Navigation("Company");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("StockManagerCore.Models.Company", b =>
-                {
-                    b.Navigation("InputProducts");
-
-                    b.Navigation("NFControls");
-
-                    b.Navigation("SoldProducts");
-
-                    b.Navigation("Stocks");
-                });
-
-            modelBuilder.Entity("StockManagerCore.Models.Person", b =>
-                {
-                    b.Navigation("NFs");
-                });
-
-            modelBuilder.Entity("StockManagerCore.Models.Product", b =>
-                {
-                    b.Navigation("InputProduct");
-
-                    b.Navigation("SoldProduct");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
