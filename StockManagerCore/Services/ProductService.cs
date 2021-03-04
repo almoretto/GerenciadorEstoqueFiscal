@@ -59,9 +59,21 @@ namespace StockManagerCore.Services
             }
             return product;
         }
-       
+
+        public IEnumerable<object> GetObjProducts()
+        {
+            var query = from p in _context.Products
+                        select new
+                        {
+                            Produto = p.GroupP,
+                            Codigo = p.Id,
+                        };
+            return query.ToList();
+        }
+
+
         #region --== CRUD ==--
-        
+
         //Method to create a new product on database
         public string Create(string name)
         {

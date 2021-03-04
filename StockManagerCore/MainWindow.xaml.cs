@@ -67,7 +67,8 @@ namespace StockManagerCore
         private InputProduct InputProduct { get; set; } = new InputProduct();
         private List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
         private IEnumerable<Company> ListCompanies { get; set; }
-        private IEnumerable<object> ListOfStocks { get; set; }
+        private List<DispStockCompany> ListOfStocksStruct { get; set; }
+        private List<Stock> StocksList { get; set; } = new List<Stock>();
         private IEnumerable<Product> ListOfProducts { get; set; }
         private IEnumerable<Person> ListPeople { get; set; }
         private IEnumerable<NFControl> Notes { get; set; }
@@ -102,12 +103,7 @@ namespace StockManagerCore
             foreach (Company c in ListCompanies)
             {
                 CmbCompany.Items.Add(c.Name);
-                CmbStkCompany.Items.Add(c.Name);
                 cmbNFCompany.Items.Add(c.Name);
-            }
-            foreach (Product product in ListOfProducts)
-            {
-                CmbStkProduct.Items.Add(product.GroupP);
             }
             foreach (Person person in ListPeople)
             {
@@ -204,13 +200,13 @@ namespace StockManagerCore
                     {
                         //Instances a new Product
                         Product p = new Product();
-                        
+
                         //Getting the entity product by his group name in the service class.
                         p = _productService.FindByGroup(item.Group);
-                        
+
                         //callcing an method to padronize the names of the products as groups.
-                        item.AlternateNames(); 
-                        
+                        item.AlternateNames();
+
                         //Instancing model class and calling constructor for each item record in service class to place data.
                         //Working in a private unique local instance of the model
                         InputProduct = new InputProduct
@@ -227,9 +223,9 @@ namespace StockManagerCore
                             SelectedCompany);
                         //calling the method to insert the data in model on db context
                         _inputService.InsertInputs(InputProduct);
-                        
+
                     }
-                    
+
                 }
                 else //Exception
                 {
@@ -361,7 +357,7 @@ namespace StockManagerCore
                     ClearFile();
                     importCount = 0;
                     btnProcessSales.IsEnabled = true;
-                   
+
                 }
                 else
                 {
@@ -545,9 +541,9 @@ namespace StockManagerCore
                     //Company must not be null
                     throw new ApplicationException("Selecione uma empresa!");
                 }
-                ListOfStocks = _stockService.GetStocksFormated(SelectedCompany); //list Resulkt
+                ListOfStocksStruct = _stockService.GetStocksStructured(SelectedCompany); //list Resulkt
                 //Method to generate GridView
-                GenerateGrid(ListOfStocks, SelectedCompany);
+                GenerateGrid(ListOfStocksStruct, SelectedCompany);
             }
             catch (ApplicationException ex)
             {
@@ -563,7 +559,7 @@ namespace StockManagerCore
         }
         private void BtnBalanceAll_Click(object sender, RoutedEventArgs e)
         {
-            IEnumerable<Stock> stocksToCalc;
+            List<Stock> stocksToCalc;
             stocksToCalc = _stockService.GetStocks();
 
             foreach (Stock item in stocksToCalc)
@@ -571,7 +567,7 @@ namespace StockManagerCore
                 try
                 {
                     item.SetBalance();
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -587,317 +583,13 @@ namespace StockManagerCore
             }
             _stockService.UpdateRange(stocksToCalc);
             MessageBox.Show("Calculo Efetuado em:" + DateTime.Now.ToString("dd/MMM/yyyy"),
-                "Atualização de Saldo", 
-                MessageBoxButton.OK, 
+                "Atualização de Saldo",
+                MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
         #endregion
 
-        #region --== CRUD Companies, Products and Stock==--
-        private void Btn_Select_Click(object sender, RoutedEventArgs e)
-        {
-            switch (CmbSwitch.SelectedItem.ToString())
-            {
-                //Selects the type of Searching service to use according to the user selection
-                //And populates the controls with the returned data.
-                case "Empresa":
-                    SelectedCompany = _companyService.FindByName(TxtSelection.Text.ToUpper());
-                    TxtCoId.Text = SelectedCompany.Id.ToString();
-                    TxtCoName.Text = SelectedCompany.Name;
-                    txtCompanyMaxRevenues.Text = SelectedCompany.MaxRevenues.ToString("C2");
-                    txtCompanyBalance.Text = SelectedCompany.Balance.ToString("C2");
-                    InitializeComponent();
-                    break;
-                case "Produto":
-                    SelectedProduct = _productService.FindByGroup(TxtSelection.Text.ToUpper());
-                    TxtProdId.Text = SelectedProduct.Id.ToString();
-                    TxtProdGroupP.Text = SelectedProduct.GroupP;
-                    InitializeComponent();
-                    break;
-                case "Estoque":
-                    string[] pars = TxtSelection.Text.Split(',');
-                    SelectedCompany = _companyService.FindByName(pars[0]);
-                    SelectedStock = _stockService.GetStockByCompanyAndGroup(SelectedCompany, pars[1]);
-                    TxtStkId.Text = SelectedStock.ToString();
-                    TxtStkQtyPurchased.Text = SelectedStock.QtyPurchased.ToString();
-                    TxtStkQtySold.Text = SelectedStock.QtySold.ToString();
-                    TxtStkAmountPurchased.Text = SelectedStock.AmountPurchased.ToString("C2");
-                    TxtStkAmountSold.Text = SelectedStock.AmountSold.ToString("C2");
-                    CmbStkCompany.SelectedItem = SelectedStock.Company.Name;
-                    CmbStkProduct.SelectedItem = SelectedStock.Product.GroupP;
-                    DPkrStkLastInput.DisplayDate = SelectedStock.LastInput.Date;
-                    DPkrStkLastSale.DisplayDate = SelectedStock.LastSales.Date;
-                    InitializeComponent();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        //Crud Company
-        private void Btn_CreateComp_Click(object sender, RoutedEventArgs e)
-        {
-            //Method for Create a New Company Record
-            try
-            {
-                if (TxtCoName == null)
-                {
-                    //Validation required field
-                    throw new RequiredFieldException("Favor preencher o nome da empresa para cadastrar");
-                }
-                //Calling Method Create from service layer and Returning to the log 
-                log.AppendLine(_companyService.Create(TxtCoName.Text, Convert.ToDouble(txtCompanyMaxRevenues.Text)));
-
-                TxtBlkLogCRUD.Text = log.ToString();
-            }
-            catch (Exception ex)
-            {
-                TxtBlkLogCRUD.Text = "";
-                log.Clear();
-                log.AppendLine(ex.Message);
-                if (ex.InnerException != null)
-                {
-                    log.AppendLine(ex.InnerException.Message);
-                }
-                LogTextBlock.Text = log.ToString();
-            }
-        }
-        private void Btn_ReadComp_Click(object sender, RoutedEventArgs e)
-        {
-            //Method for listing Companies
-            //Calling GetCompanies from service layer
-            ListCompanies = _companyService.GetCompanies();
-            //Rearranjing the list
-            var listC = from c in ListCompanies select new { Nome = c.Name, Codigo = c.Id };
-            //The following five lines is to display the companies on grid
-            GrdView.AutoGenerateColumns = true;
-            TxtBCompany.Text = "Lista de Empresas";
-            GrdView.ItemsSource = listC.ToList();
-            InitializeComponent();
-            tbiDataView.IsSelected = true;
-
-        }
-        private void Btn_UpdateComp_Click(object sender, RoutedEventArgs e)
-        {
-            //Method to update a company 
-            Company toUpdate = new Company();
-            if (TxtCoId.Text == null && TxtCoName == null)
-            {
-                //validation for update
-                throw new RequiredFieldException("Favor preencher o nome ou ID da empresa para Editar");
-            }
-            else
-            {
-                //calling method to find company
-                toUpdate = _companyService.FindToUdate(Convert.ToInt32(TxtCoId.Text));
-            }
-            if (toUpdate == null || toUpdate.Id.ToString() != TxtCoId.Text)
-            {
-                //validation of the return 
-                throw new NotFoundException("Nenhuma empresa localizada");
-            }
-            //Updating temporary model for further update in db context
-            toUpdate.Name = TxtCoName.Text;
-            toUpdate.Id = Convert.ToInt32(TxtCoId.Text);
-            toUpdate.MaxRevenues = Convert.ToDouble(txtCompanyMaxRevenues.Text);
-            toUpdate.SetBalance(CalculateCompanyBalance(_stockService.GetStocksByCompany(toUpdate), toUpdate));
-            //Calling update method in service layer and returning result to log
-            log.AppendLine(_companyService.Update(toUpdate));
-            TxtBlkLogCRUD.Text = log.ToString();
-        }
-
-        //Products CRUD
-        private void Btn_CreateProd_Click(object sender, RoutedEventArgs e)
-        {
-            //Method for create a new Product follows the same logic of the create company
-            try
-            {
-                if (TxtProdGroupP == null)
-                {
-                    throw new RequiredFieldException("Favor preencher o nome do produto para cadastrar");
-                }
-
-                log.AppendLine(_productService.Create(TxtProdGroupP.Text));
-
-                TxtBlkLogCRUD.Text = log.ToString();
-            }
-            catch (Exception ex)
-            {
-                TxtBlkLogCRUD.Text = "";
-                log.Clear();
-                log.AppendLine(ex.Message);
-                if (ex.InnerException != null)
-                {
-                    log.AppendLine(ex.InnerException.Message);
-                }
-                LogTextBlock.Text = log.ToString();
-            }
-        }
-        private void Btn_ReadProd_Click(object sender, RoutedEventArgs e)
-        {
-            //Method to get all products and displying on grid
-            ListOfProducts = _productService.GetProducts();
-            var listP = from p in ListOfProducts select new { Nome = p.GroupP, Codigo = p.Id };
-            GrdView.AutoGenerateColumns = true;
-            TxtBCompany.Text = "Lista de Produtos";
-            GrdView.ItemsSource = listP.ToList();
-            InitializeComponent();
-            tbiDataView.IsSelected = true;
-        }
-        private void Btn_UpdateProd_Click(object sender, RoutedEventArgs e)
-        {
-            //Method to update product follows the same logic of the update company
-            Product toUpdate = new Product();
-            if (TxtProdId.Text == null && TxtProdGroupP == null)
-            {
-                throw new RequiredFieldException("Favor preencher o nome ou ID do Produto para Editar");
-            }
-            else
-            {
-                toUpdate = _productService.FindToUdate(TxtProdGroupP.Text, null);
-            }
-            if (toUpdate == null || toUpdate.Id.ToString() != TxtProdId.Text)
-            {
-                throw new NotFoundException("Nenhum Produto localizado");
-            }
-            toUpdate.GroupP = TxtProdGroupP.Text;
-            toUpdate.Id = Convert.ToInt32(TxtCoId.Text);
-            log.AppendLine(_productService.Update(toUpdate));
-            TxtBlkLogCRUD.Text = log.ToString();
-        }
-
-        //Crud Stock
-        private void Btn_CreateStock_Click(object sender, RoutedEventArgs e)
-        {
-            //Method to create new Stock control, follows same logic as before.
-            try
-            {
-                SelectedProduct = _productService.FindByGroup(CmbStkProduct.SelectedItem.ToString());
-                SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedItem.ToString());
-                if (SelectedProduct == null)
-                {
-                    throw new NotFoundException("Produto não encontrado!");
-                }
-                if (SelectedCompany == null)
-                {
-                    throw new NotFoundException("Empresa não encontrada!");
-                }
-#pragma warning disable CS8629 // O tipo de valor de nulidade pode ser nulo.
-                DateTime lstin = (DateTime)DPkrStkLastInput.SelectedDate;
-                DateTime lstout = (DateTime)DPkrStkLastSale.SelectedDate;
-#pragma warning restore CS8629 // O tipo de valor de nulidade pode ser nulo.
-                log.AppendLine(_stockService.Create(SelectedProduct,
-                    Convert.ToInt32(TxtStkQtyPurchased.Text),
-                    Convert.ToInt32(TxtStkQtySold.Text),
-                    Convert.ToDouble(TxtStkAmountPurchased.Text),
-                    Convert.ToDouble(TxtStkAmountSold.Text),
-                    lstin.Date, lstout.Date,
-                    SelectedCompany));
-
-                TxtBlkLogCRUD.Text = log.ToString();
-            }
-            catch (MyApplicationException ex)
-            {
-                LogTextBlock.Text = "";
-                log.AppendLine(ex.Message);
-                if (ex.InnerException != null)
-                {
-                    log.AppendLine(ex.InnerException.Message);
-                }
-                LogTextBlock.Text = log.ToString();
-            }
-        }
-        private void Btn_ReadStock_Click(object sender, RoutedEventArgs e)
-        {
-            //Method to List all Stocks By Company
-            if (CmbStkCompany != null)
-            {
-                SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedItem.ToString());
-                if (SelectedCompany == null)
-                {
-                    throw new NotFoundException("Empresa não localizada");
-                }
-                ListOfStocks = _stockService.GetStocksByCompany(SelectedCompany);
-
-                GrdView.AutoGenerateColumns = true;
-                TxtBCompany.Text = "Lista de Estoques";
-                GrdView.ItemsSource = ListOfStocks.ToList();
-                InitializeComponent();
-                tbiDataView.IsSelected = true;
-            }
-            else
-            {
-                throw new RequiredFieldException("Informa a empresa para filtrar os estoques");
-            }
-        }
-        private void BtnBalanceCalc_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedItem.ToString());
-            if (SelectedCompany == null)
-            {
-                //Company must not be null
-                throw new ApplicationException("Selecione uma empresa!");
-            }
-            ListOfStocks = _stockService.CalculateBalance(SelectedCompany);
-            GenerateGrid(ListOfStocks, SelectedCompany);
-        }
-        //Method to create an manual stock entry
-        private void BtnEntryStock_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedProduct = _productService.FindByGroup(CmbStkProduct.SelectedItem.ToString());
-            SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedItem.ToString());
-            SelectedStock = _stockService.GetStockByCompanyAndGroup(SelectedCompany, SelectedProduct.GroupP);
-            SelectedStock.MovimentInput(
-                Convert.ToInt32(TxtStkQtyPurchased.Text),
-                Convert.ToDouble(TxtStkAmountPurchased.Text),
-                DateTime.Now.Date);
-            try
-            {
-                _stockService.Update(SelectedStock);
-                TxtBlkLogCRUD.Text = "Atualizado com sucesso";
-                CmbStkCompany.SelectedIndex = -1;
-                CmbStkProduct.SelectedIndex = -1;
-                TxtStkAmountPurchased.Text = string.Empty;
-                TxtStkAmountSold.Text = string.Empty;
-                TxtStkQtyPurchased.Text = string.Empty;
-                TxtStkQtySold.Text = string.Empty;
-            }
-            catch (ApplicationException ex)
-            {
-                TxtBlkLogCRUD.Text = "Erro ao Atualizar" + ex.Message;
-                throw new ApplicationException("Erro na Atualização" + ex.Message);
-            }
-        }
-        //Method to create an manual stock sale
-        private void BtnSaleStock_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedProduct = _productService.FindByGroup(CmbStkProduct.SelectedItem.ToString());
-            SelectedCompany = _companyService.FindByName(CmbStkCompany.SelectedItem.ToString());
-            SelectedStock = _stockService.GetStockByCompanyAndGroup(SelectedCompany, SelectedProduct.GroupP);
-            SelectedStock.MovimentSale(
-                Convert.ToInt32(TxtStkQtySold.Text),
-                Convert.ToDouble(TxtStkAmountSold.Text),
-                DateTime.Now.Date);
-            try
-            {
-                _stockService.Update(SelectedStock);
-                TxtBlkLogCRUD.Text = "Atualizado com sucesso";
-                CmbStkCompany.SelectedIndex = -1;
-                CmbStkProduct.SelectedIndex = -1;
-                TxtStkAmountPurchased.Text = string.Empty;
-                TxtStkAmountSold.Text = string.Empty;
-                TxtStkQtyPurchased.Text = string.Empty;
-                TxtStkQtySold.Text = string.Empty;
-            }
-            catch (ApplicationException ex)
-            {
-                TxtBlkLogCRUD.Text = "Erro ao Atualizar" + ex.Message;
-                throw new ApplicationException("Erro na Atualização" + ex.Message);
-            }
-
-
-        }
-        #endregion
+       
 
         #region --== NF Control ==--
         private void BtnSearchNF_Click(object sender, RoutedEventArgs e)
@@ -1199,7 +891,7 @@ namespace StockManagerCore
                 SelectedCompany.Name = txtCompanyNF.Text;
                 SelectedCompany.MaxRevenues = Convert.ToDouble(txtMaxRevenuesNF.Text);
                 SelectedCompany.SetBalance(
-                    CalculateCompanyBalance(
+                    _companyService.CalculateCompanyBalance(
                         _stockService.GetStocksByCompany(SelectedCompany),
                         SelectedCompany));
                 MessageBox.Show(_companyService.Update(SelectedCompany));
@@ -1267,34 +959,29 @@ namespace StockManagerCore
         #endregion
 
         #region --== Local Methods ==--
-        private void GenerateGrid(IEnumerable<Object> gridContent, Company c)
+        private void GenerateGrid(List<DispStockCompany> gridContent, Company c)
         {
+            int tq = 0;
+            double tv = 0.0;
+            foreach (var item in gridContent)
+            {
+                tq += item.QteSaldo;
+                tv += double.Parse(item.ValorSaldo.Replace("R$", "").Trim(),CultureInfo.CurrentCulture);
+            }
+
             //Changes view to the tab of dataview
             tbiDataView.IsSelected = true;
             //Activates the auto generate columns for the grid manages himself
             GrdView.AutoGenerateColumns = true;
             //attributes the data to grid
-            TxtBCompany.Text = c.Name; //Label on top
+            TxtBCompany.Text += ": " + c.Name; //Label on top
             //attach list to grid for result
+            lblTotalQtyInStock.Content = tq.ToString("N0", CultureInfo.CurrentCulture);
+            lblTotalAmtInStock.Content = tv.ToString("C2");
             GrdView.ItemsSource = gridContent.ToList();
             InitializeComponent();
         }
-        
-        private double CalculateCompanyBalance(IEnumerable<Stock> list, Company c)
-        {
-            double sum = 0.0d;
-            foreach (Stock item in list)
-            {
-                sum += item.AmountSold;
-            }
-
-            MessageBox.Show(_companyService.Update(c),
-                "Resultado",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
-            return sum;
-        }
-
+          
         private void ClearFile()
         {
             filename = string.Empty;

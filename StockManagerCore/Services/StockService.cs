@@ -21,7 +21,7 @@ namespace StockManagerCore.Services
 
         #region --== Methods ==--
         //Querry all stocks selecting by an specific company
-        public IEnumerable<Stock> GetStocksByCompany(Company company)
+        public List<Stock> GetStocksByCompany(Company company)
         {
             if (company == null)
             {
@@ -33,7 +33,7 @@ namespace StockManagerCore.Services
                 return _context.Stocks
                     .Include(s => s.Product)
                     .Include(s => s.Company)
-                    .Where(s => s.Company.Id == company.Id);
+                    .Where(s => s.Company.Id == company.Id).ToList();
             }
             catch (NotFoundException ex)
             {
@@ -64,17 +64,17 @@ namespace StockManagerCore.Services
         }
 
         //Querry all Stocks from database
-        public IEnumerable<Stock> GetStocks()
+        public List<Stock> GetStocks()
         {
-            IEnumerable<Stock>stocks = _context.Stocks
+            List<Stock> stocks = _context.Stocks
                 .Include(s => s.Product)
                 .Include(s => s.Company)
-                .OrderBy(s => s.Product.GroupP);
+                .OrderBy(s => s.Product.GroupP).ToList();
 
             _context.Database.CloseConnection();
 
             return stocks;
-           
+
         }
 
         //Querry all stocks and returns a formated list. Includin product name and company name.
@@ -88,8 +88,10 @@ namespace StockManagerCore.Services
                         {
                             Produto = s.Product.GroupP,
                             QteComprada = s.QtyPurchased,
+                            ValorMedio = 0.0,
                             QteVendida = s.QtySold,
                             QteSaldo = s.ProdQtyBalance,
+                            ValorSaldo = 0.0,
                             DataSaldo = s.BalanceDate.ToString("dd/MM/yyyy"),
                             ValorCompra = s.AmountPurchased.ToString("C2"),
                             ValorVenda = s.AmountSold.ToString("C2"),
@@ -98,11 +100,50 @@ namespace StockManagerCore.Services
                         };
             return query.ToList();
         }
-        public IEnumerable<object> CalculateBalance(Company company)
+        public List<DispStockCompany> GetStocksStructured(Company company)
+        {
+            List<DispStockCompany> outList = new List<DispStockCompany>();
+            DispStockCompany stockToDisplay;
+            List<Stock> query = _context.Stocks
+                .Include(s => s.Company)
+                .Include(s => s.Product)
+                .Where(s => s.Company.Id == company.Id).ToList();
+
+            foreach (Stock st in query)
+            {
+                stockToDisplay = new DispStockCompany();
+                stockToDisplay.Produto = st.Product.GroupP.ToString();
+                stockToDisplay.QteCompra = st.QtyPurchased;
+                stockToDisplay.QteVendida = st.QtySold;
+                stockToDisplay.QteSaldo = st.ProdQtyBalance;
+                stockToDisplay.ValorCompra = st.AmountPurchased.ToString("C2");
+                stockToDisplay.ValorVenda = st.AmountSold.ToString("C2");
+                stockToDisplay.DataSaldo = st.BalanceDate.Date.ToString("dd/MM/yyyy");
+                stockToDisplay.UltimaEntrada = st.LastInput.Date.ToString("dd/MM/yyyy");
+                stockToDisplay.UltimaSaída = st.LastSales.Date.ToString("dd/MM/yyyy");
+                if (st.QtyPurchased > 0)
+                {
+                    double vm = st.AmountPurchased / st.QtyPurchased;
+                    stockToDisplay.ValorMedio = (vm).ToString("C2");
+                    stockToDisplay.ValorSaldo = (st.ProdQtyBalance * vm).ToString("C2");
+                }
+                else
+                {
+                    stockToDisplay.ValorMedio = "R$0,0";
+                    stockToDisplay.ValorSaldo = "R$0,0";
+                }
+
+                outList.Add(stockToDisplay);
+
+            }
+
+            return outList;
+        }
+        public List<DispStockCompany> CalculateBalance(Company company)
         {
             try
             {
-                IEnumerable<Stock> stocks;
+                List<Stock> stocks = new List<Stock>();
                 stocks = GetStocksByCompany(company);
                 foreach (Stock item in stocks)
                 {
@@ -116,7 +157,7 @@ namespace StockManagerCore.Services
                 MessageBox.Show("Erro ao tentar fazer update!\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new DbUpdateConcurrencyException(ex.Message);
             }
-            return GetStocksFormated(company).ToList();
+            return GetStocksStructured(company);
         }
 
 
@@ -124,7 +165,7 @@ namespace StockManagerCore.Services
 
         //Method to Create new Stock
         public string Create(Product product, int? qtyPurchased, int? qtySold, double? amountPurchased,
-            double? amountSold, DateTime lstImput, DateTime? lstSale, Company company)
+            double? amountSold, DateTime? lstImput, DateTime? lstSale, Company company)
         {
             Stock stk = new Stock();
             string result;
@@ -140,7 +181,7 @@ namespace StockManagerCore.Services
                     && company != null)
                 {
                     stk = new Stock(product, qtyPurchased.Value, qtySold.Value, amountPurchased.Value, amountSold.Value,
-                   lstImput, lstSale.Value, company);
+                   (DateTime)lstImput, (DateTime)lstSale.Value, company);
                     _context.Stocks.Add(stk);
                     _context.SaveChanges();
                 }
@@ -200,7 +241,7 @@ namespace StockManagerCore.Services
                 throw new DbUpdateConcurrencyException(ex.Message);
             }
         }
-        public void UpdateRange(IEnumerable<Stock>stks)
+        public void UpdateRange(IEnumerable<Stock> stks)
         {
             try
             {
@@ -213,7 +254,7 @@ namespace StockManagerCore.Services
                 MessageBox.Show("Erro ao tentar fazer update!\n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new DbUpdateConcurrencyException(ex.Message);
             }
-            
+
         }
         #endregion
         #endregion

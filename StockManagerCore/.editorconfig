@@ -2,3 +2,6 @@
 
 # CS8602: Desreferência de uma referência possivelmente nula.
 dotnet_diagnostic.CS8602.severity = silent
+
+# CS8629: O tipo de valor de nulidade pode ser nulo.
+dotnet_diagnostic.CS8629.severity = silent

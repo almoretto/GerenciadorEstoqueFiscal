@@ -1,0 +1,86 @@
+﻿<Window x:Class="StockManagerCore.UserInterface.WdnStockCrud"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StockManagerCore.UserInterface"
+        mc:Ignorable="d"
+        Title="WdnStockCrud" Height="700" Width="1000">
+    <Grid>
+        <Grid x:Name="GrdBackComp" Background="#FFFDFDFD" Margin="28,92,28,65" UseLayoutRounding="False" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="23*"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox x:Name="GrpComp" Header="Empresa" Margin="32,56,483,333">
+                <Grid Margin="10,0,-2,0" Height="139">
+                    <TextBox x:Name="TxtCoId" HorizontalAlignment="Left" Margin="130,10,0,0" Text="Id" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" AllowDrop="False" IsInactiveSelectionHighlightEnabled="True" IsReadOnly="True" IsTabStop="False" IsUndoEnabled="False"/>
+                    <Label x:Name="LblCoId" Content="Id" HorizontalAlignment="Left" Margin="35,6,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.395,0.54" Width="68"/>
+                    <Label x:Name="LblCoName" Content="Empresa" HorizontalAlignment="Left" Margin="35,29,0,0" VerticalAlignment="Top" Width="68"/>
+                    <TextBox x:Name="TxtCoName" HorizontalAlignment="Left" Margin="130,33,0,0" Text="Nome" TextWrapping="Wrap" VerticalAlignment="Top" Width="204"/>
+                    <Button x:Name="BtnCreateComp" Content="Criar" HorizontalAlignment="Left" Margin="339,32,0,0" VerticalAlignment="Top" Width="60" Click="Btn_CreateComp_Click" />
+                    <Button x:Name="BtnReadComp" Content="Visualizar" HorizontalAlignment="Left" Margin="339,55,0,0" VerticalAlignment="Top" Width="60" Click="Btn_ReadComp_Click" />
+                    <Button x:Name="BtnUpdateComp" Content="Editar" HorizontalAlignment="Left" Margin="339,79,0,0" VerticalAlignment="Top" Width="60" Click="Btn_UpdateComp_Click" />
+                    <Label x:Name="lblMaxRevenues" Content="Limite Fat" HorizontalAlignment="Left" Margin="35,55,0,0" VerticalAlignment="Top" Width="69"/>
+                    <TextBox x:Name="txtCompanyMaxRevenues" HorizontalAlignment="Left" Margin="130,56,0,0" Text="Limite de faturamento" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" InputScope="CurrencyAmount"/>
+                    <Label x:Name="lblCompanyBalance" Content="Saldo Faturável" HorizontalAlignment="Left" Margin="35,75,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtCompanyBalance" HorizontalAlignment="Left" Margin="130,79,0,0" Text="R$" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" InputScope="CurrencyAmountAndSymbol" IsReadOnly="True"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox x:Name="GrpProducts" Header="Produtos" Margin="460,56,51,333">
+                <Grid Height="150" Margin="10,0,-2,0">
+                    <TextBox x:Name="TxtProdGroupP" HorizontalAlignment="Left" Margin="210,37,0,0" Text="Produto" TextWrapping="Wrap" VerticalAlignment="Top" Width="186"/>
+                    <TextBox x:Name="TxtProdId" HorizontalAlignment="Left" Margin="60,37,0,0" Text="Id" TextWrapping="Wrap" VerticalAlignment="Top" Width="66"/>
+                    <Label x:Name="LblProdId" Content="Id" HorizontalAlignment="Left" Margin="20,33,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="LblProdGroupP" Content="Produto" HorizontalAlignment="Left" Margin="142,33,0,0" VerticalAlignment="Top"/>
+                    <Button x:Name="BtnCreateProd" Content="Criar" HorizontalAlignment="Left" Margin="30,0,0,0" VerticalAlignment="Center" Width="60" Click="Btn_CreateProd_Click"/>
+                    <Button x:Name="BtnReadProd" Content="Visualizar" HorizontalAlignment="Left" Margin="96,0,0,0" VerticalAlignment="Center" Width="60" Click="Btn_ReadProd_Click"/>
+                    <Button x:Name="BtnUpdateProd" Content="Editar" HorizontalAlignment="Left" Margin="160,0,0,0" VerticalAlignment="Center" Width="60" Click="Btn_UpdateProd_Click"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox x:Name="GrpStock" Header="Estoques" Margin="32,199,51,127">
+                <Grid>
+                    <Label x:Name="LblStkId" Content="Id" HorizontalAlignment="Left" Margin="16,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.434,0.561" Width="53"/>
+                    <TextBox x:Name="TxtStkId" HorizontalAlignment="Left" Margin="16,41,0,0" Text="Id" TextWrapping="Wrap" VerticalAlignment="Top" Width="53"/>
+                    <ComboBox x:Name="CmbStkProduct" HorizontalAlignment="Left" Margin="154,10,0,0" VerticalAlignment="Top" Width="128"/>
+                    <Label x:Name="LblStkProduct" Content="Produto" HorizontalAlignment="Left" Margin="85,10,0,0" VerticalAlignment="Top" Width="54"/>
+                    <Label x:Name="LblStkQtyPurchased" Content="Qte Comprada" HorizontalAlignment="Left" Margin="453,10,0,0" VerticalAlignment="Top" Width="156"/>
+                    <TextBox x:Name="TxtStkQtyPurchased" HorizontalAlignment="Left" Margin="453,36,0,0" Text="Qte" TextWrapping="Wrap" VerticalAlignment="Top" Width="156"/>
+                    <Label x:Name="LblStkQtySold" Content="Qte Vendida" HorizontalAlignment="Left" Margin="455,59,0,0" VerticalAlignment="Top" Width="154"/>
+                    <TextBox x:Name="TxtStkQtySold" HorizontalAlignment="Left" Margin="453,87,0,0" Text="Qte" TextWrapping="Wrap" VerticalAlignment="Top" Width="156" RenderTransformOrigin="0.873,0.579"/>
+                    <Label x:Name="LblStkAmountPurchased" Content="Valor Compra" HorizontalAlignment="Left" Margin="614,10,0,0" VerticalAlignment="Top" Width="176"/>
+                    <TextBox x:Name="TxtStkAmountPurchased" HorizontalAlignment="Left" Margin="614,36,0,0" Text="ValorCompra" TextWrapping="Wrap" VerticalAlignment="Top" Width="176"/>
+                    <Label x:Name="LblStkAmountSold" Content="Valor Venda" HorizontalAlignment="Left" Margin="614,59,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.514,0.528" Width="176"/>
+                    <TextBox x:Name="TxtStkAmountSold" HorizontalAlignment="Left" Margin="614,87,0,0" Text="ValorVenda" TextWrapping="Wrap" VerticalAlignment="Top" Width="176"/>
+                    <ComboBox x:Name="CmbStkCompany" HorizontalAlignment="Left" Margin="154,39,0,0" VerticalAlignment="Top" Width="128"/>
+                    <Label x:Name="LblStkCompany" Content="Empresa" HorizontalAlignment="Left" Margin="85,37,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="LblStkLastInput" Content="Última Importação" HorizontalAlignment="Left" Margin="453,110,0,0" VerticalAlignment="Top" Width="156"/>
+                    <Label x:Name="LblStkLastSale" Content="Ultima Saída" HorizontalAlignment="Left" Margin="614,110,0,0" VerticalAlignment="Top" Width="176"/>
+                    <DatePicker x:Name="DPkrStkLastInput" HorizontalAlignment="Left" Margin="455,136,0,0" VerticalAlignment="Top" Width="154"/>
+                    <DatePicker x:Name="DPkrStkLastSale" HorizontalAlignment="Left" Margin="614,136,0,0" VerticalAlignment="Top" Width="176"/>
+                    <Button x:Name="BtnCreateStock" Content="Criar" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top" Width="80" Click="Btn_CreateStock_Click"/>
+                    <Button x:Name="BtnReadStock" Content="Visualizar" HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top" Width="80" Click="Btn_ReadStock_Click"/>
+                    <Button x:Name="btnEntryStock" Content="Efetuar Entrada" HorizontalAlignment="Left" Margin="296,71,0,0" VerticalAlignment="Top" Width="130" Click="BtnEntryStock_Click" RenderTransformOrigin="0.574,-0.397"/>
+                    <Button x:Name="btnSaleStock" Content="Efetuar Saída" HorizontalAlignment="Left" Margin="296,97,0,0" VerticalAlignment="Top" Click="BtnSaleStock_Click" Height="20" Width="130"/>
+                    <Button x:Name="btnBalanceCalc" Content="Calcula Saldo" HorizontalAlignment="Left" Margin="151,97,0,0" VerticalAlignment="Top" Width="125" Click="BtnBalanceCalc_Click"/>
+                    <Label x:Name="lblBalanceDate" Content="Data de Cálculo" HorizontalAlignment="Left" Margin="296,10,0,0" VerticalAlignment="Top" Width="130" Height="25"/>
+                    <DatePicker x:Name="dpkBalanceDate" HorizontalAlignment="Left" Margin="294,39,0,0" VerticalAlignment="Top" Width="132"/>
+                    <Label x:Name="lblBalance" Content="Saldo" HorizontalAlignment="Left" Margin="85,68,0,0" VerticalAlignment="Top" Width="54"/>
+                    <TextBox x:Name="txtBalance" HorizontalAlignment="Left" Margin="151,69,0,0" Text="Saldo Atual" TextWrapping="Wrap" VerticalAlignment="Top" Width="131" AllowDrop="False" IsReadOnly="True" IsTabStop="False" IsUndoEnabled="False" InputScope="CurrencyAmountAndSymbol" Height="23"/>
+                    <CheckBox x:Name="chkFormated" Content="Vizualizar Formatado?" HorizontalAlignment="Left" Margin="16,151,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.574,0.466"/>
+                </Grid>
+            </GroupBox>
+            <TextBlock x:Name="TxtBlkLogCRUD" HorizontalAlignment="Left" Margin="36,459,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="857" Height="58" FontWeight="Normal" Background="#FFCDDDDE" Panel.ZIndex="3"/>
+            <TextBlock x:Name="TxtBlkInstructStock" HorizontalAlignment="Left" Margin="36,405,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="742" Height="35"><Run Text="Para Visualizar selecione a empresa"/><Run Text=". "/><Run/><LineBreak/><Run Text="Lembre-se que ao cadastrar um produto novo, o mesmo deverá ser cadastrado no estoque de cada uma das empresas separadamente."/><Run Text=" "/></TextBlock>
+            <ComboBox x:Name="CmbSwitch" Grid.Column="1" HorizontalAlignment="Left" Margin="32,20,0,0" VerticalAlignment="Top" Width="166">
+                <ComboBoxItem Content="Empresa"/>
+                <ComboBoxItem Content="Produto"/>
+                <ComboBoxItem Content="Estoque"/>
+            </ComboBox>
+            <Button x:Name="BtnSelect" Content="Selecionar" Grid.Column="1" HorizontalAlignment="Left" Margin="210,21,0,0" VerticalAlignment="Top" Click="Btn_Select_Click"/>
+            <TextBox x:Name="TxtSelection" Grid.Column="1" HorizontalAlignment="Left" Margin="287,22,0,0" Text="Digite a entidade para buscar" TextWrapping="Wrap" VerticalAlignment="Top" Width="172"/>
+            <TextBlock x:Name="TxtBlkSign" Grid.Column="1" HorizontalAlignment="Left" Margin="479,23,0,0" Text="Empresa ou Produto/ Empresa ,Produto" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-0.041,0.001"/>
+        </Grid>
+        <Label x:Name="lblCrudTittle" Content="Janela de controle do estoque fiscal" HorizontalAlignment="Center" Margin="0,31,0,0" VerticalAlignment="Top" FontSize="20" FontWeight="ExtraBold"/>
+
+    </Grid>
+</Window>

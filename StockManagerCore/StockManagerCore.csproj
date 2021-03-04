@@ -22,6 +22,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="stock_paste.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.2">
@@ -34,6 +38,14 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Xceed.Products.Wpf.Toolkit.AvalonDock" Version="4.1.21063.2360" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UserInterface\Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="stock_paste.png" />
   </ItemGroup>
 
 </Project>

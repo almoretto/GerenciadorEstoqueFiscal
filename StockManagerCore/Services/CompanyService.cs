@@ -81,6 +81,49 @@ namespace StockManagerCore.Services
             throw new NotFoundException("Insuficient Data to find entity!");
         }
 
+        public IEnumerable<object> GetObjCompanies()
+        {
+            var query = from c in _context.Companies
+                        join s in _context.Stocks on c.Id equals s.Company.Id
+                        select new
+                        {
+                            Nome = c.Name,
+                            Codigo = c.Id,
+                            MaxFaturamento = c.MaxRevenues.ToString("C2"),
+                            SaldoFaturavel = c.Balance.ToString("C2")
+                        };
+            return query.ToList();
+        }
+
+        public double CalculateCompanyBalance(IEnumerable<Stock> list, Company c)
+        {
+            double sum = 0.0d;
+            try
+            {
+               
+                foreach (Stock item in list)
+                {
+                    sum += item.AmountSold;
+                }
+                _context.Companies.Update(c);
+                _context.SaveChanges();
+                MessageBox.Show("Saldo Atualizado! "+ sum.ToString("C2"),
+                    "Resultado",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (DbComcurrancyException ex)
+            {
+                MessageBox.Show("Saldo não atualizado!\n " + ex.Message,
+                   "Erro",
+                   MessageBoxButton.OK,
+                   MessageBoxImage.Error);
+                throw new DbComcurrancyException(ex.Message);
+            }
+          
+            return sum;
+        }
+
         #region --== CRUD ==--
 
         //Methods to Create New and Update records of companies.
