@@ -61,6 +61,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -198,7 +206,9 @@
             "IsolateTo" = "8:"
             }
         }
-        
+        "FileType"
+        {
+        }
         "Folder"
         {
             "{1525181F-901A-416C-8A58-119130FE478E}:_9D26682CED694C3C86DEE79F8BAEF1BA"
@@ -787,7 +797,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_47710535AF2D479A888E3078DF28C030"
             {
-            "SourcePath" = "8:..\\StockManagerCore\\obj\\Debug\\netcoreapp3.1\\StockManagerCore.dll"
+            "SourcePath" = "8:..\\StockManagerCore\\obj\\Release\\netcoreapp3.1\\StockManagerCore.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F35AC50F2ED34191A5389F571D85E08A"
@@ -815,7 +825,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_4FF5133C92B54805BFC766FC8497D2C3"
             {
-            "SourcePath" = "8:..\\StockManagerCore\\obj\\Debug\\netcoreapp3.1\\apphost.exe"
+            "SourcePath" = "8:..\\StockManagerCore\\obj\\Release\\netcoreapp3.1\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F35AC50F2ED34191A5389F571D85E08A"
@@ -835,6 +845,34 @@
             "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:PublishItems"
+            "OutputProjectGuid" = "8:{60133310-8AE9-4B87-8EED-A560D8EA9576}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_F6C1CBC2D0FF417789CD6AAC78A7F03A"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_F35AC50F2ED34191A5389F571D85E08A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:PriFilesOutputGroup"
             "OutputProjectGuid" = "8:{60133310-8AE9-4B87-8EED-A560D8EA9576}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"

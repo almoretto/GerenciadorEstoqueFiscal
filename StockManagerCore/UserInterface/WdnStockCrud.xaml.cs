@@ -40,10 +40,8 @@ namespace StockManagerCore.UserInterface
         private Company SelectedCompany { get; set; } = new Company();
         private Product SelectedProduct { get; set; } = new Product();
         private Stock SelectedStock { get; set; } = new Stock();
-        //private List<SoldProduct> ListOfSales { get; set; } = new List<SoldProduct>();
         private IEnumerable<Company> ListCompanies { get; set; }
         private List<DispStockCompany> ListOfStocksStruct { get; set; }
-       // private List<Stock> StocksList { get; set; } = new List<Stock>();
         private IEnumerable<Product> ListOfProducts { get; set; }
         private IEnumerable<object> GridList { get; set; }
         public WdwGenericGridData companyGrid { get; set; }

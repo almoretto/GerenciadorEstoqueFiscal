@@ -19,9 +19,7 @@ namespace StockManagerCore.Data
         #region --== Properties ==--
         private List<Product> Ps { get; set; } = new List<Product>();
         private List<Company> Cs { get; set; } = new List<Company>();
-        private List<City> Cty { get; set; } = new List<City>();
-        private List<Person> Pep { get; set; } = new List<Person>();
-        private List<NFControl> NF { get; set; } = new List<NFControl>();
+        
 
         #endregion
 
@@ -225,74 +223,74 @@ namespace StockManagerCore.Data
             }
             #endregion
 
-            #region --== Seeding Cities ==--
-            if (!_Context.Cities.Any())
-            {
-                Cty.Add(new City("CURITIBA", State.PR));
-                Cty.Add(new City("BIRIGUI", State.SP));
-                Cty.Add(new City("MANHAÇU", State.MG));
-                Cty.Add(new City("LONDRINA", State.PR));
-                Cty.Add(new City("SAO LUIZ", State.MA));
-                Cty.Add(new City("SAO PAULO", State.SP));
-                Cty.Add(new City("PARANAVAI", State.PR));
-                Cty.Add(new City("GOIANIA", State.GO));
-                Cty.Add(new City("MANAUS", State.AM));
-                Cty.Add(new City("SALVADOR", State.BA));
-                Cty.Add(new City("ERECHIM", State.RS));
-                Cty.Add(new City("BELEM", State.PA));
-                Cty.Add(new City("JABOATAO DOS GUARARAPES", State.PE));
-                Cty.Add(new City("CAMPO GRANDE", State.MS));
-                Cty.Add(new City("CUIABA", State.MT));
-                Cty.Add(new City("FORTALEZA", State.CE));
-                Cty.Add(new City("TEREZINA", State.PI));
-                Cty.Add(new City("SOROCABA", State.SP));
-                Cty.Add(new City("TRES ARROIOS", State.RS));
-                Cty.Add(new City("LAURO DE FREITAS", State.BA));
-                Cty.Add(new City("ARAGUAINA", State.TO));
-                Cty.Add(new City("GURUPI", State.TO));
-                Cty.Add(new City("ADAMANTINA", State.SP));
+            //#region --== Seeding Cities ==--
+            //if (!_Context.Cities.Any())
+            //{
+            //    Cty.Add(new City("CURITIBA", State.PR));
+            //    Cty.Add(new City("BIRIGUI", State.SP));
+            //    Cty.Add(new City("MANHAÇU", State.MG));
+            //    Cty.Add(new City("LONDRINA", State.PR));
+            //    Cty.Add(new City("SAO LUIZ", State.MA));
+            //    Cty.Add(new City("SAO PAULO", State.SP));
+            //    Cty.Add(new City("PARANAVAI", State.PR));
+            //    Cty.Add(new City("GOIANIA", State.GO));
+            //    Cty.Add(new City("MANAUS", State.AM));
+            //    Cty.Add(new City("SALVADOR", State.BA));
+            //    Cty.Add(new City("ERECHIM", State.RS));
+            //    Cty.Add(new City("BELEM", State.PA));
+            //    Cty.Add(new City("JABOATAO DOS GUARARAPES", State.PE));
+            //    Cty.Add(new City("CAMPO GRANDE", State.MS));
+            //    Cty.Add(new City("CUIABA", State.MT));
+            //    Cty.Add(new City("FORTALEZA", State.CE));
+            //    Cty.Add(new City("TEREZINA", State.PI));
+            //    Cty.Add(new City("SOROCABA", State.SP));
+            //    Cty.Add(new City("TRES ARROIOS", State.RS));
+            //    Cty.Add(new City("LAURO DE FREITAS", State.BA));
+            //    Cty.Add(new City("ARAGUAINA", State.TO));
+            //    Cty.Add(new City("GURUPI", State.TO));
+            //    Cty.Add(new City("ADAMANTINA", State.SP));
 
-                _Context.Cities.AddRange(Cty); //Adding to DBSet
-                _Context.SaveChanges();
-            }
-            #endregion
+            //    _Context.Cities.AddRange(Cty); //Adding to DBSet
+            //    _Context.SaveChanges();
+            //}
+            //#endregion
 
-            #region ---== Seeding People ==--
-            if (!_Context.People.Any())
-            {
-                Pep.Add(new Person("ADILSON",
-                    "",
-                    _Context.Cities
-                    .Where(c => c.CityName == "ADAMANTINA")
-                    .FirstOrDefault(),
-                    State.SP,
-                    PersonType.PF,
-                    PersonCategory.Representante));
-                Pep.Add(new Person("ALBERTO",
-                    "",
-                    _Context.Cities
-                    .Where(c => c.CityName == "CUIABA")
-                    .FirstOrDefault(),
-                    State.MT,
-                    PersonType.PF,
-                    PersonCategory.Representante));
-                Pep.Add(new Person("CYNTHIA",
-                    "",
-                    _Context.Cities
-                    .Where(c => c.CityName == "TEREZINA")
-                    .FirstOrDefault(),
-                    State.PI,
-                    PersonType.PF,
-                    PersonCategory.Representante));
+            //#region ---== Seeding People ==--
+            //if (!_Context.People.Any())
+            //{
+            //    Pep.Add(new Person("ADILSON",
+            //        "",
+            //        _Context.Cities
+            //        .Where(c => c.CityName == "ADAMANTINA")
+            //        .FirstOrDefault(),
+            //        State.SP,
+            //        PersonType.PF,
+            //        PersonCategory.Representante));
+            //    Pep.Add(new Person("ALBERTO",
+            //        "",
+            //        _Context.Cities
+            //        .Where(c => c.CityName == "CUIABA")
+            //        .FirstOrDefault(),
+            //        State.MT,
+            //        PersonType.PF,
+            //        PersonCategory.Representante));
+            //    Pep.Add(new Person("CYNTHIA",
+            //        "",
+            //        _Context.Cities
+            //        .Where(c => c.CityName == "TEREZINA")
+            //        .FirstOrDefault(),
+            //        State.PI,
+            //        PersonType.PF,
+            //        PersonCategory.Representante));
 
-                _Context.People.AddRange(Pep);
-                _Context.SaveChanges();
-            }
-            else
-            {
-                return;//Seed Realized
-            }
-            #endregion
+            //    _Context.People.AddRange(Pep);
+            //    _Context.SaveChanges();
+            //}
+            //else
+            //{
+            //    return;//Seed Realized
+            //}
+            //#endregion
         }
     }
 }

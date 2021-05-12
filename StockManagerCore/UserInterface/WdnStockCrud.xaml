@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StockManagerCore.UserInterface"
         mc:Ignorable="d"
-        Title="WdnStockCrud" Height="700" Width="1000">
-    <Grid>
+        Title="WdnStockCrud" Height="700" Width="1000" Icon="/Imgs/stock.png" Topmost="True" WindowStartupLocation="CenterScreen" TabIndex="2147483641">
+    <Grid x:Name="GridCrud">
         <Grid x:Name="GrdBackComp" Background="#FFFDFDFD" Margin="28,92,28,65" UseLayoutRounding="False" ScrollViewer.VerticalScrollBarVisibility="Disabled">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="23*"/>

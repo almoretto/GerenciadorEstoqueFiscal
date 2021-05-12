@@ -6,7 +6,7 @@
              Startup="OnStartup">
     <!--Declaration of resouces to use enumerators in the combobox each necessary enum has an Object provider declared-->            
     <Application.Resources>
-        <ObjectDataProvider x:Key="enmNFType" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+        <!--<ObjectDataProvider x:Key="enmNFType" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="enm:NFType"></x:Type>
             </ObjectDataProvider.MethodParameters>
@@ -25,7 +25,7 @@
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="enm:State"></x:Type>
             </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
+        </ObjectDataProvider>-->
     </Application.Resources>
     
 </Application>
