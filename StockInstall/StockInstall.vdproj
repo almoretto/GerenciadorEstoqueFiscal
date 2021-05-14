@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_27D9A92D916B43D18CD5828B20804DFE"
+        "MsmKey" = "8:_3846A784C60B4CCDA9852200945168A0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -33,13 +33,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A5F01E2ECA29419DA4C89482CB93E929"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B438C0FE3CC842D39698D5BE19F9514B"
+        "MsmKey" = "8:_80484FA89636421D89903C5EBDE8505C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -68,6 +62,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -145,50 +147,10 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_27D9A92D916B43D18CD5828B20804DFE"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3846A784C60B4CCDA9852200945168A0"
             {
-            "SourcePath" = "8:..\\StockManagerCore\\stock2.ico"
-            "TargetName" = "8:stock2.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_F35AC50F2ED34191A5389F571D85E08A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A5F01E2ECA29419DA4C89482CB93E929"
-            {
-            "SourcePath" = "8:..\\StockManagerCore\\stock.ico"
+            "SourcePath" = "8:..\\Imgs\\stock.ico"
             "TargetName" = "8:stock.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_F35AC50F2ED34191A5389F571D85E08A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B438C0FE3CC842D39698D5BE19F9514B"
-            {
-            "SourcePath" = "8:..\\StockManagerCore\\bin\\Debug\\netcoreapp3.1\\StockManagerCore.exe"
-            "TargetName" = "8:StockManagerCore.exe"
             "Tag" = "8:"
             "Folder" = "8:_F35AC50F2ED34191A5389F571D85E08A"
             "Condition" = "8:"
@@ -279,7 +241,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_3846A784C60B4CCDA9852200945168A0"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -390,10 +352,10 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_B438C0FE3CC842D39698D5BE19F9514B"
+            "Target" = "8:"
             "Folder" = "8:_9D26682CED694C3C86DEE79F8BAEF1BA"
             "WorkingFolder" = "8:_F35AC50F2ED34191A5389F571D85E08A"
-            "Icon" = "8:_27D9A92D916B43D18CD5828B20804DFE"
+            "Icon" = "8:"
             "Feature" = "8:"
             }
         }
@@ -845,6 +807,90 @@
             "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:PublishItems"
+            "OutputProjectGuid" = "8:{60133310-8AE9-4B87-8EED-A560D8EA9576}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_80484FA89636421D89903C5EBDE8505C"
+            {
+            "SourcePath" = "8:..\\StockManagerCore\\obj\\Release\\netcoreapp3.1\\StockManagerCore.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_F35AC50F2ED34191A5389F571D85E08A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:BuiltProjectOutputGroup"
+            "OutputProjectGuid" = "8:{60133310-8AE9-4B87-8EED-A560D8EA9576}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8B02EC98FCFC466298F8FF9F124D55E0"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_F35AC50F2ED34191A5389F571D85E08A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:ReferenceCopyLocalPathsOutputGroup"
+            "OutputProjectGuid" = "8:{60133310-8AE9-4B87-8EED-A560D8EA9576}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A72160158EA24E348B1D82130F773745"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_F35AC50F2ED34191A5389F571D85E08A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:SourceFilesProjectOutputGroup"
             "OutputProjectGuid" = "8:{60133310-8AE9-4B87-8EED-A560D8EA9576}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"

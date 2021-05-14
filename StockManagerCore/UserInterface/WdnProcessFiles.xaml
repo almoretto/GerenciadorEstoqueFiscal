@@ -1,0 +1,60 @@
+﻿<Window x:Name="WdnProcessFiles1" x:Class="StockManagerCore.UserInterface.WdnProcessFiles"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StockManagerCore.UserInterface"
+        mc:Ignorable="d"
+        Title="Processamento de Arquivos" Height="596" Width="878">
+    <Grid HorizontalAlignment="Center" Width="878" Height="586" VerticalAlignment="Top">
+        <Grid Background="#FFFBF8F8" Margin="0,81,0,0" HorizontalAlignment="Center" Width="858" Height="495" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="236*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="FileNameTextBox" HorizontalAlignment="Left" Margin="10,23,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="399" Height="18"/>
+            <Button x:Name="BtnFileOpen" Content="Selecionar" HorizontalAlignment="Left" Margin="339,46,0,0" VerticalAlignment="Top" Click="BtnFileOpen_Click" Height="26" Width="70"/>
+            <Button x:Name="btnProcessFile" Content="Processar Entradas" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top" Click="ProcessInputs_Click" Height="20" Width="120"/>
+            <Button x:Name="btnProcessSales" Content="Processar Saídas" HorizontalAlignment="Left" Margin="135,104,0,0" VerticalAlignment="Top" Width="120" Click="ProcessSales_Click" Height="20"/>
+            <TextBlock x:Name="LogTextBlock" HorizontalAlignment="Left" Margin="10,356,0,0" Text="Log" TextWrapping="Wrap" VerticalAlignment="Top" Width="704" Height="112" FontWeight="Normal" FontSize="14"/>
+            <Button x:Name="btnExit"  Margin="0,0,54,48" Click="btnExit_Click" Height="85" VerticalAlignment="Bottom" Width="85" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" HorizontalAlignment="Right">
+                <Image Source="/Resources/Exit.png" Stretch="Fill" />
+                <Button.Effect>
+                    <DropShadowEffect/>
+                </Button.Effect>
+            </Button>
+            <ComboBox x:Name="CmbCompany" HorizontalAlignment="Left" Margin="10,77,0,0" VerticalAlignment="Top" Width="399" Height="22"/>
+            <TextBox x:Name="TxtDateInitial" HorizontalAlignment="Left" Margin="428,48,0,0" Text="Data Inicial" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date" Height="22"/>
+            <Button x:Name="BtnCalculate" Content="Calcular" HorizontalAlignment="Left" Margin="428,79,0,0" VerticalAlignment="Top" Click="Btn_Calculate_Click" Height="20" Width="244"/>
+            <RadioButton x:Name="RdnIn" HorizontalAlignment="Left" Margin="428,25,0,0" VerticalAlignment="Top" GroupName="E/S" Content="Entradas" IsChecked="True" Height="14" Width="64" RenderTransformOrigin="-0.75,2.168"/>
+            <RadioButton x:Name="RdnOut" Content="Saídas" HorizontalAlignment="Left" Margin="506,25,0,0" VerticalAlignment="Top" RenderTransformOrigin="0,0.34" GroupName="E/S" Height="15" Width="64"/>
+            <TextBox x:Name="TxtDateFinal" HorizontalAlignment="Left" Margin="553,48,0,0" Text="Data Final" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" InputScope="Date" Height="22"/>
+            <TextBox x:Name="TxtConsole" HorizontalAlignment="Center" Margin="0,149,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="840" Height="202" AllowDrop="False" IsReadOnlyCaretVisible="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+            <Button x:Name="BtnShowStock" HorizontalAlignment="Left" Margin="747,10,0,0" VerticalAlignment="Top" Width="103" Click="Btn_ShowStock_Click" Height="57" Panel.ZIndex="-3" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" ToolTip="Visualizar Estoque">
+                <Button.Effect>
+                    <DropShadowEffect/>
+                </Button.Effect>
+                <Image Source="/View.png" Stretch="Fill" Width="57"/>
+            </Button>
+            <Button x:Name="btnBalanceAll" Margin="747,72,0,0" Click="BtnBalanceAll_Click" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" ToolTip="Recalcular Estoque" HorizontalAlignment="Left" Width="103" Height="58" VerticalAlignment="Top">
+                <Button.Effect>
+                    <DropShadowEffect/>
+                </Button.Effect>
+                <Image Source="/CalcStock.png" Stretch="Fill" Width="57"/>
+            </Button>
+
+            <Label x:Name="lblCompaySelector" Content="Selecione a Empresa" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top"/>
+            <Label Content="" HorizontalAlignment="Left" Margin="721,28,0,0" VerticalAlignment="Top"/>
+            <Label Content="Sair" Margin="0,446,73,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="32"/>
+        </Grid>
+        <TextBlock HorizontalAlignment="Center" Margin="0,24,0,0" Text="Processamento de Arquivos" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="-2.313,-0.875" FontSize="24" FontWeight="Bold" FontFamily="Rockwell" Width="448" TextAlignment="Center" Height="36" FontStretch="UltraExpanded">
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="0.45"/>
+                    <GradientStop Color="#FFB2B4B3" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+
+    </Grid>
+</Window>

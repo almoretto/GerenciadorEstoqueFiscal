@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using StockManagerCore.Data;
 using StockManagerCore.Models;
 using StockManagerCore.Services.Exceptions;
-using System.Windows;
 #endregion
 
 namespace StockManagerCore.Services
 {
-    public class ProductService
+	public class ProductService
     {
         #region --== Constructor for dependency injection ==--
         

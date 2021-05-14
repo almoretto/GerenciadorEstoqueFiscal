@@ -22,7 +22,8 @@ namespace StockManagerCore.Data
         public DbSet<SoldProduct> SoldProducts { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Company> Companies { get; set; }
-      
+        public DbSet<User> Users { get; set; }
+
 
 
         #endregion

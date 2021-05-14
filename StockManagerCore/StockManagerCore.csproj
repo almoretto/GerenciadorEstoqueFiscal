@@ -22,6 +22,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="stock2.ico" />
+  </ItemGroup>
+
+  <!--<ItemGroup>
     <Compile Remove="UserInterface\Resources\**" />
     <EmbeddedResource Remove="UserInterface\Resources\**" />
     <None Remove="UserInterface\Resources\**" />
@@ -29,9 +33,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Exit.png" />
+    <None Remove="InvoiceAdd.png" />
+    <None Remove="stock.png" />
+    <None Remove="StockMain.png" />
     <None Remove="stock_paste.png" />
     <None Remove="UserInterface\stock.ico" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
@@ -48,7 +56,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Imgs\stock_paste.png" />
+    <Resource Include="Resources\StockMain.png" />
+    <Resource Include="Resources\Exit.png" />
+    <Resource Include="Resources\InvoiceAdd.png" />
+    <Resource Include="Resources\stock.png" />
+    <Resource Include="stock2.ico" />
   </ItemGroup>
 
 </Project>
