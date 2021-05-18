@@ -16,9 +16,11 @@ namespace StockManagerCore.Models
 		[Key]
 		public int Id { get; set; }
 		public string UserName { get; set; }
+		public string  Name { get; set; }
 		public UserType UserType { get; set; }
 		public string Email { get; set; }
 		private string MD5Password { get; set; }
+		public bool Status { get; set; }
 		#endregion
 
 		#region --== Private Props ==--
@@ -29,13 +31,20 @@ namespace StockManagerCore.Models
 		#region --== Constructors ==--
 		public User() { }
 
-		public User( string userName, UserType userType, string email, string openPass )
+		public User(string name, 
+							string userName, 
+							UserType userType, 
+							string email, 
+							string openPass, 
+							bool status )
 		{
+			Name = name;
 			UserName = userName;
 			UserType = userType;
 			Email = email;
 			Keychange = "";
 			SetPass( openPass );
+			Status= status;
 		}
 		#endregion
 
@@ -48,12 +57,12 @@ namespace StockManagerCore.Models
 				MD5Password = CypherPass( Keychange );
 				return true;
 			}
-			catch ( ApplicationException ex  )
+			catch ( ApplicationException ex )
 			{
-				MessageBox.Show( 
-						ex.Message, 
-						"Erro ao gravar senha!", 
-						MessageBoxButton.OK, 
+				MessageBox.Show(
+						ex.Message,
+						"Erro ao gravar senha!",
+						MessageBoxButton.OK,
 						MessageBoxImage.Error );
 			}
 			return false;
@@ -69,7 +78,7 @@ namespace StockManagerCore.Models
 				return false;
 			}
 		}
-		public bool ChangePass(string passkey, string newPass)
+		public bool ChangePass( string passkey, string newPass )
 		{
 			if ( CheckPass( passkey ) )
 			{
@@ -84,10 +93,10 @@ namespace StockManagerCore.Models
 						MessageBoxImage.Error );
 				return false;
 			}
-						
+
 		}
 		#endregion
-	
+
 		#region --== Private Methods ==--
 		private string CypherPass( string password )
 		{ return CypherModule.MD5Return( password ); }

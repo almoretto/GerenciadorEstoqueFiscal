@@ -21,26 +21,31 @@ namespace StockManagerCore.Services
 		#region --== Methods ==--
 
 		//Querry to fetch all users from database 
-		public List<User> GetProducts()
+		public List<User> GetUsers()
 		{
 			return _context.Users.ToList();
 		}
 
 		//Querry to Find a producta By Entity
-		public User Find( User u )
+		public User Find( int id )
 		{
 			User user = new User();
-			if ( u.UserName == string.Empty )
+
+			try
 			{
-				throw new RequiredFieldException( "Campo requerido para pesquisa" );
+				user = _context.Users
+					.Where( us => us.Id == id )
+					.SingleOrDefault();
+				if ( user.UserName == string.Empty )
+				{
+					throw new NotFoundException( "Entidade não encontrada" );
+				}
 			}
-			user = _context.Users
-				.Where( us => us.Id == u.Id )
-				.SingleOrDefault();
-			if ( user.UserName == string.Empty )
+			catch ( DbComcurrancyException e)
 			{
-				throw new NotFoundException( "Entidade não encontrada" );
+				throw new DbComcurrancyException(e.Message);
 			}
+
 			return user;
 		}
 
@@ -81,7 +86,7 @@ namespace StockManagerCore.Services
 				}
 				else
 				{
-					response = ex.Message
+					response = ex.Message;
 				}
 				throw new DbComcurrancyException( "Erro ao tentar criar usuário!\n" + response );
 			}
