@@ -11,9 +11,8 @@ namespace StockManagerCore.Data
         public StockDBContext(DbContextOptions<StockDBContext> options) : base(options){ }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=tcp:192.168.100.2,1433;Initial Catalog =StockKManagerDB;User Id=sa;Password=$3nh@2020DBAdm1m;");
+            optionsBuilder.UseSqlServer( "server=tcp:=192.168.100.2,1433;Network Library = DBMSSOCN;Initial Catalog=StockKManagerDB;User Id=appuser;Password=$3nh@2021;" );
         }
-
         #region --== DB Sets table links ==--
 
         //Tables conections declaration dor codeFirst approuch on EFcore

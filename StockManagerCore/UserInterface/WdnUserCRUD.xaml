@@ -25,7 +25,7 @@
         <Button x:Name="btnChangePassword" HorizontalAlignment="Left" Margin="251,291,0,0" VerticalAlignment="Top"  Width="26" Height="26" BorderBrush="Black" Background="{x:Null}" Foreground="{x:Null}" ToolTip="Trocar Senha" Click="btnChangePassword_Click">
             <Image Source="/Resources/password.png" Stretch="Fill" Height="20" Width="20"/>
         </Button>
-        <Button HorizontalAlignment="Left" Margin="138,114,0,0" VerticalAlignment="Top"  Width="25" Height="25" BorderBrush="Black" Background="{x:Null}" Foreground="{x:Null}" ToolTip="Inativar Usuário">
+        <Button x:Name="btnDeleteUser" HorizontalAlignment="Left" Margin="138,114,0,0" VerticalAlignment="Top"  Width="25" Height="25" BorderBrush="Black" Background="{x:Null}" Foreground="{x:Null}" ToolTip="Inativar Usuário" Click="btnDeleteUser_Click">
             <Image Source="/Resources/remove-user.png" Stretch="Fill" Height="20" Width="20"/>
         </Button>
         <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Margin="181,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="186"/>
@@ -36,30 +36,33 @@
         <Label x:Name="lblName" Content="Nome" HorizontalAlignment="Left" Margin="79,177,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txtNewPass" HorizontalAlignment="Left" Margin="182,243,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="186" InputScope="Password"/>
         <Label x:Name="lblPassConfirm" Content="Nova Senha" HorizontalAlignment="Left" Margin="79,239,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnAddUser" HorizontalAlignment="Left" Margin="342,291,0,0" VerticalAlignment="Top" Width="25" Height="26" BorderBrush="Black" Background="{x:Null}" Foreground="{x:Null}" ToolTip="Listar Usuários">
+        <Button x:Name="btnAddUser" HorizontalAlignment="Left" Margin="342,291,0,0" VerticalAlignment="Top" Width="25" Height="26" BorderBrush="Black" Background="{x:Null}" Foreground="{x:Null}" ToolTip="Listar Usuários" Click="btnAddUser_Click">
             <Image Source="/Resources/add-user.png" Stretch="Fill" Height="20" Width="20"/>
         </Button>
-        <Button x:Name="btnClear" HorizontalAlignment="Left" Margin="312,291,0,0" VerticalAlignment="Top" Width="25" Height="26" BorderBrush="Black" Background="{x:Null}" Foreground="{x:Null}" ToolTip="Listar Usuários">
+        <Button x:Name="btnClear" HorizontalAlignment="Left" Margin="312,291,0,0" VerticalAlignment="Top" Width="25" Height="26" BorderBrush="Black" Background="{x:Null}" Foreground="{x:Null}" ToolTip="Listar Usuários" Click="btnClear_Click">
             <Image Source="/Resources/wipe.png" Stretch="Fill" Height="20" Width="20"/>
         </Button>
-        <Button x:Name="btnSave" HorizontalAlignment="Left" Margin="282,291,0,0" VerticalAlignment="Top" Width="25" Height="26" BorderBrush="Black" Background="{x:Null}" Foreground="{x:Null}" ToolTip="Listar Usuários">
+        <Button x:Name="btnSave" HorizontalAlignment="Left" Margin="282,291,0,0" VerticalAlignment="Top" Width="25" Height="26" BorderBrush="Black" Background="{x:Null}" Foreground="{x:Null}" ToolTip="Listar Usuários" Click="btnSave_Click">
             <Image Source="/Resources/floppy-disk.png" Stretch="Fill" Height="20" Width="20"/>
         </Button>
         <Label x:Name="lblEmail" Content="Email" HorizontalAlignment="Left" Margin="382,146,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txtEmail" HorizontalAlignment="Left" Margin="425,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="258" SelectionOpacity="0" Cursor=""/>
         <GroupBox x:Name="grbUserType" Header="Permissão" HorizontalAlignment="Left" Height="92" Margin="382,181,0,0" VerticalAlignment="Top" Width="148">
             <StackPanel Height="59" HorizontalAlignment="Left" Width="136">
-                <RadioButton Content="Usuário" HorizontalAlignment="Left" Margin="10,10,0,0" Height="14"/>
-                <RadioButton Content="Administrador" HorizontalAlignment="Left" Margin="10,10,0,0" Height="14"/>
+                <RadioButton x:Name="rbtUser" Content="Usuário" HorizontalAlignment="Left" Margin="10,10,0,0" Height="14"/>
+                <RadioButton x:Name="rbtAdmin" Content="Administrador" HorizontalAlignment="Left" Margin="10,10,0,0" Height="14"/>
             </StackPanel>
         </GroupBox>
         <GroupBox x:Name="grbUserStatus" Header="Status" HorizontalAlignment="Left" Height="92" Margin="535,181,0,0" VerticalAlignment="Top" Width="148">
             <StackPanel Height="59" HorizontalAlignment="Left" Width="136">
-                <RadioButton Content="Ativo" HorizontalAlignment="Left" Margin="10,10,0,0" Height="14"/>
-                <RadioButton Content="Inativo" HorizontalAlignment="Left" Margin="10,10,0,0" Height="14"/>
+                <RadioButton x:Name="rbtActive" Content="Ativo" HorizontalAlignment="Left" Margin="10,10,0,0" Height="14"/>
+                <RadioButton x:Name="rbtInactive" Content="Inativo" HorizontalAlignment="Left" Margin="10,10,0,0" Height="14"/>
             </StackPanel>
         </GroupBox>
         <TextBox x:Name="txtPassConfirmation" HorizontalAlignment="Left" Margin="182,266,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="186" InputScope="Password"/>
         <Label x:Name="lblPassConfirm_Copy" Content="Confirmar" HorizontalAlignment="Left" Margin="79,262,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnExit"  Margin="0,0,10,10" Click="btnExit_Click" Height="40" VerticalAlignment="Bottom" Width="40" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" HorizontalAlignment="Right">
+            <Image Source="/Resources/Exit.png" Stretch="Fill" />
+        </Button>
     </Grid>
 </Window>

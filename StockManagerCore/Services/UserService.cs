@@ -70,7 +70,7 @@ namespace StockManagerCore.Services
 		//Method to create a new product on database
 		public string Create( User user )
 		{
-			string response = "";
+			string response = string.Empty;
 			try
 			{
 				_context.Users.Add( user );
@@ -122,6 +122,7 @@ namespace StockManagerCore.Services
 		//Method to update an edited product
 		public string Update( User u )
 		{
+			string returnMsg = string.Empty;
 			try
 			{
 				if ( u.UserName == string.Empty )
@@ -130,6 +131,7 @@ namespace StockManagerCore.Services
 				}
 				_context.Users.Update( u );
 				_context.SaveChanges();
+				returnMsg = "Update realizado com sucesso!";
 			}
 			catch ( DbComcurrancyException ex )
 			{
@@ -140,7 +142,8 @@ namespace StockManagerCore.Services
 				}
 				throw new DbComcurrancyException( "Não foi possivel atualizar veja mensagem: \n" + msg );
 			}
-			return "Update realizado com sucesso!";
+		
+			return returnMsg;
 		}
 
 		#endregion
